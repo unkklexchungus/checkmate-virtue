@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspection Details - CheckMate Virtue</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .category-card {
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .item-row {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+        .item-row:last-child {
+            border-bottom: none;
+        }
+        .grade-select {
+            min-width: 100px;
+        }
+        .photo-preview {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        .upload-area:hover {
+            border-color: #667eea;
+            background: #f0f2ff;
+        }
+        .upload-area.dragover {
+            border-color: #667eea;
+            background: #e8ecff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-clipboard-check me-2"></i>
+                CheckMate Virtue
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/inspections">Inspections</a>
+                <a class="nav-link" href="/inspections/new">New Inspection</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <h2>
+                    <i class="fas fa-clipboard-list me-2"></i>
+                    {{ inspection.title }}
+                </h2>
+                <p class="text-muted">
+                    <i class="fas fa-calendar me-1"></i>
+                    {{ inspection.date.split('T')[0] if inspection.date else 'N/A' }}
+                    <span class="ms-3">
+                        <i class="fas fa-user me-1"></i>
+                        {{ inspection.inspector_name }}
+                    </span>
+                </p>
+            </div>
+            <div class="col-md-4 text-end">
+                <button class="btn btn-success" onclick="saveInspection()">
+                    <i class="fas fa-save me-2"></i>
+                    Save Inspection
+                </button>
+                <button class="btn btn-primary ms-2" onclick="generateReport()">
+                    <i class="fas fa-file-pdf me-2"></i>
+                    Generate Report
+                </button>
+            </div>
+        </div>
+
+        <!-- Vehicle Information -->
+        {% if inspection.vehicle_info %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-car me-2"></i>
+                    Vehicle Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Year:</strong><br>
+                        {{ inspection.vehicle_info.year or 'N/A' }}
+                    </div>
+                    <div class="col-md-2">
+                        <strong>Make:</strong><br>
+                        {{ inspection.vehicle_info.make or 'N/A' }}
+                    </div>
+                    <div class="col-md-2">
+                        <strong>Model:</strong><br>
+                        {{ inspection.vehicle_info.model or 'N/A' }}
+                    </div>
+                    <div class="col-md-3">
+                        <strong>VIN:</strong><br>
+                        {{ inspection.vehicle_info.vin or 'N/A' }}
+                    </div>
+                    <div class="col-md-2">
+                        <strong>License Plate:</strong><br>
+                        {{ inspection.vehicle_info.license_plate or 'N/A' }}
+                    </div>
+                    <div class="col-md-1">
+                        <strong>Mileage:</strong><br>
+                        {{ inspection.vehicle_info.mileage or 'N/A' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Inspection Categories -->
+        {% for category in inspection.categories %}
+        <div class="card category-card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-cogs me-2"></i>
+                    {{ category['name'] }}
+                </h5>
+                <small class="text-muted">{{ category['description'] }}</small>
+            </div>
+            <div class="card-body">
+                {% for item in category['items'] %}
+                <div class="item-row">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <strong>{{ item['name'] }}</strong>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select grade-select" 
+                                                                           onchange="updateGrade('{{ category['name'] }}', '{{ item['name'] }}', this.value)">
+                                <option value="N/A" {{ 'selected' if item['grade'] == 'N/A' else '' }}>N/A</option>
+                                <option value="Pass" {{ 'selected' if item['grade'] == 'Pass' else '' }}>Pass</option>
+                                <option value="Fail" {{ 'selected' if item['grade'] == 'Fail' else '' }}>Fail</option>
+                                <option value="Rec" {{ 'selected' if item['grade'] == 'Rec' else '' }}>Rec</option>
+                                <option value="Req" {{ 'selected' if item['grade'] == 'Req' else '' }}>Req</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <textarea class="form-control" rows="2" 
+                                      placeholder="Add notes..."
+                                                                             onchange="updateNotes('{{ category['name'] }}', '{{ item['name'] }}', this.value)">{{ item['notes'] or '' }}</textarea>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-outline-primary btn-sm" 
+                                    onclick="openPhotoUpload('{{ category['name'] }}', '{{ item['name'] }}')">
+                                <i class="fas fa-camera me-1"></i>
+                                Photo
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Photo Display -->
+                    {% if item['photos'] %}
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <small class="text-muted">Photos:</small><br>
+                            {% for photo in item['photos'] %}
+                            <img src="{{ photo }}" class="photo-preview" alt="Inspection photo">
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Photo Upload Modal -->
+    <div class="modal fade" id="photoModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Upload Photo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                        <p>Drag and drop a photo here or click to select</p>
+                        <input type="file" id="photoInput" accept="image/*" style="display: none;">
+                        <button class="btn btn-primary" onclick="document.getElementById('photoInput').click()">
+                            <i class="fas fa-folder-open me-2"></i>
+                            Choose File
+                        </button>
+                    </div>
+                    <div id="uploadProgress" style="display: none;">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="uploadPhoto()">Upload</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentCategory = '';
+        let currentItem = '';
+        let inspectionData = {{ inspection | tojson }};
+
+        function updateGrade(category, item, grade) {
+            for (let cat of inspectionData.categories) {
+                if (cat.name === category) {
+                    for (let it of cat.items) {
+                        if (it.name === item) {
+                            it.grade = grade;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        function updateNotes(category, item, notes) {
+            for (let cat of inspectionData.categories) {
+                if (cat.name === category) {
+                    for (let it of cat.items) {
+                        if (it.name === item) {
+                            it.notes = notes;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        function openPhotoUpload(category, item) {
+            currentCategory = category;
+            currentItem = item;
+            new bootstrap.Modal(document.getElementById('photoModal')).show();
+        }
+
+        async function uploadPhoto() {
+            const fileInput = document.getElementById('photoInput');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a file first');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('category', currentCategory.toLowerCase().replace(/ /g, '_'));
+            formData.append('item', currentItem.toLowerCase().replace(/ /g, '_'));
+
+            try {
+                const response = await fetch(`/api/inspections/{{ inspection.id }}/photos`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Reload the page to show the new photo
+                    location.reload();
+                } else {
+                    alert('Error uploading photo: ' + result.error);
+                }
+            } catch (error) {
+                alert('Error uploading photo: ' + error);
+            }
+        }
+
+        async function saveInspection() {
+            try {
+                const response = await fetch(`/api/inspections/{{ inspection.id }}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(inspectionData)
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert('Inspection saved successfully!');
+                } else {
+                    alert('Error saving inspection: ' + result.error);
+                }
+            } catch (error) {
+                alert('Error saving inspection: ' + error);
+            }
+        }
+
+        function generateReport() {
+            window.open(`/api/inspections/{{ inspection.id }}/report`, '_blank');
+        }
+
+        // Drag and drop functionality
+        const uploadArea = document.getElementById('uploadArea');
+        const photoInput = document.getElementById('photoInput');
+
+        uploadArea.addEventListener('click', () => photoInput.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                photoInput.files = files;
+            }
+        });
+
+        photoInput.addEventListener('change', () => {
+            if (photoInput.files.length > 0) {
+                uploadArea.innerHTML = `
+                    <i class="fas fa-check fa-3x text-success mb-3"></i>
+                    <p>File selected: ${photoInput.files[0].name}</p>
+                `;
+            }
+        });
+    </script>
+</body>
+</html> 

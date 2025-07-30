@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspections - CheckMate Virtue</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .inspection-card {
+            transition: transform 0.2s ease;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .inspection-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .status-badge {
+            font-size: 0.8rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-clipboard-check me-2"></i>
+                CheckMate Virtue
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link active" href="/inspections">Inspections</a>
+                <a class="nav-link" href="/inspections/new">New Inspection</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>
+                <i class="fas fa-list me-2"></i>
+                Vehicle Inspections
+            </h2>
+            <a href="/inspections/new" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>
+                New Inspection
+            </a>
+        </div>
+
+        {% if inspections %}
+            <div class="row">
+                {% for inspection in inspections %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card inspection-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">{{ inspection.title }}</h6>
+                            <span class="badge bg-{{ 'success' if inspection.status == 'completed' else 'warning' }} status-badge">
+                                {{ inspection.status.title() }}
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    {{ inspection.date.split('T')[0] if inspection.date else 'N/A' }}
+                                </small>
+                            </div>
+                            
+                            {% if inspection.vehicle_info %}
+                            <div class="mb-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-car me-1"></i>
+                                    {% if inspection.vehicle_info.year and inspection.vehicle_info.make and inspection.vehicle_info.model %}
+                                        {{ inspection.vehicle_info.year }} {{ inspection.vehicle_info.make }} {{ inspection.vehicle_info.model }}
+                                    {% else %}
+                                        Vehicle info not provided
+                                    {% endif %}
+                                </small>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="mb-3">
+                                <small class="text-muted">
+                                    <i class="fas fa-user me-1"></i>
+                                    {{ inspection.inspector_name }}
+                                </small>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <a href="/inspections/{{ inspection.id }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-eye me-1"></i>
+                                    View
+                                </a>
+                                <button class="btn btn-outline-success btn-sm" onclick="generateReport('{{ inspection.id }}')">
+                                    <i class="fas fa-file-pdf me-1"></i>
+                                    Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No inspections found</h4>
+                <p class="text-muted">Start your first vehicle inspection to get began.</p>
+                <a href="/inspections/new" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>
+                    Start New Inspection
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        async function generateReport(inspectionId) {
+            try {
+                const response = await fetch(`/api/inspections/${inspectionId}/report`);
+                const report = await response.json();
+                
+                if (response.ok) {
+                    // Create a new window to display the report
+                    const reportWindow = window.open('', '_blank');
+                    reportWindow.document.write(`
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <title>Inspection Report - ${report.title}</title>
+                            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+                        </head>
+                        <body>
+                            <div class="container mt-4">
+                                <h2>Inspection Report</h2>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5>Vehicle Information</h5>
+                                        <p><strong>Year:</strong> ${report.vehicle_info.year || 'N/A'}</p>
+                                        <p><strong>Make:</strong> ${report.vehicle_info.make || 'N/A'}</p>
+                                        <p><strong>Model:</strong> ${report.vehicle_info.model || 'N/A'}</p>
+                                        <p><strong>VIN:</strong> ${report.vehicle_info.vin || 'N/A'}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>Inspector Information</h5>
+                                        <p><strong>Name:</strong> ${report.inspector.name}</p>
+                                        <p><strong>ID:</strong> ${report.inspector.id}</p>
+                                        <p><strong>Date:</strong> ${report.date.split('T')[0]}</p>
+                                    </div>
+                                </div>
+                                <h5>Summary</h5>
+                                <p><strong>Total Items:</strong> ${report.summary.total_items}</p>
+                                <p><strong>Passed:</strong> ${report.summary.passed}</p>
+                                <p><strong>Failed:</strong> ${report.summary.failed}</p>
+                                <p><strong>Completion Rate:</strong> ${report.summary.completion_rate.toFixed(1)}%</p>
+                            </div>
+                        </body>
+                        </html>
+                    `);
+                    reportWindow.document.close();
+                } else {
+                    alert('Error generating report: ' + report.error);
+                }
+            } catch (error) {
+                alert('Error generating report: ' + error);
+            }
+        }
+    </script>
+</body>
+</html> 
