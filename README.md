@@ -1,201 +1,224 @@
 # CheckMate Virtue - Professional Vehicle Inspection System
 
-A modern web-based vehicle inspection application built with FastAPI and Python, designed to replace the original Android app with a comprehensive web interface.
+A modern, Pythonic FastAPI-based web application for professional vehicle inspections.
 
-## 🚗 Features
+## 🚀 Features
 
-- **Comprehensive Vehicle Inspections** - Multi-point inspection system covering all major vehicle systems
-- **Photo Documentation** - Upload and attach photos to inspection items
-- **Professional Reporting** - Generate detailed inspection reports
-- **Vehicle Information Tracking** - Store VIN, make, model, year, mileage, and license plate
-- **Inspector Management** - Track inspector details and assignments
-- **Real-time Updates** - Auto-save functionality and live updates
-- **Responsive Design** - Works on desktop, tablet, and mobile devices
+- **Professional Vehicle Inspections**: Complete inspection workflow with categories and items
+- **Photo Upload**: Support for uploading inspection photos with validation
+- **Report Generation**: Automatic report generation with statistics
+- **Modern Web Interface**: Clean, responsive HTML templates
+- **RESTful API**: Full API for programmatic access
+- **Data Validation**: Comprehensive input validation using Pydantic
+- **Error Handling**: Robust error handling with proper HTTP status codes
 
-## 🛠️ Technology Stack
+## 🏗️ Architecture
 
-- **Backend**: FastAPI (Python)
-- **Frontend**: HTML5, CSS3, JavaScript, Bootstrap 5
-- **Template Engine**: Jinja2
-- **File Upload**: Python Multipart
-- **Data Storage**: JSON-based file system
-- **Server**: Uvicorn ASGI server
+The application follows modern Python best practices:
 
-## 📋 Inspection Categories
+- **FastAPI**: Modern, fast web framework with automatic API documentation
+- **Pydantic**: Data validation and serialization
+- **Jinja2**: Template engine for HTML rendering
+- **Pathlib**: Modern path handling
+- **Type Hints**: Comprehensive type annotations for better code quality
 
-The application includes comprehensive inspection points for:
+## 📁 Project Structure
 
-- **Brake System** - Pads, rotors, lines, calipers, master cylinder
-- **Tire Maintenance** - Tread depth, pressure, condition, alignment
-- **Steering & Suspension** - Shocks, struts, ball joints, control arms
-- **Exhaust System** - Muffler, pipes, O2 sensors, catalytic converter
-- **Engine Performance** - Ignition, fuel system, compression
-- **Electrical System** - Battery, alternator, starter, wiring
-- **Fluid Leaks** - Oil, coolant, transmission, brake fluid
-- **Safety Equipment** - Lights, signals, wipers, mirrors
+```
+Lexicon-Re/
+├── main.py              # Main FastAPI application
+├── config.py            # Configuration settings
+├── requirements.txt     # Python dependencies
+├── README.md           # This file
+├── test_utils.py       # Utility function tests
+├── data/               # Data storage
+│   └── inspections.json
+├── static/             # Static files
+│   └── uploads/        # Uploaded photos
+├── templates/          # HTML templates
+│   ├── index.html
+│   ├── inspections.html
+│   ├── new_inspection.html
+│   └── view_inspection.html
+└── CheckMateVirtue/    # Original APK assets
+    └── assets/
+        └── basic_inspection.json
+```
 
-## 🚀 Quick Start
+## 🛠️ Installation
 
-### Prerequisites
-
-- Python 3.8+
-- pip (Python package installer)
-
-### Installation
-
-1. **Clone the repository**
+1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/checkmate-virtue-web.git
-   cd checkmate-virtue-web
+   git clone <repository-url>
+   cd Lexicon-Re
    ```
 
-2. **Create virtual environment**
+2. **Create virtual environment**:
    ```bash
    python3 -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-3. **Install dependencies**
+3. **Install dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Run the application**
+4. **Run the application**:
    ```bash
-   uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+   python main.py
    ```
 
-5. **Access the application**
-   Open your browser and navigate to: http://localhost:8000
+5. **Access the application**:
+   - Web Interface: http://localhost:8000
+   - API Documentation: http://localhost:8000/docs
 
-## 📱 Usage
+## 🔧 Configuration
 
-### Creating a New Inspection
+All configuration settings are centralized in `config.py`:
 
-1. Navigate to the home page
-2. Click "Start New Inspection"
-3. Fill in inspector information
-4. Enter vehicle details (year, make, model, VIN, etc.)
-5. Click "Start Inspection"
+- **Application Settings**: Name, version, description
+- **Server Settings**: Host, port
+- **File Paths**: All file and directory paths
+- **CORS Settings**: Cross-origin resource sharing
+- **Upload Settings**: File size limits, allowed extensions
+- **Validation Settings**: Input validation rules
 
-### Performing an Inspection
+## 📋 API Endpoints
 
-1. Go through each category systematically
-2. For each item:
-   - Select appropriate grade (Pass/Fail/Rec/Req/N/A)
-   - Add notes describing findings
-   - Upload photos if needed
-3. Save your progress regularly
-4. Generate final report when complete
+### Web Interface
+- `GET /` - Home page
+- `GET /inspections` - List all inspections
+- `GET /inspections/new` - New inspection form
+- `GET /inspections/{id}` - View specific inspection
 
-### Photo Upload
+### API Endpoints
+- `GET /api/inspection-template` - Get inspection template
+- `POST /api/inspections` - Create new inspection
+- `PUT /api/inspections/{id}` - Update inspection
+- `POST /api/inspections/{id}/photos` - Upload inspection photos
+- `GET /api/inspections/{id}/report` - Generate inspection report
 
-- Click the camera icon next to any inspection item
-- Drag and drop images or use the file picker
-- Photos are automatically associated with the specific item
-- Multiple photos can be uploaded per item
+## 🧪 Testing
 
-## 🔧 API Endpoints
+Run the utility function tests:
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/` | Home page |
-| GET | `/inspections` | List all inspections |
-| GET | `/inspections/new` | New inspection form |
-| POST | `/api/inspections` | Create new inspection |
-| GET | `/inspections/{id}` | View specific inspection |
-| PUT | `/api/inspections/{id}` | Update inspection |
-| POST | `/api/inspections/{id}/photos` | Upload photos |
-| GET | `/api/inspections/{id}/report` | Generate report |
-| GET | `/api/inspection-template` | Get inspection template |
-
-## 📁 Project Structure
-
-```
-checkmate-virtue-web/
-├── main.py                 # FastAPI application
-├── requirements.txt        # Python dependencies
-├── README.md              # Project documentation
-├── .gitignore             # Git ignore rules
-├── templates/             # HTML templates
-│   ├── index.html         # Home page
-│   ├── new_inspection.html # New inspection form
-│   ├── inspections.html   # Inspections list
-│   └── view_inspection.html # Inspection details
-├── static/                # Static files
-│   └── uploads/           # Photo uploads
-└── data/                  # Data storage
-    └── inspections.json   # Inspection data
-```
-
-## 🔒 Data Storage
-
-- **Inspection Data**: Stored in JSON format in `data/inspections.json`
-- **Photos**: Uploaded to `static/uploads/` directory
-- **Templates**: Original inspection template from decompiled APK
-
-## 🎨 Customization
-
-### Adding New Inspection Categories
-
-1. Modify the inspection template in `CheckMateVirtue/assets/basic_inspection.json`
-2. Add new categories with items and descriptions
-3. Restart the application
-
-### Styling
-
-- Bootstrap 5 for responsive design
-- Custom CSS in template files
-- Font Awesome icons for UI elements
-
-## 🚀 Deployment
-
-### Local Development
 ```bash
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+python3 test_utils.py
 ```
 
-### Production Deployment
-```bash
-# Install production dependencies
-pip install -r requirements.txt
+## 🔍 Code Quality Improvements
 
-# Run with production server
-uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
-```
+The codebase has been significantly improved with:
 
-### Docker Deployment
-```dockerfile
-FROM python:3.9-slim
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
-```
+### 1. **Better Organization**
+- Separated configuration into `config.py`
+- Centralized constants and settings
+- Clear separation of concerns
+
+### 2. **Enhanced Error Handling**
+- Proper HTTP status codes
+- Comprehensive exception handling
+- User-friendly error messages
+
+### 3. **Improved Type Safety**
+- Comprehensive type hints
+- Pydantic models for data validation
+- Better IDE support and code completion
+
+### 4. **File Operations**
+- Centralized file handling utilities
+- Proper encoding handling
+- Error recovery mechanisms
+
+### 5. **Data Validation**
+- Input validation with Pydantic
+- File type validation for uploads
+- Data structure validation
+
+### 6. **Pythonic Practices**
+- Pathlib for path handling
+- Context managers for file operations
+- List comprehensions and generator expressions
+- Modern Python syntax
+
+## 🚀 Running the Application
+
+1. **Start the server**:
+   ```bash
+   python main.py
+   ```
+
+2. **Access the web interface**:
+   - Open http://localhost:8000 in your browser
+
+3. **API Documentation**:
+   - Visit http://localhost:8000/docs for interactive API documentation
+
+## 📊 Data Models
+
+### VehicleInfo
+- `year`: Vehicle year
+- `make`: Vehicle make
+- `model`: Vehicle model
+- `vin`: Vehicle identification number
+- `license_plate`: License plate number
+- `mileage`: Vehicle mileage
+
+### InspectionRequest
+- `title`: Inspection title (1-200 characters)
+- `vehicle_info`: Vehicle information
+- `inspector_name`: Inspector name (1-100 characters)
+- `inspector_id`: Inspector ID
+
+### InspectionData
+- `id`: Unique inspection ID
+- `title`: Inspection title
+- `vehicle_info`: Vehicle information
+- `inspector_name`: Inspector name
+- `inspector_id`: Inspector ID
+- `date`: Inspection date
+- `categories`: List of inspection categories
+- `status`: Inspection status (default: "draft")
+
+## 🔒 Security Features
+
+- **File Upload Validation**: Only allowed image types
+- **Input Validation**: Comprehensive validation with Pydantic
+- **Error Handling**: Secure error messages without information leakage
+- **CORS Configuration**: Configurable cross-origin settings
+
+## 🛠️ Development
+
+### Adding New Features
+
+1. **Update models** in `main.py` if needed
+2. **Add configuration** in `config.py` for new settings
+3. **Create templates** in `templates/` for new pages
+4. **Add routes** in `main.py` for new endpoints
+5. **Update tests** in `test_utils.py` for new functionality
+
+### Code Style
+
+The code follows PEP 8 guidelines and modern Python practices:
+- Type hints for all functions
+- Docstrings for all classes and functions
+- Consistent naming conventions
+- Proper error handling
+- Clean, readable code structure
+
+## 📝 License
+
+This project is part of the CheckMate Virtue vehicle inspection system.
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Original CheckMate Virtue Android app for the inspection template
-- FastAPI community for the excellent web framework
-- Bootstrap team for the responsive UI components
-
-## 📞 Support
-
-For support, email support@checkmatevirtue.com or create an issue in the GitHub repository.
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Submit a pull request
 
 ---
 
-**CheckMate Virtue Web** - Professional vehicle inspections made simple and efficient. 
+**CheckMate Virtue** - Professional Vehicle Inspection System 
