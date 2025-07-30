@@ -13,9 +13,17 @@ from fastapi import FastAPI, Request, UploadFile, File, Form, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
 import uvicorn
 from pydantic import BaseModel, Field
+from reportlab.lib.pagesizes import letter, A4
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from reportlab.lib import colors
+from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
+import tempfile
+import os
 
 from config import *
 
@@ -116,6 +124,144 @@ def validate_inspection_data(data: Dict[str, Any]) -> bool:
     """Validate inspection data structure."""
     required_fields = ["id", "title", "vehicle_info", "inspector_name", "inspector_id", "date", "categories"]
     return all(field in data for field in required_fields)
+
+def generate_pdf_report(inspection: Dict[str, Any]) -> str:
+    """Generate PDF report for inspection."""
+    # Create temporary file for PDF
+    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
+    temp_path = temp_file.name
+    temp_file.close()
+    
+    # Create PDF document
+    doc = SimpleDocTemplate(temp_path, pagesize=A4)
+    story = []
+    
+    # Get styles
+    styles = getSampleStyleSheet()
+    title_style = ParagraphStyle(
+        'CustomTitle',
+        parent=styles['Heading1'],
+        fontSize=18,
+        spaceAfter=30,
+        alignment=TA_CENTER,
+        textColor=colors.darkblue
+    )
+    heading_style = ParagraphStyle(
+        'CustomHeading',
+        parent=styles['Heading2'],
+        fontSize=14,
+        spaceAfter=12,
+        textColor=colors.darkblue
+    )
+    normal_style = styles['Normal']
+    
+    # Title
+    story.append(Paragraph("CheckMate Virtue - Vehicle Inspection Report", title_style))
+    story.append(Spacer(1, 20))
+    
+    # Inspection Details
+    story.append(Paragraph(f"Inspection: {inspection['title']}", heading_style))
+    story.append(Paragraph(f"Date: {inspection['date'].split('T')[0] if 'T' in inspection['date'] else inspection['date']}", normal_style))
+    story.append(Paragraph(f"Inspector: {inspection['inspector_name']} (ID: {inspection['inspector_id']})", normal_style))
+    story.append(Spacer(1, 20))
+    
+    # Vehicle Information
+    if inspection.get('vehicle_info'):
+        vehicle = inspection['vehicle_info']
+        story.append(Paragraph("Vehicle Information", heading_style))
+        vehicle_data = []
+        if vehicle.get('year'): vehicle_data.append(['Year', vehicle['year']])
+        if vehicle.get('make'): vehicle_data.append(['Make', vehicle['make']])
+        if vehicle.get('model'): vehicle_data.append(['Model', vehicle['model']])
+        if vehicle.get('vin'): vehicle_data.append(['VIN', vehicle['vin']])
+        if vehicle.get('license_plate'): vehicle_data.append(['License Plate', vehicle['license_plate']])
+        if vehicle.get('mileage'): vehicle_data.append(['Mileage', vehicle['mileage']])
+        
+        if vehicle_data:
+            vehicle_table = Table(vehicle_data, colWidths=[2*inch, 4*inch])
+            vehicle_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, 0), 12),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                ('GRID', (0, 0), (-1, -1), 1, colors.black)
+            ]))
+            story.append(vehicle_table)
+            story.append(Spacer(1, 20))
+    
+    # Inspection Categories
+    story.append(Paragraph("Inspection Results", heading_style))
+    
+    total_items = 0
+    passed_items = 0
+    failed_items = 0
+    
+    for category in inspection.get('categories', []):
+        story.append(Paragraph(f"Category: {category['name']}", heading_style))
+        
+        if category.get('items'):
+            item_data = [['Item', 'Grade', 'Notes']]
+            for item in category['items']:
+                item_data.append([
+                    item['name'],
+                    item.get('grade', 'N/A'),
+                    item.get('notes', '')[:50] + '...' if len(item.get('notes', '')) > 50 else item.get('notes', '')
+                ])
+                total_items += 1
+                if item.get('grade') == 'Pass':
+                    passed_items += 1
+                elif item.get('grade') == 'Fail':
+                    failed_items += 1
+            
+            item_table = Table(item_data, colWidths=[2.5*inch, 1*inch, 2.5*inch])
+            item_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, 0), 10),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                ('GRID', (0, 0), (-1, -1), 1, colors.black),
+                ('FONTSIZE', (0, 1), (-1, -1), 9),
+                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.beige, colors.white])
+            ]))
+            story.append(item_table)
+            story.append(Spacer(1, 15))
+    
+    # Summary
+    story.append(Paragraph("Summary", heading_style))
+    completion_rate = (passed_items + failed_items) / total_items * 100 if total_items > 0 else 0
+    
+    summary_data = [
+        ['Total Items', str(total_items)],
+        ['Passed', str(passed_items)],
+        ['Failed', str(failed_items)],
+        ['Completion Rate', f"{completion_rate:.1f}%"]
+    ]
+    
+    summary_table = Table(summary_data, colWidths=[3*inch, 3*inch])
+    summary_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.darkblue),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.lightblue),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('FONTSIZE', (0, 1), (-1, -1), 12),
+        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica-Bold')
+    ]))
+    story.append(summary_table)
+    
+    # Build PDF
+    doc.build(story)
+    return temp_path
 
 # FastAPI App
 app = FastAPI(
@@ -327,6 +473,23 @@ async def generate_report(inspection_id: str) -> Dict[str, Any]:
     }
     
     return report
+
+@app.get("/api/inspections/{inspection_id}/report/pdf")
+async def generate_pdf_report_endpoint(inspection_id: str) -> FileResponse:
+    """Generate PDF report for inspection."""
+    inspection = find_inspection(inspection_id)
+    if not inspection:
+        raise HTTPException(status_code=404, detail="Inspection not found")
+    
+    try:
+        pdf_path = generate_pdf_report(inspection)
+        return FileResponse(
+            pdf_path,
+            media_type='application/pdf',
+            filename=f"inspection_{inspection_id}.pdf"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to generate PDF: {str(e)}")
 
 if __name__ == "__main__":
     uvicorn.run(app, host=HOST, port=PORT) 
