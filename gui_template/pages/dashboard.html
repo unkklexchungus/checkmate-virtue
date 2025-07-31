@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Your Application{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 mb-4">Welcome to Your Dashboard</h1>
+        <p class="lead mb-4">Manage your data and monitor your system with our comprehensive dashboard.</p>
+        <a href="/new-item" class="btn btn-light btn-lg">
+            <i class="fas fa-plus me-2"></i>
+            Create New Item
+        </a>
+    </div>
+</section>
+
+<!-- Dashboard Content -->
+<div class="container mt-5">
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card status-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="status-icon me-3">
+                            <i class="fas fa-chart-line fa-2x text-primary"></i>
+                        </div>
+                        <div class="status-content">
+                            <h6 class="mb-1">Total Items</h6>
+                            <p class="text-muted mb-0">1,234</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card status-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="status-icon me-3">
+                            <i class="fas fa-check-circle fa-2x text-success"></i>
+                        </div>
+                        <div class="status-content">
+                            <h6 class="mb-1">Completed</h6>
+                            <p class="text-muted mb-0">856</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card status-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="status-icon me-3">
+                            <i class="fas fa-clock fa-2x text-warning"></i>
+                        </div>
+                        <div class="status-content">
+                            <h6 class="mb-1">Pending</h6>
+                            <p class="text-muted mb-0">378</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card status-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="status-icon me-3">
+                            <i class="fas fa-exclamation-triangle fa-2x text-danger"></i>
+                        </div>
+                        <div class="status-content">
+                            <h6 class="mb-1">Issues</h6>
+                            <p class="text-muted mb-0">12</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Items -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list me-2"></i>
+                        Recent Items
+                    </h5>
+                    <a href="/items" class="btn btn-outline-primary btn-sm">View All</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Sample Item 1</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td>2024-01-15</td>
+                                    <td>
+                                        <button class="btn btn-outline-primary btn-sm">View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Sample Item 2</td>
+                                    <td><span class="badge bg-warning">Pending</span></td>
+                                    <td>2024-01-14</td>
+                                    <td>
+                                        <button class="btn btn-outline-primary btn-sm">View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-tasks me-2"></i>
+                        Quick Actions
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" onclick="openModal('formModal')">
+                            <i class="fas fa-plus me-2"></i>
+                            Add New Item
+                        </button>
+                        <button class="btn btn-outline-secondary">
+                            <i class="fas fa-download me-2"></i>
+                            Export Data
+                        </button>
+                        <button class="btn btn-outline-info">
+                            <i class="fas fa-cog me-2"></i>
+                            Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

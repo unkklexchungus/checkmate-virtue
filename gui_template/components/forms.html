@@ -1,0 +1,144 @@
+<!-- Form Components -->
+
+<!-- Basic Form -->
+<form class="needs-validation" novalidate>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="input1" class="form-label">{% block form_label_1 %}Label 1{% endblock %}</label>
+            <input type="text" class="form-control" id="input1" required>
+            <div class="invalid-feedback">
+                Please provide a valid value.
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="input2" class="form-label">{% block form_label_2 %}Label 2{% endblock %}</label>
+            <input type="text" class="form-control" id="input2" required>
+            <div class="invalid-feedback">
+                Please provide a valid value.
+            </div>
+        </div>
+    </div>
+    
+    <div class="mb-3">
+        <label for="textarea1" class="form-label">{% block form_textarea_label %}Description{% endblock %}</label>
+        <textarea class="form-control" id="textarea1" rows="3"></textarea>
+    </div>
+    
+    <div class="mb-3">
+        <label for="select1" class="form-label">{% block form_select_label %}Select Option{% endblock %}</label>
+        <select class="form-select" id="select1" required>
+            <option value="">Choose...</option>
+            <option value="option1">Option 1</option>
+            <option value="option2">Option 2</option>
+            <option value="option3">Option 3</option>
+        </select>
+        <div class="invalid-feedback">
+            Please select a valid option.
+        </div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save me-2"></i>
+        {% block form_submit_text %}Save{% endblock %}
+    </button>
+</form>
+
+<!-- File Upload Form -->
+<div class="upload-form">
+    <div class="upload-area" id="uploadArea">
+        <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+        <p>Drag and drop files here or click to select</p>
+        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+        <div class="upload-buttons">
+            <button type="button" class="btn btn-primary me-2" onclick="document.getElementById('fileInput').click()">
+                <i class="fas fa-folder-open me-2"></i>
+                Choose File
+            </button>
+            <button type="button" class="btn btn-success" onclick="openCamera()">
+                <i class="fas fa-camera me-2"></i>
+                Take Photo
+            </button>
+        </div>
+    </div>
+    
+    <!-- Camera Input (Hidden) -->
+    <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
+    
+    <!-- Preview Area -->
+    <div id="previewArea" class="mt-3" style="display: none;">
+        <div class="preview-container">
+            <img id="previewImage" class="img-fluid rounded" alt="Preview">
+            <button type="button" class="btn btn-danger btn-sm mt-2" onclick="clearPreview()">
+                <i class="fas fa-times me-1"></i>
+                Remove
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Form -->
+<div class="modal fade" id="formModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% block modal_title %}Form Title{% endblock %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                {% block modal_content %}
+                <form id="modalForm">
+                    <div class="mb-3">
+                        <label for="modalInput" class="form-label">Input Label</label>
+                        <input type="text" class="form-control" id="modalInput" required>
+                    </div>
+                </form>
+                {% endblock %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="submitModalForm()">
+                    {% block modal_submit_text %}Submit{% endblock %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Form -->
+<div class="search-form mb-4">
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="{% block search_placeholder %}Search...{% endblock %}" id="searchInput">
+        <button class="btn btn-outline-secondary" type="button" onclick="performSearch()">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Filter Form -->
+<div class="filter-form mb-4">
+    <div class="row">
+        <div class="col-md-3 mb-2">
+            <select class="form-select" id="filter1">
+                <option value="">All Categories</option>
+                <option value="category1">Category 1</option>
+                <option value="category2">Category 2</option>
+            </select>
+        </div>
+        <div class="col-md-3 mb-2">
+            <select class="form-select" id="filter2">
+                <option value="">All Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+            </select>
+        </div>
+        <div class="col-md-3 mb-2">
+            <input type="date" class="form-control" id="dateFilter">
+        </div>
+        <div class="col-md-3 mb-2">
+            <button class="btn btn-primary w-100" onclick="applyFilters()">
+                <i class="fas fa-filter me-2"></i>
+                Apply Filters
+            </button>
+        </div>
+    </div>
+</div> 
