@@ -211,9 +211,11 @@ def generate_pdf_report(inspection: Dict[str, Any]) -> str:
                     item.get('notes', '')[:50] + '...' if len(item.get('notes', '')) > 50 else item.get('notes', '')
                 ])
                 total_items += 1
-                if item.get('grade') == 'Pass':
+                if item.get('grade') == 'PASS':
                     passed_items += 1
-                elif item.get('grade') == 'Fail':
+                elif item.get('grade') == 'REC':
+                    failed_items += 1
+                elif item.get('grade') == 'REQ':
                     failed_items += 1
             
             item_table = Table(item_data, colWidths=[2.5*inch, 1*inch, 2.5*inch])
@@ -444,9 +446,11 @@ async def generate_report(inspection_id: str) -> Dict[str, Any]:
     for category in inspection["categories"]:
         for item in category["items"]:
             total_items += 1
-            if item["grade"] == "Pass":
+            if item["grade"] == "PASS":
                 passed_items += 1
-            elif item["grade"] == "Fail":
+            elif item["grade"] == "REC":
+                failed_items += 1
+            elif item["grade"] == "REQ":
                 failed_items += 1
     
     completion_rate = (

@@ -155,10 +155,9 @@
                             <select class="form-select grade-select" 
                                                                            onchange="updateGrade('{{ category['name'] }}', '{{ item['name'] }}', this.value)">
                                 <option value="N/A" {{ 'selected' if item['grade'] == 'N/A' else '' }}>N/A</option>
-                                <option value="Pass" {{ 'selected' if item['grade'] == 'Pass' else '' }}>Pass</option>
-                                <option value="Fail" {{ 'selected' if item['grade'] == 'Fail' else '' }}>Fail</option>
-                                <option value="Rec" {{ 'selected' if item['grade'] == 'Rec' else '' }}>Rec</option>
-                                <option value="Req" {{ 'selected' if item['grade'] == 'Req' else '' }}>Req</option>
+                                <option value="PASS" {{ 'selected' if item['grade'] == 'PASS' else '' }}>PASS</option>
+                                <option value="REC" {{ 'selected' if item['grade'] == 'REC' else '' }}>REC</option>
+                                <option value="REQ" {{ 'selected' if item['grade'] == 'REQ' else '' }}>REQ</option>
                             </select>
                         </div>
                         <div class="col-md-4">
