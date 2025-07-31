@@ -20,7 +20,7 @@ UPLOAD_DIR = BASE_DIR / "static" / "uploads"
 TEMPLATES_DIR = BASE_DIR / "templates"
 DATA_DIR = BASE_DIR / "data"
 INSPECTIONS_FILE = DATA_DIR / "inspections.json"
-TEMPLATE_FILE = BASE_DIR / "CheckMateVirtue" / "assets" / "basic_inspection.json"
+TEMPLATE_FILE = BASE_DIR / "basic_inspection.json"
 
 # Create necessary directories
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)

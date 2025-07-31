@@ -1,0 +1,117 @@
+{
+  "inspection_name": "Detailed Vehicle Inspection",
+  "description": "Comprehensive multi-point vehicle inspection based on shop checklist.",
+  "inspection_points": {
+    "exhaust": {
+      "description": "Inspect exhaust system components for leaks, damage, and proper operation.",
+      "items": [
+        "Exhaust system",
+        "O2 sensor",
+        "Exhaust pipe",
+        "Muffler",
+        "Tips"
+      ]
+    },
+    "steering_suspension": {
+      "description": "Check steering and suspension components for wear, damage, and safety.",
+      "items": [
+        "Shocks (front/rear)",
+        "Struts (front/rear)",
+        "Ball joints (upper/lower)",
+        "Tie rods (inner/outer)",
+        "Control arms (upper/lower)",
+        "Bushings",
+        "Sway bar links",
+        "Center link",
+        "Idler arm",
+        "Pitman arm",
+        "Rack & pinion",
+        "Power steering pump",
+        "Steering gear box"
+      ]
+    },
+    "ignition": {
+      "description": "Inspect ignition system components.",
+      "items": [
+        "Spark plugs",
+        "Plug wires",
+        "Coil pack",
+        "Distributor cap",
+        "Rotor",
+        "Ignition timing"
+      ]
+    },
+    "battery_starting_check": {
+      "description": "Check battery and starting system.",
+      "items": [
+        "Battery condition",
+        "Battery terminals",
+        "Battery cables",
+        "Starter operation",
+        "Starter relay",
+        "Alternator output",
+        "Drive belt condition",
+        "Belt tension",
+        "Ground connections"
+      ]
+    },
+    "fluid_leaks": {
+      "description": "Check for fluid leaks in all major systems.",
+      "items": [
+        "Engine oil leaks",
+        "Transmission fluid leaks",
+        "Coolant leaks",
+        "Brake fluid leaks",
+        "Power steering fluid leaks",
+        "Differential fluid leaks",
+        "Transfer case leaks",
+        "AC refrigerant leaks"
+      ]
+    },
+    "maintenance_services": {
+      "description": "Review and recommend maintenance services.",
+      "items": [
+        "Oil change due",
+        "Air filter replacement",
+        "Cabin filter replacement",
+        "Fuel filter replacement",
+        "Spark plug replacement",
+        "Timing belt/chain replacement",
+        "Coolant flush",
+        "Transmission service",
+        "Brake fluid flush",
+        "Power steering service",
+        "Differential service",
+        "Transfer case service"
+      ]
+    },
+    "brakes": {
+      "description": "Inspect brake system for safety and performance.",
+      "items": [
+        "Pad thickness (LF, RF, LR, RR)",
+        "Rotor thickness (LF, RF, LR, RR)",
+        "Rotor condition (scoring, warping)",
+        "Brake lines and hoses",
+        "Caliper operation",
+        "Master cylinder",
+        "Brake booster",
+        "Parking brake operation",
+        "ABS operation"
+      ]
+    },
+    "tires_tire_maintenance": {
+      "description": "Inspect tires and recommend maintenance.",
+      "items": [
+        "Tire tread depth (LF, RF, LR, RR)",
+        "Tire pressure (LF, RF, LR, RR)",
+        "Tire sidewall condition",
+        "Tire wear patterns",
+        "Tire age/date code",
+        "Spare tire condition",
+        "Wheel alignment",
+        "Tire rotation",
+        "Tire balance"
+      ]
+    }
+  }
+} 
