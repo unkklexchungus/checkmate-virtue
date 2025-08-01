@@ -1,0 +1,129 @@
+{
+  "id": "automotive_template",
+  "name": "Automotive Inspection & Services",
+  "industry_type": "automotive",
+  "description": "Standard automotive inspection and service invoice template with job-based parts and labor",
+  "default_terms": "Payment due within 30 days. Late payments subject to 1.5% monthly interest.",
+  "default_notes": "All work performed to industry standards. Warranty applies to parts and labor as specified.",
+  "default_footer": "Thank you for choosing our automotive services. We appreciate your business!",
+  "default_jobs": [
+    {
+      "name": "Brake System Service",
+      "description": "Complete brake system inspection and maintenance",
+      "job_number": "BRK-001",
+      "status": "completed"
+    },
+    {
+      "name": "Engine Tune-Up",
+      "description": "Engine performance optimization and maintenance",
+      "job_number": "ENG-002",
+      "status": "completed"
+    },
+    {
+      "name": "Electrical System Diagnosis",
+      "description": "Electrical system troubleshooting and repair",
+      "job_number": "ELEC-003",
+      "status": "completed"
+    }
+  ],
+  "default_items": [
+    {
+      "job_id": "BRK-001",
+      "item_type": "labor",
+      "description": "Brake System Inspection & Service",
+      "quantity": 2.5,
+      "unit_price": 75.00,
+      "unit": "hours",
+      "tax_rate": 8.5,
+      "notes": "Complete brake system inspection and pad replacement"
+    },
+    {
+      "job_id": "BRK-001",
+      "item_type": "parts",
+      "description": "Brake Pads (Front)",
+      "quantity": 1,
+      "unit_price": 89.99,
+      "unit": "set",
+      "tax_rate": 8.5,
+      "notes": "Premium ceramic brake pads"
+    },
+    {
+      "job_id": "BRK-001",
+      "item_type": "parts",
+      "description": "Brake Rotors (Front)",
+      "quantity": 2,
+      "unit_price": 45.00,
+      "unit": "each",
+      "tax_rate": 8.5,
+      "notes": "OEM replacement rotors"
+    },
+    {
+      "job_id": "ENG-002",
+      "item_type": "labor",
+      "description": "Engine Tune-Up Service",
+      "quantity": 1.5,
+      "unit_price": 85.00,
+      "unit": "hours",
+      "tax_rate": 8.5,
+      "notes": "Spark plug replacement and engine optimization"
+    },
+    {
+      "job_id": "ENG-002",
+      "item_type": "parts",
+      "description": "Spark Plugs",
+      "quantity": 4,
+      "unit_price": 12.50,
+      "unit": "each",
+      "tax_rate": 8.5,
+      "notes": "Iridium spark plugs"
+    },
+    {
+      "job_id": "ENG-002",
+      "item_type": "parts",
+      "description": "Air Filter",
+      "quantity": 1,
+      "unit_price": 18.00,
+      "unit": "each",
+      "tax_rate": 8.5,
+      "notes": "High-performance air filter"
+    },
+    {
+      "job_id": "ELEC-003",
+      "item_type": "labor",
+      "description": "Electrical System Diagnosis",
+      "quantity": 1.0,
+      "unit_price": 95.00,
+      "unit": "hour",
+      "tax_rate": 8.5,
+      "notes": "Computer diagnostic and troubleshooting"
+    },
+    {
+      "job_id": "ELEC-003",
+      "item_type": "parts",
+      "description": "Battery",
+      "quantity": 1,
+      "unit_price": 125.00,
+      "unit": "each",
+      "tax_rate": 8.5,
+      "notes": "Heavy-duty automotive battery"
+    },
+    {
+      "item_type": "service",
+      "description": "Comprehensive Vehicle Inspection",
+      "quantity": 1,
+      "unit_price": 150.00,
+      "unit": "inspection",
+      "tax_rate": 8.5,
+      "notes": "Full vehicle safety and condition assessment"
+    },
+    {
+      "item_type": "service",
+      "description": "Oil Change & Filter",
+      "quantity": 1,
+      "unit_price": 45.00,
+      "unit": "service",
+      "tax_rate": 8.5,
+      "notes": "Synthetic oil and premium filter"
+    }
+  ]
+} 

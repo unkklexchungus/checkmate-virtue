@@ -1,6 +1,6 @@
 """
-CheckMate Virtue - Professional Vehicle Inspection System
-A FastAPI-based web application for vehicle inspections.
+CheckMate Virtue - Multi-Industry Professional Inspection System
+A FastAPI-based web application for professional inspections across multiple industries.
 """
 
 import json
@@ -26,16 +26,78 @@ import tempfile
 import os
 
 from config import *
-from auth import setup_auth_middleware, get_user_from_session, google_login, github_login, auth_callback, logout
+from auth import setup_auth_middleware, get_user_from_session
+from invoice_routes import router as invoice_router
 
 # Create necessary directories
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 TEMPLATES_DIR.mkdir(exist_ok=True)
 DATA_DIR.mkdir(exist_ok=True)
 
+# Available Industries
+AVAILABLE_INDUSTRIES = {
+    "automotive": {
+        "name": "Automotive",
+        "icon": "fas fa-car",
+        "description": "Vehicle inspections and maintenance",
+        "template_file": "templates/industries/automotive.json"
+    },
+    "construction": {
+        "name": "Construction",
+        "icon": "fas fa-hard-hat",
+        "description": "Site safety and structural integrity",
+        "template_file": "templates/industries/construction.json"
+    },
+    "food_safety": {
+        "name": "Food Safety",
+        "icon": "fas fa-utensils",
+        "description": "Restaurant and kitchen hygiene",
+        "template_file": "templates/industries/food_safety.json"
+    },
+    "healthcare": {
+        "name": "Healthcare",
+        "icon": "fas fa-hospital",
+        "description": "Medical equipment and facility safety",
+        "template_file": "templates/industries/healthcare.json"
+    },
+    "manufacturing": {
+        "name": "Manufacturing",
+        "icon": "fas fa-industry",
+        "description": "Equipment and quality control",
+        "template_file": "templates/industries/manufacturing.json"
+    },
+    "real_estate": {
+        "name": "Real Estate",
+        "icon": "fas fa-building",
+        "description": "Property condition and maintenance",
+        "template_file": "templates/industries/real_estate.json"
+    },
+    "it_datacenter": {
+        "name": "IT & Data Centers",
+        "icon": "fas fa-server",
+        "description": "Infrastructure and security",
+        "template_file": "templates/industries/it_datacenter.json"
+    },
+    "environmental": {
+        "name": "Environmental",
+        "icon": "fas fa-leaf",
+        "description": "Compliance and waste management",
+        "template_file": "templates/industries/environmental.json"
+    }
+}
+
 # Pydantic Models
+class IndustryInfo(BaseModel):
+    """Industry-specific information model."""
+    industry_type: str = Field(..., description="Type of industry")
+    facility_name: Optional[str] = Field(None, description="Facility name")
+    location: Optional[str] = Field(None, description="Location/address")
+    contact_person: Optional[str] = Field(None, description="Contact person")
+    phone: Optional[str] = Field(None, description="Contact phone")
+    email: Optional[str] = Field(None, description="Contact email")
+
 class VehicleInfo(BaseModel):
-    """Vehicle information model."""
+    """Vehicle information model (for automotive industry)."""
     year: Optional[str] = Field(None, description="Vehicle year")
     make: Optional[str] = Field(None, description="Vehicle make")
     model: Optional[str] = Field(None, description="Vehicle model")
@@ -44,14 +106,15 @@ class VehicleInfo(BaseModel):
     mileage: Optional[str] = Field(None, description="Vehicle mileage")
 
 class InspectionRequest(BaseModel):
-    """Inspection request model."""
+    """Inspection request model with industry support."""
     title: str = Field(
         ..., 
         min_length=MIN_TITLE_LENGTH,
         max_length=MAX_TITLE_LENGTH,
         description="Inspection title"
     )
-    vehicle_info: VehicleInfo = Field(..., description="Vehicle information")
+    industry_info: IndustryInfo = Field(..., description="Industry information")
+    vehicle_info: Optional[VehicleInfo] = Field(None, description="Vehicle information (for automotive)")
     inspector_name: str = Field(
         ..., 
         min_length=MIN_INSPECTOR_NAME_LENGTH,
@@ -59,6 +122,7 @@ class InspectionRequest(BaseModel):
         description="Inspector name"
     )
     inspector_id: str = Field(..., description="Inspector ID")
+    industry_type: str = Field(..., description="Industry type for template selection")
 
 class InspectionItem(BaseModel):
     """Individual inspection item model."""
@@ -77,12 +141,14 @@ class InspectionData(BaseModel):
     """Complete inspection data model."""
     id: str
     title: str
-    vehicle_info: VehicleInfo
+    industry_info: IndustryInfo
+    vehicle_info: Optional[VehicleInfo]
     inspector_name: str
     inspector_id: str
     date: str
     categories: List[InspectionCategory]
     status: str = "draft"
+    industry_type: str
 
 # Utility Functions
 def load_json_file(file_path: Path, default: Any = None) -> Any:
@@ -123,8 +189,16 @@ def update_inspection_data(inspection_id: str, updated_data: Dict[str, Any]) -> 
 
 def validate_inspection_data(data: Dict[str, Any]) -> bool:
     """Validate inspection data structure."""
-    required_fields = ["id", "title", "vehicle_info", "inspector_name", "inspector_id", "date", "categories"]
+    required_fields = ["id", "title", "industry_info", "inspector_name", "inspector_id", "date", "categories", "industry_type"]
     return all(field in data for field in required_fields)
+
+def get_industry_template(industry_type: str) -> Optional[Dict[str, Any]]:
+    """Get inspection template for specific industry."""
+    if industry_type not in AVAILABLE_INDUSTRIES:
+        return None
+    
+    template_file = Path(AVAILABLE_INDUSTRIES[industry_type]["template_file"])
+    return load_json_file(template_file)
 
 def generate_pdf_report(inspection: Dict[str, Any]) -> str:
     """Generate PDF report for inspection."""
@@ -134,146 +208,103 @@ def generate_pdf_report(inspection: Dict[str, Any]) -> str:
     temp_file.close()
     
     # Create PDF document
-    doc = SimpleDocTemplate(temp_path, pagesize=A4)
+    doc = SimpleDocTemplate(temp_path, pagesize=letter)
     story = []
-    
-    # Get styles
     styles = getSampleStyleSheet()
+    
+    # Title
     title_style = ParagraphStyle(
         'CustomTitle',
         parent=styles['Heading1'],
-        fontSize=18,
+        fontSize=16,
         spaceAfter=30,
-        alignment=TA_CENTER,
-        textColor=colors.darkblue
+        alignment=TA_CENTER
     )
-    heading_style = ParagraphStyle(
-        'CustomHeading',
-        parent=styles['Heading2'],
-        fontSize=14,
-        spaceAfter=12,
-        textColor=colors.darkblue
-    )
-    normal_style = styles['Normal']
-    
-    # Title
-    story.append(Paragraph("CheckMate Virtue - Vehicle Inspection Report", title_style))
-    story.append(Spacer(1, 20))
+    story.append(Paragraph(f"Inspection Report: {inspection['title']}", title_style))
+    story.append(Spacer(1, 12))
     
     # Inspection Details
-    story.append(Paragraph(f"Inspection: {inspection['title']}", heading_style))
-    story.append(Paragraph(f"Date: {inspection['date'].split('T')[0] if 'T' in inspection['date'] else inspection['date']}", normal_style))
-    story.append(Paragraph(f"Inspector: {inspection['inspector_name']} (ID: {inspection['inspector_id']})", normal_style))
-    story.append(Spacer(1, 20))
+    details_data = [
+        ['Inspection ID:', inspection['id']],
+        ['Date:', inspection['date']],
+        ['Inspector:', inspection['inspector_name']],
+        ['Industry:', inspection['industry_type'].replace('_', ' ').title()],
+        ['Status:', inspection['status']]
+    ]
     
-    # Vehicle Information
     if inspection.get('vehicle_info'):
         vehicle = inspection['vehicle_info']
-        story.append(Paragraph("Vehicle Information", heading_style))
-        vehicle_data = []
-        if vehicle.get('year'): vehicle_data.append(['Year', vehicle['year']])
-        if vehicle.get('make'): vehicle_data.append(['Make', vehicle['make']])
-        if vehicle.get('model'): vehicle_data.append(['Model', vehicle['model']])
-        if vehicle.get('vin'): vehicle_data.append(['VIN', vehicle['vin']])
-        if vehicle.get('license_plate'): vehicle_data.append(['License Plate', vehicle['license_plate']])
-        if vehicle.get('mileage'): vehicle_data.append(['Mileage', vehicle['mileage']])
+        if vehicle.get('year') and vehicle.get('make') and vehicle.get('model'):
+            details_data.append(['Vehicle:', f"{vehicle['year']} {vehicle['make']} {vehicle['model']}"])
+        if vehicle.get('license_plate'):
+            details_data.append(['License Plate:', vehicle['license_plate']])
+    
+    details_table = Table(details_data, colWidths=[2*inch, 4*inch])
+    details_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, -1), colors.grey),
+        ('TEXTCOLOR', (0, 0), (0, -1), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 10),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+        ('BACKGROUND', (1, 0), (1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ]))
+    story.append(details_table)
+    story.append(Spacer(1, 20))
+    
+    # Categories and Items
+    for category in inspection['categories']:
+        # Category header
+        category_style = ParagraphStyle(
+            'CategoryHeader',
+            parent=styles['Heading2'],
+            fontSize=14,
+            spaceAfter=12,
+            spaceBefore=20
+        )
+        story.append(Paragraph(f"Category: {category['name']}", category_style))
         
-        if vehicle_data:
-            vehicle_table = Table(vehicle_data, colWidths=[2*inch, 4*inch])
-            vehicle_table.setStyle(TableStyle([
+        if category.get('description'):
+            story.append(Paragraph(f"Description: {category['description']}", styles['Normal']))
+            story.append(Spacer(1, 12))
+        
+        # Items table
+        if category['items']:
+            items_data = [['Item', 'Grade', 'Notes']]
+            for item in category['items']:
+                items_data.append([
+                    item['name'],
+                    item['grade'],
+                    item['notes'][:50] + '...' if len(item['notes']) > 50 else item['notes']
+                ])
+            
+            items_table = Table(items_data, colWidths=[3*inch, 1*inch, 2*inch])
+            items_table.setStyle(TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
                 ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
                 ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                ('FONTSIZE', (0, 0), (-1, 0), 12),
-                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, -1), 9),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
                 ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
                 ('GRID', (0, 0), (-1, -1), 1, colors.black)
             ]))
-            story.append(vehicle_table)
-            story.append(Spacer(1, 20))
-    
-    # Inspection Categories
-    story.append(Paragraph("Inspection Results", heading_style))
-    
-    total_items = 0
-    passed_items = 0
-    failed_items = 0
-    
-    for category in inspection.get('categories', []):
-        story.append(Paragraph(f"Category: {category['name']}", heading_style))
-        
-        if category.get('items'):
-            item_data = [['Item', 'Grade', 'Notes']]
-            for item in category['items']:
-                item_data.append([
-                    item['name'],
-                    item.get('grade', 'N/A'),
-                    item.get('notes', '')[:50] + '...' if len(item.get('notes', '')) > 50 else item.get('notes', '')
-                ])
-                total_items += 1
-                if item.get('grade') == 'PASS':
-                    passed_items += 1
-                elif item.get('grade') == 'REC':
-                    failed_items += 1
-                elif item.get('grade') == 'REQ':
-                    failed_items += 1
-            
-            item_table = Table(item_data, colWidths=[2.5*inch, 1*inch, 2.5*inch])
-            item_table.setStyle(TableStyle([
-                ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                ('FONTSIZE', (0, 0), (-1, 0), 10),
-                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-                ('GRID', (0, 0), (-1, -1), 1, colors.black),
-                ('FONTSIZE', (0, 1), (-1, -1), 9),
-                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.beige, colors.white])
-            ]))
-            story.append(item_table)
-            story.append(Spacer(1, 15))
-    
-    # Summary
-    story.append(Paragraph("Summary", heading_style))
-    completion_rate = (passed_items + failed_items) / total_items * 100 if total_items > 0 else 0
-    
-    summary_data = [
-        ['Total Items', str(total_items)],
-        ['Passed', str(passed_items)],
-        ['Failed', str(failed_items)],
-        ['Completion Rate', f"{completion_rate:.1f}%"]
-    ]
-    
-    summary_table = Table(summary_data, colWidths=[3*inch, 3*inch])
-    summary_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.darkblue),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 12),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, 1), (-1, -1), colors.lightblue),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-        ('FONTSIZE', (0, 1), (-1, -1), 12),
-        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica-Bold')
-    ]))
-    story.append(summary_table)
+            story.append(items_table)
+            story.append(Spacer(1, 12))
     
     # Build PDF
     doc.build(story)
     return temp_path
 
-# FastAPI App
+# FastAPI App Setup
 app = FastAPI(
     title=APP_NAME,
     description=APP_DESCRIPTION,
     version=APP_VERSION
 )
 
-# Middleware
+# CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=CORS_ORIGINS,
@@ -282,12 +313,17 @@ app.add_middleware(
     allow_headers=CORS_HEADERS,
 )
 
-# Static files and templates
+# Static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Templates
 templates = Jinja2Templates(directory="templates")
 
-# Setup OAuth middleware
+# Setup auth middleware
 setup_auth_middleware(app)
+
+# Include invoice routes
+app.include_router(invoice_router)
 
 # Routes
 @app.get("/")
@@ -296,14 +332,41 @@ async def root(request: Request) -> HTMLResponse:
     user = get_user_from_session(request)
     return templates.TemplateResponse("index.html", {"request": request, "user": user})
 
-@app.get("/login")
-async def login_page(request: Request) -> HTMLResponse:
-    """Login page."""
-    return templates.TemplateResponse("login.html", {"request": request})
+@app.get("/industries")
+async def list_industries(request: Request) -> HTMLResponse:
+    """List available industries."""
+    user = get_user_from_session(request)
+    return templates.TemplateResponse("industries.html", {
+        "request": request, 
+        "user": user,
+        "industries": AVAILABLE_INDUSTRIES
+    })
+
+@app.get("/industries/{industry_id}/new")
+async def new_industry_inspection(request: Request, industry_id: str) -> HTMLResponse:
+    """New inspection form for specific industry."""
+    if industry_id not in AVAILABLE_INDUSTRIES:
+        raise HTTPException(status_code=404, detail="Industry not found")
+    
+    user = get_user_from_session(request)
+    return templates.TemplateResponse("new_industry_inspection.html", {
+        "request": request, 
+        "user": user,
+        "industry_id": industry_id,
+        "industry": AVAILABLE_INDUSTRIES[industry_id]
+    })
+
+@app.get("/api/industries/{industry_id}/template")
+async def get_industry_template_api(industry_id: str) -> Dict[str, Any]:
+    """Get inspection template for specific industry."""
+    template = get_industry_template(industry_id)
+    if template is None:
+        raise HTTPException(status_code=404, detail="Industry template not found")
+    return template
 
 @app.get("/api/inspection-template")
 async def get_inspection_template() -> Dict[str, Any]:
-    """Get the basic inspection template."""
+    """Get the basic inspection template (for backward compatibility)."""
     template = load_json_file(TEMPLATE_FILE)
     if template is None:
         raise HTTPException(status_code=404, detail="Inspection template not found")
@@ -313,32 +376,38 @@ async def get_inspection_template() -> Dict[str, Any]:
 async def list_inspections(request: Request) -> HTMLResponse:
     """List all inspections."""
     inspections = load_json_file(INSPECTIONS_FILE, [])
+    user = get_user_from_session(request)
     return templates.TemplateResponse("inspections.html", {
         "request": request,
+        "user": user,
         "inspections": inspections
     })
 
 @app.get("/inspections/new", response_class=HTMLResponse)
 async def new_inspection(request: Request) -> HTMLResponse:
-    """New inspection form."""
-    return templates.TemplateResponse("new_inspection.html", {"request": request})
+    """New inspection form (redirect to industries)."""
+    return templates.TemplateResponse("redirect_to_industries.html", {"request": request})
 
 @app.post("/api/inspections")
 async def create_inspection(inspection: InspectionRequest) -> Dict[str, str]:
     """Create a new inspection."""
-    # Load template
-    template = load_json_file(TEMPLATE_FILE, {"inspection_points": {}})
+    # Load template for the specified industry
+    template = get_industry_template(inspection.industry_type)
+    if template is None:
+        raise HTTPException(status_code=404, detail="Industry template not found")
     
     # Create inspection data
     inspection_data = {
         "id": generate_inspection_id(),
         "title": inspection.title,
-        "vehicle_info": inspection.vehicle_info.dict(),
+        "industry_info": inspection.industry_info.model_dump(),
+        "vehicle_info": inspection.vehicle_info.model_dump() if inspection.vehicle_info else None,
         "inspector_name": inspection.inspector_name,
         "inspector_id": inspection.inspector_id,
         "date": datetime.now().isoformat(),
         "categories": [],
-        "status": DEFAULT_INSPECTION_STATUS
+        "status": DEFAULT_INSPECTION_STATUS,
+        "industry_type": inspection.industry_type
     }
     
     # Add categories from template
@@ -376,8 +445,10 @@ async def view_inspection(request: Request, inspection_id: str) -> HTMLResponse:
     if not inspection:
         raise HTTPException(status_code=404, detail="Inspection not found")
     
+    user = get_user_from_session(request)
     return templates.TemplateResponse("view_inspection.html", {
         "request": request,
+        "user": user,
         "inspection": inspection
     })
 
@@ -396,50 +467,50 @@ async def upload_photo(
     # Check file extension
     file_ext = Path(file.filename).suffix.lower()
     if file_ext not in ALLOWED_EXTENSIONS:
-        raise HTTPException(
-            status_code=400, 
-            detail=f"File type not allowed. Allowed types: {', '.join(ALLOWED_EXTENSIONS)}"
-        )
+        raise HTTPException(status_code=400, detail="Invalid file type")
     
-    # Save file
-    filename = f"{inspection_id}_{category}_{item}_{file.filename}"
-    filepath = UPLOAD_DIR / filename
+    # Check file size
+    if file.size and file.size > MAX_FILE_SIZE:
+        raise HTTPException(status_code=400, detail="File too large")
     
-    try:
-        content = await file.read()
-        with open(filepath, "wb") as f:
-            f.write(content)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
-    
-    # Update inspection with photo
+    # Find inspection
     inspection = find_inspection(inspection_id)
     if not inspection:
         raise HTTPException(status_code=404, detail="Inspection not found")
     
-    photo_path = f"/static/uploads/{filename}"
+    # Save file
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"{inspection_id}_{category}_{item}_{timestamp}{file_ext}"
+    file_path = UPLOAD_DIR / filename
     
-    for category_obj in inspection["categories"]:
-        if category_obj["name"].lower().replace(" ", "_") == category:
-            for item_obj in category_obj["items"]:
-                if item_obj["name"].lower().replace(" ", "_") == item:
-                    item_obj["photos"].append(photo_path)
+    try:
+        with open(file_path, "wb") as buffer:
+            content = await file.read()
+            buffer.write(content)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
+    
+    # Update inspection data
+    for category_data in inspection["categories"]:
+        if category_data["name"].lower().replace(" ", "_") == category.lower():
+            for item_data in category_data["items"]:
+                if item_data["name"] == item:
+                    item_data["photos"].append(filename)
                     update_inspection_data(inspection_id, inspection)
-                    return {"message": "Photo uploaded successfully"}
+                    return {"message": "Photo uploaded successfully", "filename": filename}
     
     raise HTTPException(status_code=404, detail="Category or item not found")
 
 @app.put("/api/inspections/{inspection_id}")
 async def update_inspection(inspection_id: str, inspection: Dict[str, Any]) -> Dict[str, str]:
-    """Update an existing inspection."""
-    # Validate inspection data
+    """Update inspection data."""
     if not validate_inspection_data(inspection):
-        raise HTTPException(status_code=400, detail="Invalid inspection data structure")
+        raise HTTPException(status_code=400, detail="Invalid inspection data")
     
-    if not update_inspection_data(inspection_id, inspection):
+    if update_inspection_data(inspection_id, inspection):
+        return {"message": "Inspection updated successfully"}
+    else:
         raise HTTPException(status_code=404, detail="Inspection not found")
-    
-    return {"message": "Inspection updated successfully"}
 
 @app.get("/api/inspections/{inspection_id}/report")
 async def generate_report(inspection_id: str) -> Dict[str, Any]:
@@ -448,42 +519,39 @@ async def generate_report(inspection_id: str) -> Dict[str, Any]:
     if not inspection:
         raise HTTPException(status_code=404, detail="Inspection not found")
     
-    # Calculate summary statistics
+    # Calculate statistics
     total_items = 0
+    graded_items = 0
     passed_items = 0
     failed_items = 0
     
     for category in inspection["categories"]:
         for item in category["items"]:
             total_items += 1
-            if item["grade"] == "PASS":
-                passed_items += 1
-            elif item["grade"] == "REC":
-                failed_items += 1
-            elif item["grade"] == "REQ":
-                failed_items += 1
+            if item["grade"] != "N/A":
+                graded_items += 1
+                if item["grade"] in ["Pass", "Good", "Excellent"]:
+                    passed_items += 1
+                elif item["grade"] in ["Fail", "Poor", "Critical"]:
+                    failed_items += 1
     
-    completion_rate = (
-        (passed_items + failed_items) / total_items * 100 
-        if total_items > 0 else 0
-    )
-    
+    # Generate report
     report = {
-        "inspection_id": inspection_id,
+        "inspection_id": inspection["id"],
         "title": inspection["title"],
-        "vehicle_info": inspection["vehicle_info"],
-        "inspector": {
-            "name": inspection["inspector_name"],
-            "id": inspection["inspector_id"]
-        },
         "date": inspection["date"],
-        "categories": inspection["categories"],
-        "summary": {
+        "inspector": inspection["inspector_name"],
+        "industry_type": inspection["industry_type"],
+        "status": inspection["status"],
+        "statistics": {
             "total_items": total_items,
-            "passed": passed_items,
-            "failed": failed_items,
-            "completion_rate": completion_rate
-        }
+            "graded_items": graded_items,
+            "passed_items": passed_items,
+            "failed_items": failed_items,
+            "completion_percentage": (graded_items / total_items * 100) if total_items > 0 else 0,
+            "pass_rate": (passed_items / graded_items * 100) if graded_items > 0 else 0
+        },
+        "categories": inspection["categories"]
     }
     
     return report
@@ -499,41 +567,12 @@ async def generate_pdf_report_endpoint(inspection_id: str) -> FileResponse:
         pdf_path = generate_pdf_report(inspection)
         return FileResponse(
             pdf_path,
-            media_type='application/pdf',
-            filename=f"inspection_{inspection_id}.pdf"
+            media_type="application/pdf",
+            filename=f"inspection_report_{inspection_id}.pdf"
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to generate PDF: {str(e)}")
 
-# OAuth Routes
-@app.get("/auth/google")
-async def google_auth(request: Request):
-    """Google OAuth login."""
-    return await google_login(request)
-
-@app.get("/auth/github")
-async def github_auth(request: Request):
-    """GitHub OAuth login."""
-    return await github_login(request)
-
-@app.get("/auth/callback/{provider}")
-async def auth_callback_route(request: Request, provider: str):
-    """OAuth callback handler."""
-    return await auth_callback(request, provider)
-
-@app.get("/auth/logout")
-async def logout_route(request: Request):
-    """Logout user."""
-    return await logout(request)
-
-@app.get("/auth/user")
-async def get_current_user_route(request: Request):
-    """Get current user from session."""
-    user = get_user_from_session(request)
-    if user:
-        return {"user": {"id": user.id, "email": user.email, "name": user.name, "provider": user.provider}}
-    return {"user": None}
-
 if __name__ == "__main__":
     port = int(os.getenv("PORT", PORT))
-    uvicorn.run(app, host=HOST, port=port) 
+    uvicorn.run(app, host=HOST, port=port)

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New {{ industry.name }} Inspection - CheckMate Virtue</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .form-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .industry-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-clipboard-check me-2"></i>
+                CheckMate Virtue
+            </a>
+            <div class="navbar-nav ms-auto">
+                {% if user %}
+                    <span class="navbar-text me-3">
+                        <i class="fas fa-user me-1"></i>
+                        {{ user.name }}
+                    </span>
+                    <a class="nav-link" href="/inspections">Inspections</a>
+                    <a class="nav-link" href="/industries">Industries</a>
+                    <a class="nav-link" href="/auth/logout">Logout</a>
+                {% else %}
+                    <a class="nav-link" href="/login">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Industry Header -->
+    <section class="industry-header">
+        <div class="container text-center">
+            <h1 class="display-5 mb-3">
+                <i class="{{ industry.icon }} me-3"></i>
+                New {{ industry.name }} Inspection
+            </h1>
+            <p class="lead mb-0">{{ industry.description }}</p>
+        </div>
+    </section>
+
+    <!-- Inspection Form -->
+    <div class="container my-5">
+        <form id="inspectionForm">
+            <!-- Basic Information -->
+            <div class="form-section">
+                <h3 class="mb-4">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Basic Information
+                </h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="title" class="form-label">Inspection Title *</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="inspector_name" class="form-label">Inspector Name *</label>
+                        <input type="text" class="form-control" id="inspector_name" name="inspector_name" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="inspector_id" class="form-label">Inspector ID *</label>
+                        <input type="text" class="form-control" id="inspector_id" name="inspector_id" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Industry Information -->
+            <div class="form-section">
+                <h3 class="mb-4">
+                    <i class="fas fa-industry me-2"></i>
+                    {{ industry.name }} Information
+                </h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="facility_name" class="form-label">Facility Name</label>
+                        <input type="text" class="form-control" id="facility_name" name="facility_name">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="location" class="form-label">Location/Address</label>
+                        <input type="text" class="form-control" id="location" name="location">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="contact_person" class="form-label">Contact Person</label>
+                        <input type="text" class="form-control" id="contact_person" name="contact_person">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="tel" class="form-control" id="phone" name="phone">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vehicle Information (for automotive) -->
+            {% if industry_id == "automotive" %}
+            <div class="form-section">
+                <h3 class="mb-4">
+                    <i class="fas fa-car me-2"></i>
+                    Vehicle Information
+                </h3>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="year" class="form-label">Year</label>
+                        <input type="text" class="form-control" id="year" name="year">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="make" class="form-label">Make</label>
+                        <input type="text" class="form-control" id="make" name="make">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="model" class="form-label">Model</label>
+                        <input type="text" class="form-control" id="model" name="model">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="vin" class="form-label">VIN</label>
+                        <input type="text" class="form-control" id="vin" name="vin">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="license_plate" class="form-label">License Plate</label>
+                        <input type="text" class="form-control" id="license_plate" name="license_plate">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="mileage" class="form-label">Mileage</label>
+                        <input type="text" class="form-control" id="mileage" name="mileage">
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus me-2"></i>
+                    Create {{ industry.name }} Inspection
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center p-4">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h5>Creating Inspection...</h5>
+                    <p class="text-muted">Please wait while we set up your inspection.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2024 CheckMate Virtue. Professional inspection system.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('inspectionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Show loading modal
+            const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+            loadingModal.show();
+            
+            // Collect form data
+            const formData = new FormData(this);
+            const data = {
+                title: formData.get('title'),
+                inspector_name: formData.get('inspector_name'),
+                inspector_id: formData.get('inspector_id'),
+                industry_type: '{{ industry_id }}',
+                industry_info: {
+                    industry_type: '{{ industry_id }}',
+                    facility_name: formData.get('facility_name'),
+                    location: formData.get('location'),
+                    contact_person: formData.get('contact_person'),
+                    phone: formData.get('phone'),
+                    email: formData.get('email')
+                }
+            };
+
+            // Add vehicle info for automotive
+            {% if industry_id == "automotive" %}
+            data.vehicle_info = {
+                year: formData.get('year'),
+                make: formData.get('make'),
+                model: formData.get('model'),
+                vin: formData.get('vin'),
+                license_plate: formData.get('license_plate'),
+                mileage: formData.get('mileage')
+            };
+            {% endif %}
+
+            try {
+                const response = await fetch('/api/inspections', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    window.location.href = `/inspections/${result.inspection_id}`;
+                } else {
+                    const error = await response.json();
+                    alert('Error creating inspection: ' + error.detail);
+                    loadingModal.hide();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error creating inspection. Please try again.');
+                loadingModal.hide();
+            }
+        });
+    </script>
+</body>
+</html>

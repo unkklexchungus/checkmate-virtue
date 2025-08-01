@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Invoice - CheckMate Virtue</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .item-row {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .job-section {
+            background-color: #e3f2fd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .total-section {
+            background-color: #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+        .item-type-labor { border-left: 4px solid #28a745; }
+        .item-type-parts { border-left: 4px solid #dc3545; }
+        .item-type-materials { border-left: 4px solid #ffc107; }
+        .item-type-service { border-left: 4px solid #17a2b8; }
+        .item-type-other { border-left: 4px solid #6c757d; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-shield-alt me-2"></i>
+                CheckMate Virtue
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/industries">Industries</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/inspections">Inspections</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/invoices">Invoices</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>
+                <i class="fas fa-plus me-2"></i>
+                New Invoice
+            </h1>
+            <a href="/invoices" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Back to Invoices
+            </a>
+        </div>
+
+        <form id="invoiceForm">
+            <div class="row">
+                <!-- Left Column -->
+                <div class="col-md-8">
+                    <!-- Client and Basic Info -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-user me-2"></i>
+                                Client & Basic Information
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="client_id" class="form-label">Client *</label>
+                                    <select class="form-select" id="client_id" name="client_id" required>
+                                        <option value="">Select a client</option>
+                                        {% for client in clients %}
+                                        <option value="{{ client.id }}">
+                                            {{ client.name }}
+                                            {% if client.company %} - {{ client.company }}{% endif %}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                    <div class="form-text">
+                                        <a href="/invoices/clients/new" target="_blank">Add new client</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="industry_type" class="form-label">Industry Type *</label>
+                                    <select class="form-select" id="industry_type" name="industry_type" required>
+                                        <option value="">Select industry</option>
+                                        <option value="automotive">Automotive</option>
+                                        <option value="construction">Construction</option>
+                                        <option value="healthcare">Healthcare</option>
+                                        <option value="food_safety">Food Safety</option>
+                                        <option value="manufacturing">Manufacturing</option>
+                                        <option value="real_estate">Real Estate</option>
+                                        <option value="it_datacenter">IT & Data Centers</option>
+                                        <option value="environmental">Environmental</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="issue_date" class="form-label">Issue Date *</label>
+                                    <input type="date" class="form-control" id="issue_date" name="issue_date" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="due_date" class="form-label">Due Date *</label>
+                                    <input type="date" class="form-control" id="due_date" name="due_date" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="inspection_id" class="form-label">Inspection ID (Optional)</label>
+                                    <input type="text" class="form-control" id="inspection_id" name="inspection_id" placeholder="Link to inspection">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <button type="button" class="btn btn-outline-primary mt-4" onclick="loadTemplate()">
+                                        <i class="fas fa-download me-2"></i>
+                                        Load Industry Template
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Jobs/Work Orders -->
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="fas fa-briefcase me-2"></i>
+                                Jobs/Work Orders
+                            </h5>
+                            <button type="button" class="btn btn-success btn-sm" onclick="addJob()">
+                                <i class="fas fa-plus me-2"></i>
+                                Add Job
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="jobsContainer">
+                                <!-- Jobs will be added here dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Invoice Items -->
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="fas fa-list me-2"></i>
+                                Invoice Items
+                            </h5>
+                            <button type="button" class="btn btn-success btn-sm" onclick="addItem()">
+                                <i class="fas fa-plus me-2"></i>
+                                Add Item
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="itemsContainer">
+                                <!-- Items will be added here dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Charges -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-plus-circle me-2"></i>
+                                Additional Charges
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="shipping" class="form-label">Shipping</label>
+                                    <input type="number" class="form-control" id="shipping" name="shipping" value="0" step="0.01" min="0">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="handling" class="form-label">Handling</label>
+                                    <input type="number" class="form-control" id="handling" name="handling" value="0" step="0.01" min="0">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="other_charges" class="form-label">Other Charges</label>
+                                    <input type="number" class="form-control" id="other_charges" name="other_charges" value="0" step="0.01" min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-md-4">
+                    <!-- Terms and Notes -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-file-text me-2"></i>
+                                Terms & Notes
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="terms" class="form-label">Payment Terms</label>
+                                <textarea class="form-control" id="terms" name="terms" rows="3" placeholder="Payment due within 30 days..."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="notes" class="form-label">Invoice Notes</label>
+                                <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Additional notes..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Totals -->
+                    <div class="total-section">
+                        <h5 class="mb-3">
+                            <i class="fas fa-calculator me-2"></i>
+                            Invoice Totals
+                        </h5>
+                        <div class="row mb-2">
+                            <div class="col-6">Subtotal:</div>
+                            <div class="col-6 text-end" id="subtotal">$0.00</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">Tax:</div>
+                            <div class="col-6 text-end" id="tax_amount">$0.00</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">Discount:</div>
+                            <div class="col-6 text-end" id="discount_amount">$0.00</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">Shipping:</div>
+                            <div class="col-6 text-end" id="shipping_display">$0.00</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">Handling:</div>
+                            <div class="col-6 text-end" id="handling_display">$0.00</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">Other:</div>
+                            <div class="col-6 text-end" id="other_charges_display">$0.00</div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-6"><strong>Total:</strong></div>
+                            <div class="col-6 text-end"><strong id="total">$0.00</strong></div>
+                        </div>
+                        
+                        <!-- Job-based breakdown -->
+                        <hr>
+                        <h6 class="mb-2">Breakdown by Type:</h6>
+                        <div class="row mb-1">
+                            <div class="col-6">Labor:</div>
+                            <div class="col-6 text-end" id="labor_total">$0.00</div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-6">Parts:</div>
+                            <div class="col-6 text-end" id="parts_total">$0.00</div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-6">Materials:</div>
+                            <div class="col-6 text-end" id="materials_total">$0.00</div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-6">Services:</div>
+                            <div class="col-6 text-end" id="service_total">$0.00</div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary w-100 mb-2">
+                            <i class="fas fa-save me-2"></i>
+                            Create Invoice
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary w-100" onclick="saveDraft()">
+                            <i class="fas fa-edit me-2"></i>
+                            Save as Draft
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let itemCounter = 0;
+        let jobCounter = 0;
+
+        // Set default dates
+        document.getElementById('issue_date').value = new Date().toISOString().split('T')[0];
+        document.getElementById('due_date').value = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+        function addJob() {
+            jobCounter++;
+            const container = document.getElementById('jobsContainer');
+            const jobHtml = `
+                <div class="job-section" id="job_${jobCounter}">
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Job Name *</label>
+                            <input type="text" class="form-control job-name" required>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Job Number</label>
+                            <input type="text" class="form-control job-number" placeholder="JOB-001">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 mb-2">
+                            <label class="form-label">Description</label>
+                            <input type="text" class="form-control job-description" placeholder="Job description...">
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Status</label>
+                            <select class="form-select job-status">
+                                <option value="in_progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                                <option value="pending">Pending</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Start Date</label>
+                            <input type="date" class="form-control job-start-date">
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">&nbsp;</label>
+                            <button type="button" class="btn btn-danger w-100" onclick="removeJob(${jobCounter})">
+                                <i class="fas fa-trash"></i> Remove Job
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', jobHtml);
+        }
+
+        function removeJob(jobId) {
+            document.getElementById(`job_${jobId}`).remove();
+        }
+
+        function addItem() {
+            itemCounter++;
+            const container = document.getElementById('itemsContainer');
+            const itemHtml = `
+                <div class="item-row" id="item_${itemCounter}">
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Job (Optional)</label>
+                            <select class="form-select item-job-id">
+                                <option value="">No Job</option>
+                                <!-- Jobs will be populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Item Type *</label>
+                            <select class="form-select item-type" onchange="updateItemStyle(${itemCounter})">
+                                <option value="labor">Labor</option>
+                                <option value="parts">Parts</option>
+                                <option value="materials">Materials</option>
+                                <option value="service">Service</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Description *</label>
+                            <input type="text" class="form-control item-description" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2 mb-2">
+                            <label class="form-label">Quantity *</label>
+                            <input type="number" class="form-control item-quantity" value="1" min="0" step="0.01" required>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label class="form-label">Unit Price *</label>
+                            <input type="number" class="form-control item-unit-price" value="0" min="0" step="0.01" required>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label class="form-label">Unit</label>
+                            <input type="text" class="form-control item-unit" value="item">
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label class="form-label">Tax Rate (%)</label>
+                            <input type="number" class="form-control item-tax-rate" value="0" min="0" max="100" step="0.01">
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label class="form-label">Discount (%)</label>
+                            <input type="number" class="form-control item-discount" value="0" min="0" max="100" step="0.01">
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label class="form-label">&nbsp;</label>
+                            <button type="button" class="btn btn-danger w-100" onclick="removeItem(${itemCounter})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-2">
+                            <label class="form-label">Notes</label>
+                            <input type="text" class="form-control item-notes" placeholder="Item notes...">
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', itemHtml);
+            updateItemStyle(itemCounter);
+        }
+
+        function updateItemStyle(itemId) {
+            const itemRow = document.getElementById(`item_${itemId}`);
+            const itemType = itemRow.querySelector('.item-type').value;
+            
+            // Remove existing type classes
+            itemRow.classList.remove('item-type-labor', 'item-type-parts', 'item-type-materials', 'item-type-service', 'item-type-other');
+            
+            // Add new type class
+            itemRow.classList.add(`item-type-${itemType}`);
+        }
+
+        function removeItem(itemId) {
+            document.getElementById(`item_${itemId}`).remove();
+            updateTotals();
+        }
+
+        function loadTemplate() {
+            const industryType = document.getElementById('industry_type').value;
+            if (!industryType) {
+                alert('Please select an industry type first.');
+                return;
+            }
+
+            fetch(`/invoices/templates/${industryType}`)
+                .then(response => response.json())
+                .then(template => {
+                    // Clear existing jobs and items
+                    document.getElementById('jobsContainer').innerHTML = '';
+                    document.getElementById('itemsContainer').innerHTML = '';
+                    jobCounter = 0;
+                    itemCounter = 0;
+
+                    // Add template jobs
+                    if (template.default_jobs) {
+                        template.default_jobs.forEach(job => {
+                            jobCounter++;
+                            const container = document.getElementById('jobsContainer');
+                            const jobHtml = `
+                                <div class="job-section" id="job_${jobCounter}">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-2">
+                                            <label class="form-label">Job Name *</label>
+                                            <input type="text" class="form-control job-name" value="${job.name}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <label class="form-label">Job Number</label>
+                                            <input type="text" class="form-control job-number" value="${job.job_number || ''}" placeholder="JOB-001">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8 mb-2">
+                                            <label class="form-label">Description</label>
+                                            <input type="text" class="form-control job-description" value="${job.description || ''}" placeholder="Job description...">
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <label class="form-label">Status</label>
+                                            <select class="form-select job-status">
+                                                <option value="in_progress" ${job.status === 'in_progress' ? 'selected' : ''}>In Progress</option>
+                                                <option value="completed" ${job.status === 'completed' ? 'selected' : ''}>Completed</option>
+                                                <option value="pending" ${job.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                                <option value="cancelled" ${job.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-2">
+                                            <label class="form-label">Start Date</label>
+                                            <input type="date" class="form-control job-start-date" value="${job.start_date || ''}">
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <label class="form-label">&nbsp;</label>
+                                            <button type="button" class="btn btn-danger w-100" onclick="removeJob(${jobCounter})">
+                                                <i class="fas fa-trash"></i> Remove Job
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            container.insertAdjacentHTML('beforeend', jobHtml);
+                        });
+                    }
+
+                    // Add template items
+                    if (template.default_items) {
+                        template.default_items.forEach(item => {
+                            itemCounter++;
+                            const container = document.getElementById('itemsContainer');
+                            const itemHtml = `
+                                <div class="item-row" id="item_${itemCounter}">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-2">
+                                            <label class="form-label">Job (Optional)</label>
+                                            <select class="form-select item-job-id">
+                                                <option value="">No Job</option>
+                                                <option value="${item.job_id || ''}" ${item.job_id ? 'selected' : ''}>${item.job_id || ''}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <label class="form-label">Item Type *</label>
+                                            <select class="form-select item-type" onchange="updateItemStyle(${itemCounter})">
+                                                <option value="labor" ${item.item_type === 'labor' ? 'selected' : ''}>Labor</option>
+                                                <option value="parts" ${item.item_type === 'parts' ? 'selected' : ''}>Parts</option>
+                                                <option value="materials" ${item.item_type === 'materials' ? 'selected' : ''}>Materials</option>
+                                                <option value="service" ${item.item_type === 'service' ? 'selected' : ''}>Service</option>
+                                                <option value="other" ${item.item_type === 'other' ? 'selected' : ''}>Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <label class="form-label">Description *</label>
+                                            <input type="text" class="form-control item-description" value="${item.description}" required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2 mb-2">
+                                            <label class="form-label">Quantity *</label>
+                                            <input type="number" class="form-control item-quantity" value="${item.quantity}" min="0" step="0.01" required>
+                                        </div>
+                                        <div class="col-md-2 mb-2">
+                                            <label class="form-label">Unit Price *</label>
+                                            <input type="number" class="form-control item-unit-price" value="${item.unit_price}" min="0" step="0.01" required>
+                                        </div>
+                                        <div class="col-md-2 mb-2">
+                                            <label class="form-label">Unit</label>
+                                            <input type="text" class="form-control item-unit" value="${item.unit}">
+                                        </div>
+                                        <div class="col-md-2 mb-2">
+                                            <label class="form-label">Tax Rate (%)</label>
+                                            <input type="number" class="form-control item-tax-rate" value="${item.tax_rate}" min="0" max="100" step="0.01">
+                                        </div>
+                                        <div class="col-md-2 mb-2">
+                                            <label class="form-label">Discount (%)</label>
+                                            <input type="number" class="form-control item-discount" value="${item.discount_percent || 0}" min="0" max="100" step="0.01">
+                                        </div>
+                                        <div class="col-md-2 mb-2">
+                                            <label class="form-label">&nbsp;</label>
+                                            <button type="button" class="btn btn-danger w-100" onclick="removeItem(${itemCounter})">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 mb-2">
+                                            <label class="form-label">Notes</label>
+                                            <input type="text" class="form-control item-notes" value="${item.notes || ''}" placeholder="Item notes...">
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            container.insertAdjacentHTML('beforeend', itemHtml);
+                            updateItemStyle(itemCounter);
+                        });
+                    }
+
+                    // Set default terms and notes
+                    if (template.default_terms) {
+                        document.getElementById('terms').value = template.default_terms;
+                    }
+                    if (template.default_notes) {
+                        document.getElementById('notes').value = template.default_notes;
+                    }
+
+                    updateTotals();
+                    alert('Template loaded successfully!');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to load template');
+                });
+        }
+
+        function updateTotals() {
+            let subtotal = 0;
+            let taxAmount = 0;
+            let discountAmount = 0;
+            let laborTotal = 0;
+            let partsTotal = 0;
+            let materialsTotal = 0;
+            let serviceTotal = 0;
+
+            // Calculate from items
+            document.querySelectorAll('.item-row').forEach(item => {
+                const quantity = parseFloat(item.querySelector('.item-quantity').value) || 0;
+                const unitPrice = parseFloat(item.querySelector('.item-unit-price').value) || 0;
+                const taxRate = parseFloat(item.querySelector('.item-tax-rate').value) || 0;
+                const discount = parseFloat(item.querySelector('.item-discount').value) || 0;
+                const itemType = item.querySelector('.item-type').value;
+
+                const itemSubtotal = quantity * unitPrice;
+                const itemDiscount = itemSubtotal * (discount / 100);
+                const itemTax = (itemSubtotal - itemDiscount) * (taxRate / 100);
+
+                subtotal += itemSubtotal;
+                taxAmount += itemTax;
+                discountAmount += itemDiscount;
+
+                // Add to type-specific totals
+                switch(itemType) {
+                    case 'labor':
+                        laborTotal += itemSubtotal;
+                        break;
+                    case 'parts':
+                        partsTotal += itemSubtotal;
+                        break;
+                    case 'materials':
+                        materialsTotal += itemSubtotal;
+                        break;
+                    case 'service':
+                        serviceTotal += itemSubtotal;
+                        break;
+                }
+            });
+
+            // Add additional charges
+            const shipping = parseFloat(document.getElementById('shipping').value) || 0;
+            const handling = parseFloat(document.getElementById('handling').value) || 0;
+            const otherCharges = parseFloat(document.getElementById('other_charges').value) || 0;
+
+            const total = subtotal - discountAmount + taxAmount + shipping + handling + otherCharges;
+
+            // Update display
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('tax_amount').textContent = `$${taxAmount.toFixed(2)}`;
+            document.getElementById('discount_amount').textContent = `$${discountAmount.toFixed(2)}`;
+            document.getElementById('shipping_display').textContent = `$${shipping.toFixed(2)}`;
+            document.getElementById('handling_display').textContent = `$${handling.toFixed(2)}`;
+            document.getElementById('other_charges_display').textContent = `$${otherCharges.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+            
+            // Update type breakdown
+            document.getElementById('labor_total').textContent = `$${laborTotal.toFixed(2)}`;
+            document.getElementById('parts_total').textContent = `$${partsTotal.toFixed(2)}`;
+            document.getElementById('materials_total').textContent = `$${materialsTotal.toFixed(2)}`;
+            document.getElementById('service_total').textContent = `$${serviceTotal.toFixed(2)}`;
+        }
+
+        // Add event listeners for real-time calculation
+        document.addEventListener('input', function(e) {
+            if (e.target.classList.contains('item-quantity') || 
+                e.target.classList.contains('item-unit-price') || 
+                e.target.classList.contains('item-tax-rate') || 
+                e.target.classList.contains('item-discount') ||
+                e.target.id === 'shipping' ||
+                e.target.id === 'handling' ||
+                e.target.id === 'other_charges') {
+                updateTotals();
+            }
+        });
+
+        document.getElementById('invoiceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                client_id: document.getElementById('client_id').value,
+                industry_type: document.getElementById('industry_type').value,
+                issue_date: document.getElementById('issue_date').value,
+                due_date: document.getElementById('due_date').value,
+                inspection_id: document.getElementById('inspection_id').value || null,
+                terms: document.getElementById('terms').value,
+                notes: document.getElementById('notes').value,
+                jobs: [],
+                items: []
+            };
+
+            // Collect jobs
+            document.querySelectorAll('.job-section').forEach(job => {
+                formData.jobs.push({
+                    name: job.querySelector('.job-name').value,
+                    description: job.querySelector('.job-description').value,
+                    job_number: job.querySelector('.job-number').value,
+                    start_date: job.querySelector('.job-start-date').value,
+                    status: job.querySelector('.job-status').value
+                });
+            });
+
+            // Collect items
+            document.querySelectorAll('.item-row').forEach(item => {
+                formData.items.push({
+                    job_id: item.querySelector('.item-job-id').value || null,
+                    item_type: item.querySelector('.item-type').value,
+                    description: item.querySelector('.item-description').value,
+                    quantity: parseFloat(item.querySelector('.item-quantity').value),
+                    unit_price: parseFloat(item.querySelector('.item-unit-price').value),
+                    unit: item.querySelector('.item-unit').value,
+                    tax_rate: parseFloat(item.querySelector('.item-tax-rate').value),
+                    discount_percent: parseFloat(item.querySelector('.item-discount').value),
+                    notes: item.querySelector('.item-notes').value
+                });
+            });
+
+            // Send to server
+            fetch('/invoices/api/invoices', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                window.location.href = '/invoices';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to create invoice');
+            });
+        });
+
+        function saveDraft() {
+            // Similar to submit but with draft status
+            alert('Draft saving not yet implemented');
+        }
+
+        // Add initial job and item
+        addJob();
+        addItem();
+    </script>
+</body>
+</html> 

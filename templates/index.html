@@ -3,13 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CheckMate Virtue - Professional Inspection System</title>
+    <title>CheckMate Virtue - Multi-Industry Professional Inspection System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         .hero-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 4rem 0;
+        }
+        .feature-card {
+            transition: transform 0.2s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
         }
     </style>
 </head>
@@ -27,8 +34,9 @@
                         {{ user.name }}
                     </span>
                     <a class="nav-link" href="/inspections">Inspections</a>
-                    <a class="nav-link" href="/inspections/new">New Inspection</a>
-                    <a class="nav-link" href="/auth/logout">Logout</a>
+                    <a class="nav-link" href="/invoices">Invoices</a>
+                    <a class="nav-link" href="/industries">Industries</a>
+                    <a class="nav-link" href="#" onclick="alert("OAuth disabled for demo")">Logout</a>
                 {% else %}
                     <a class="nav-link" href="/login">Login</a>
                 {% endif %}
@@ -38,29 +46,118 @@
 
     <section class="hero-section">
         <div class="container text-center">
-            <h1 class="display-4 mb-4">Professional Vehicle Inspection System</h1>
-            <p class="lead mb-4">Comprehensive multi-point vehicle inspection with detailed reporting and photo documentation.</p>
-            <a href="/inspections/new" class="btn btn-light btn-lg">
-                <i class="fas fa-plus me-2"></i>
-                Start New Inspection
-            </a>
+            <h1 class="display-4 mb-4">Multi-Industry Professional Inspection System</h1>
+            <p class="lead mb-4">Comprehensive inspection solutions for automotive, construction, healthcare, manufacturing, and more industries.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="/industries" class="btn btn-light btn-lg">
+                    <i class="fas fa-industry me-2"></i>
+                    Browse Industries
+                </a>
+                <a href="/inspections" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-list me-2"></i>
+                    View Inspections
+                </a>
+            </div>
         </div>
     </section>
 
     <section class="py-5">
         <div class="container">
+            <h2 class="text-center mb-5">Supported Industries</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card feature-card h-100 text-center">
+                        <div class="card-body">
+                            <i class="fas fa-car fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Automotive</h5>
+                            <p class="card-text">Vehicle inspections and maintenance</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card feature-card h-100 text-center">
+                        <div class="card-body">
+                            <i class="fas fa-hard-hat fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Construction</h5>
+                            <p class="card-text">Site safety and structural integrity</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card feature-card h-100 text-center">
+                        <div class="card-body">
+                            <i class="fas fa-utensils fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Food Safety</h5>
+                            <p class="card-text">Restaurant and kitchen hygiene</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card feature-card h-100 text-center">
+                        <div class="card-body">
+                            <i class="fas fa-hospital fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Healthcare</h5>
+                            <p class="card-text">Medical equipment and facility safety</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card feature-card h-100 text-center">
+                        <div class="card-body">
+                            <i class="fas fa-industry fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Manufacturing</h5>
+                            <p class="card-text">Equipment and quality control</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card feature-card h-100 text-center">
+                        <div class="card-body">
+                            <i class="fas fa-building fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Real Estate</h5>
+                            <p class="card-text">Property condition and maintenance</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card feature-card h-100 text-center">
+                        <div class="card-body">
+                            <i class="fas fa-server fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">IT & Data Centers</h5>
+                            <p class="card-text">Infrastructure and security</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card feature-card h-100 text-center">
+                        <div class="card-body">
+                            <i class="fas fa-leaf fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Environmental</h5>
+                            <p class="card-text">Compliance and waste management</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-light py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Key Features</h2>
             <div class="row">
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
                         <div class="card-body text-center">
-                            <h5 class="card-title">Comprehensive Checklists</h5>
-                            <p class="card-text">Detailed inspection points covering all major vehicle systems.</p>
+                            <i class="fas fa-clipboard-list fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Industry-Specific Templates</h5>
+                            <p class="card-text">Professional inspection templates designed for each industry's unique requirements.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
                         <div class="card-body text-center">
+                            <i class="fas fa-camera fa-3x text-primary mb-3"></i>
                             <h5 class="card-title">Photo Documentation</h5>
                             <p class="card-text">Capture photos of issues and components for detailed documentation.</p>
                         </div>
@@ -69,6 +166,7 @@
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
                         <div class="card-body text-center">
+                            <i class="fas fa-chart-bar fa-3x text-primary mb-3"></i>
                             <h5 class="card-title">Professional Reports</h5>
                             <p class="card-text">Generate comprehensive inspection reports with findings and recommendations.</p>
                         </div>
@@ -77,5 +175,13 @@
             </div>
         </div>
     </section>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2024 CheckMate Virtue. Professional multi-industry inspection system.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>

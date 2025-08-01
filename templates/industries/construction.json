@@ -1,0 +1,72 @@
+{
+  "inspection_name": "Construction Site Safety Inspection",
+  "description": "Comprehensive construction site safety and quality inspection checklist.",
+  "industry": "construction",
+  "inspection_points": {
+    "site_safety": {
+      "description": "General site safety and hazard assessment",
+      "items": [
+        "Personal protective equipment (PPE)",
+        "Safety signage and barriers",
+        "Emergency exits and evacuation routes",
+        "Fire extinguishers and safety equipment",
+        "First aid kits and medical supplies",
+        "Weather conditions and site accessibility",
+        "Lighting and visibility",
+        "Noise levels and hearing protection"
+      ]
+    },
+    "structural_integrity": {
+      "description": "Structural safety and integrity checks",
+      "items": [
+        "Foundation stability",
+        "Structural supports and beams",
+        "Wall integrity and load-bearing capacity",
+        "Roof structure and stability",
+        "Flooring and decking safety",
+        "Scaffolding and temporary structures",
+        "Crane and heavy equipment stability",
+        "Excavation and trench safety"
+      ]
+    },
+    "electrical_safety": {
+      "description": "Electrical systems and safety compliance",
+      "items": [
+        "Electrical panel and circuit protection",
+        "Ground fault protection",
+        "Extension cords and temporary wiring",
+        "Electrical tool safety",
+        "Lockout/tagout procedures",
+        "Emergency power systems",
+        "Lighting and electrical fixtures",
+        "Electrical hazard identification"
+      ]
+    },
+    "environmental_compliance": {
+      "description": "Environmental protection and compliance",
+      "items": [
+        "Dust and debris control",
+        "Noise pollution management",
+        "Water runoff and erosion control",
+        "Hazardous material handling",
+        "Waste disposal procedures",
+        "Air quality monitoring",
+        "Soil protection measures",
+        "Wildlife and habitat protection"
+      ]
+    },
+    "equipment_maintenance": {
+      "description": "Construction equipment and tool safety",
+      "items": [
+        "Heavy machinery inspection",
+        "Tool maintenance and safety",
+        "Vehicle and transport safety",
+        "Lifting equipment certification",
+        "Welding and cutting equipment",
+        "Compressed gas cylinder safety",
+        "Generator and power equipment",
+        "Communication equipment"
+      ]
+    }
+  }
+}
