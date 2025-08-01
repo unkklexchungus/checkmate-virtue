@@ -84,6 +84,39 @@ All configuration settings are centralized in `config.py`:
 - **Upload Settings**: File size limits, allowed extensions
 - **Validation Settings**: Input validation rules
 
+## 🔐 OAuth Authentication
+
+The application supports OAuth authentication with Google and GitHub. To enable OAuth:
+
+### Google OAuth Setup
+
+1. Go to [Google Cloud Console](https://console.developers.google.com/)
+2. Create a new project or select existing one
+3. Enable Google+ API
+4. Go to Credentials → Create Credentials → OAuth 2.0 Client ID
+5. Set authorized redirect URI: `http://localhost:8000/auth/callback/google`
+6. Copy Client ID and Client Secret to your `.env` file
+
+### GitHub OAuth Setup
+
+1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
+2. Click "New OAuth App"
+3. Set Homepage URL: `http://localhost:8000`
+4. Set Authorization callback URL: `http://localhost:8000/auth/callback/github`
+5. Copy Client ID and Client Secret to your `.env` file
+
+### Environment Variables
+
+Create a `.env` file with the following variables:
+
+```env
+SECRET_KEY=your-secret-key-here
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GITHUB_CLIENT_ID=your-github-client-id
+GITHUB_CLIENT_SECRET=your-github-client-secret
+```
+
 ## 📋 API Endpoints
 
 ### Web Interface
@@ -98,6 +131,14 @@ All configuration settings are centralized in `config.py`:
 - `PUT /api/inspections/{id}` - Update inspection
 - `POST /api/inspections/{id}/photos` - Upload inspection photos
 - `GET /api/inspections/{id}/report` - Generate inspection report
+
+### OAuth Endpoints
+- `GET /login` - Login page
+- `GET /auth/google` - Google OAuth login
+- `GET /auth/github` - GitHub OAuth login
+- `GET /auth/callback/{provider}` - OAuth callback handler
+- `GET /auth/logout` - Logout user
+- `GET /auth/user` - Get current user info
 
 ## 🧪 Testing
 

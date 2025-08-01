@@ -26,6 +26,7 @@ import tempfile
 import os
 
 from config import *
+from auth import setup_auth_middleware, get_user_from_session, google_login, github_login, auth_callback, logout
 
 # Create necessary directories
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -285,11 +286,20 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
+# Setup OAuth middleware
+setup_auth_middleware(app)
+
 # Routes
 @app.get("/")
 async def root(request: Request) -> HTMLResponse:
     """Home page."""
-    return templates.TemplateResponse("index.html", {"request": request})
+    user = get_user_from_session(request)
+    return templates.TemplateResponse("index.html", {"request": request, "user": user})
+
+@app.get("/login")
+async def login_page(request: Request) -> HTMLResponse:
+    """Login page."""
+    return templates.TemplateResponse("login.html", {"request": request})
 
 @app.get("/api/inspection-template")
 async def get_inspection_template() -> Dict[str, Any]:
@@ -494,6 +504,35 @@ async def generate_pdf_report_endpoint(inspection_id: str) -> FileResponse:
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to generate PDF: {str(e)}")
+
+# OAuth Routes
+@app.get("/auth/google")
+async def google_auth(request: Request):
+    """Google OAuth login."""
+    return await google_login(request)
+
+@app.get("/auth/github")
+async def github_auth(request: Request):
+    """GitHub OAuth login."""
+    return await github_login(request)
+
+@app.get("/auth/callback/{provider}")
+async def auth_callback_route(request: Request, provider: str):
+    """OAuth callback handler."""
+    return await auth_callback(request, provider)
+
+@app.get("/auth/logout")
+async def logout_route(request: Request):
+    """Logout user."""
+    return await logout(request)
+
+@app.get("/auth/user")
+async def get_current_user_route(request: Request):
+    """Get current user from session."""
+    user = get_user_from_session(request)
+    if user:
+        return {"user": {"id": user.id, "email": user.email, "name": user.name, "provider": user.provider}}
+    return {"user": None}
 
 if __name__ == "__main__":
     uvicorn.run(app, host=HOST, port=PORT) 
