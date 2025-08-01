@@ -8,10 +8,12 @@
   - Fixed `discount_percent > 0` comparisons by converting to float: `(item['discount_percent']|float) > 0`
   - Fixed all invoice total comparisons for shipping, handling, other_charges
   - Fixed all breakdown total comparisons for labor_total, parts_total, materials_total, service_total
-- **Deployment Crashes**: Fixed missing template files that were causing deployment failures
+- **Deployment Crashes**: Fixed missing template files and dependency issues that were causing deployment failures
   - Added missing `templates/invoices/edit.html` template
   - Cleared Python cache to ensure template changes are applied
   - Improved error handling for missing template files
+  - Fixed ModuleNotFoundError for reportlab by resolving dependency conflicts
+  - Removed problematic Pillow version constraint that was causing build failures
 
 ### 📊 Data Structure Improvements
 - **Invoice Data Consistency**: Fixed missing fields and data structure issues
