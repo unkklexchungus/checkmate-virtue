@@ -535,4 +535,5 @@ async def get_current_user_route(request: Request):
     return {"user": None}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host=HOST, port=PORT) 
+    port = int(os.getenv("PORT", PORT))
+    uvicorn.run(app, host=HOST, port=port) 
