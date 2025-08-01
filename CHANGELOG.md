@@ -14,6 +14,9 @@
   - Improved error handling for missing template files
   - Fixed ModuleNotFoundError for reportlab by resolving dependency conflicts
   - Removed problematic Pillow version constraint that was causing build failures
+  - **Removed all OAuth functionality** to eliminate jose dependency issues
+  - Deleted OAuth-related files and documentation
+  - Simplified authentication to basic session management only
 
 ### 📊 Data Structure Improvements
 - **Invoice Data Consistency**: Fixed missing fields and data structure issues
