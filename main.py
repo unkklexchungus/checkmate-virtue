@@ -28,6 +28,9 @@ import os
 from config import *
 from auth import setup_auth_middleware, get_user_from_session
 from invoice_routes import router as invoice_router
+from modules.vehicle_data.routes import router as vehicle_router
+
+
 
 # Create necessary directories
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -97,13 +100,26 @@ class IndustryInfo(BaseModel):
     email: Optional[str] = Field(None, description="Contact email")
 
 class VehicleInfo(BaseModel):
-    """Vehicle information model (for automotive industry)."""
+    """Vehicle information model (for automotive industry) - compatible with comprehensive vehicle data."""
     year: Optional[str] = Field(None, description="Vehicle year")
     make: Optional[str] = Field(None, description="Vehicle make")
     model: Optional[str] = Field(None, description="Vehicle model")
     vin: Optional[str] = Field(None, description="Vehicle identification number")
     license_plate: Optional[str] = Field(None, description="License plate number")
     mileage: Optional[str] = Field(None, description="Vehicle mileage")
+    
+    # Additional fields for comprehensive vehicle data
+    trim: Optional[str] = Field(None, description="Vehicle trim level")
+    body_style: Optional[str] = Field(None, description="Vehicle body style")
+    engine: Optional[str] = Field(None, description="Engine information")
+    transmission: Optional[str] = Field(None, description="Transmission type")
+    drivetrain: Optional[str] = Field(None, description="Drivetrain type")
+    fuel_type: Optional[str] = Field(None, description="Fuel type")
+    country_of_origin: Optional[str] = Field(None, description="Country of origin")
+    plant_code: Optional[str] = Field(None, description="Manufacturing plant code")
+    serial_number: Optional[str] = Field(None, description="Serial number")
+    
+
 
 class InspectionRequest(BaseModel):
     """Inspection request model with industry support."""
@@ -325,6 +341,13 @@ setup_auth_middleware(app)
 # Include invoice routes
 app.include_router(invoice_router)
 
+# Include vehicle data routes
+app.include_router(vehicle_router)
+
+
+
+
+
 # Routes
 @app.get("/")
 async def root(request: Request) -> HTMLResponse:
@@ -390,18 +413,61 @@ async def new_inspection(request: Request) -> HTMLResponse:
 
 @app.post("/api/inspections")
 async def create_inspection(inspection: InspectionRequest) -> Dict[str, str]:
-    """Create a new inspection."""
+    """Create a new inspection with enhanced vehicle data integration."""
     # Load template for the specified industry
     template = get_industry_template(inspection.industry_type)
     if template is None:
         raise HTTPException(status_code=404, detail="Industry template not found")
+    
+    # Enhanced vehicle info processing with VIN decoding
+    vehicle_info = None
+    if inspection.vehicle_info:
+        vehicle_data = inspection.vehicle_info.model_dump()
+        
+        # If VIN is provided, try to decode it
+        if vehicle_data.get("vin"):
+            try:
+                from modules.vehicle_data.service import decode_vin
+                decoded_vehicle = await decode_vin(vehicle_data["vin"])
+                
+                # Update vehicle info with decoded data, keeping existing values if not found
+                if decoded_vehicle.year and not vehicle_data.get("year"):
+                    vehicle_data["year"] = decoded_vehicle.year
+                if decoded_vehicle.make and not vehicle_data.get("make"):
+                    vehicle_data["make"] = decoded_vehicle.make
+                if decoded_vehicle.model and not vehicle_data.get("model"):
+                    vehicle_data["model"] = decoded_vehicle.model
+                if decoded_vehicle.trim and not vehicle_data.get("trim"):
+                    vehicle_data["trim"] = decoded_vehicle.trim
+                if decoded_vehicle.engine_displacement and not vehicle_data.get("engine"):
+                    vehicle_data["engine"] = decoded_vehicle.engine_displacement
+                if decoded_vehicle.transmission_type and not vehicle_data.get("transmission"):
+                    vehicle_data["transmission"] = decoded_vehicle.transmission_type
+                if decoded_vehicle.body_style and not vehicle_data.get("body_style"):
+                    vehicle_data["body_style"] = decoded_vehicle.body_style
+                if decoded_vehicle.fuel_type and not vehicle_data.get("fuel_type"):
+                    vehicle_data["fuel_type"] = decoded_vehicle.fuel_type
+                if decoded_vehicle.drivetrain and not vehicle_data.get("drivetrain"):
+                    vehicle_data["drivetrain"] = decoded_vehicle.drivetrain
+                if decoded_vehicle.country_of_origin and not vehicle_data.get("country_of_origin"):
+                    vehicle_data["country_of_origin"] = decoded_vehicle.country_of_origin
+                if decoded_vehicle.plant_code and not vehicle_data.get("plant_code"):
+                    vehicle_data["plant_code"] = decoded_vehicle.plant_code
+                if decoded_vehicle.serial_number and not vehicle_data.get("serial_number"):
+                    vehicle_data["serial_number"] = decoded_vehicle.serial_number
+                    
+            except Exception as e:
+                print(f"VIN decoding failed: {e}")
+                # Continue with original vehicle data if decoding fails
+        
+        vehicle_info = vehicle_data
     
     # Create inspection data
     inspection_data = {
         "id": generate_inspection_id(),
         "title": inspection.title,
         "industry_info": inspection.industry_info.model_dump(),
-        "vehicle_info": inspection.vehicle_info.model_dump() if inspection.vehicle_info else None,
+        "vehicle_info": vehicle_info,
         "inspector_name": inspection.inspector_name,
         "inspector_id": inspection.inspector_id,
         "date": datetime.now().isoformat(),
@@ -556,6 +622,16 @@ async def generate_report(inspection_id: str) -> Dict[str, Any]:
     
     return report
 
+@app.get("/test-vin")
+async def test_vin_page(request: Request) -> HTMLResponse:
+    """Test page for VIN decoder functionality."""
+    return FileResponse("test_vin_frontend.html")
+
+@app.get("/test-vin-simple")
+async def test_vin_simple_page(request: Request) -> HTMLResponse:
+    """Simple test page for VIN decoder functionality."""
+    return FileResponse("test_vin_simple.html")
+
 @app.get("/api/inspections/{inspection_id}/report/pdf")
 async def generate_pdf_report_endpoint(inspection_id: str) -> FileResponse:
     """Generate PDF report for inspection."""
@@ -572,6 +648,8 @@ async def generate_pdf_report_endpoint(inspection_id: str) -> FileResponse:
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to generate PDF: {str(e)}")
+
+
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", PORT))

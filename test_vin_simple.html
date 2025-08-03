@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple VIN Test</title>
+</head>
+<body>
+    <h1>Simple VIN Decoder Test</h1>
+    
+    <div>
+        <label>VIN: <input type="text" id="vin" value="1HGBH41JXMN109186"></label>
+        <button onclick="testDecode()">Decode</button>
+    </div>
+    
+    <div>
+        <label>Year: <input type="text" id="year"></label><br>
+        <label>Make: <input type="text" id="make"></label><br>
+        <label>Model: <input type="text" id="model"></label><br>
+        <label>Trim: <input type="text" id="trim"></label><br>
+        <label>Engine: <input type="text" id="engine"></label><br>
+        <label>Transmission: <input type="text" id="transmission"></label><br>
+        <label>Body Style: <input type="text" id="body_style"></label><br>
+        <label>Drivetrain: <input type="text" id="drivetrain"></label><br>
+        <label>Fuel Type: <input type="text" id="fuel_type"></label><br>
+    </div>
+    
+    <div id="status"></div>
+    
+    <script>
+        async function testDecode() {
+            const vin = document.getElementById('vin').value;
+            const status = document.getElementById('status');
+            
+            status.textContent = 'Decoding...';
+            
+            try {
+                const response = await fetch(`/vehicle/decode/${vin}`);
+                const data = await response.json();
+                
+                console.log('Response:', data);
+                
+                if (response.ok && data) {
+                    // Set values
+                    if (data.year) document.getElementById('year').value = data.year;
+                    if (data.make) document.getElementById('make').value = data.make;
+                    if (data.model) document.getElementById('model').value = data.model;
+                    if (data.trim) document.getElementById('trim').value = data.trim;
+                    if (data.engine_displacement) document.getElementById('engine').value = data.engine_displacement + 'L';
+                    if (data.transmission_type) document.getElementById('transmission').value = data.transmission_type;
+                    if (data.body_style) document.getElementById('body_style').value = data.body_style;
+                    if (data.drivetrain) document.getElementById('drivetrain').value = data.drivetrain;
+                    if (data.fuel_type) document.getElementById('fuel_type').value = data.fuel_type;
+                    
+                    status.textContent = 'Success!';
+                } else {
+                    status.textContent = 'Failed to decode VIN';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                status.textContent = 'Error: ' + error.message;
+            }
+        }
+        
+        // Auto-test on load
+        window.onload = function() {
+            setTimeout(testDecode, 1000);
+        };
+    </script>
+</body>
+</html> 

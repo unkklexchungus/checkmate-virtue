@@ -114,9 +114,17 @@
                     <i class="fas fa-car me-2"></i>
                     Vehicle Information
                 </h5>
+
             </div>
             <div class="card-body">
-                <div class="row">
+                <!-- Basic Vehicle Information -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <h6 class="text-primary mb-2">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Basic Information
+                        </h6>
+                    </div>
                     <div class="col-md-2">
                         <strong>Year:</strong><br>
                         {{ inspection.vehicle_info.year or 'N/A' }}
@@ -129,19 +137,88 @@
                         <strong>Model:</strong><br>
                         {{ inspection.vehicle_info.model or 'N/A' }}
                     </div>
-                    <div class="col-md-3">
-                        <strong>VIN:</strong><br>
-                        {{ inspection.vehicle_info.vin or 'N/A' }}
+                    <div class="col-md-2">
+                        <strong>Trim:</strong><br>
+                        {{ inspection.vehicle_info.trim or 'N/A' }}
                     </div>
                     <div class="col-md-2">
+                        <strong>Body Style:</strong><br>
+                        {{ inspection.vehicle_info.body_style or 'N/A' }}
+                    </div>
+                    <div class="col-md-2">
+                        <strong>VIN:</strong><br>
+                        <code>{{ inspection.vehicle_info.vin or 'N/A' }}</code>
+                    </div>
+                </div>
+
+                <!-- Engine and Drivetrain Information -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <h6 class="text-primary mb-2">
+                            <i class="fas fa-cogs me-1"></i>
+                            Engine & Drivetrain
+                        </h6>
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Engine:</strong><br>
+                        {{ inspection.vehicle_info.engine or 'N/A' }}
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Transmission:</strong><br>
+                        {{ inspection.vehicle_info.transmission or 'N/A' }}
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Drivetrain:</strong><br>
+                        {{ inspection.vehicle_info.drivetrain or 'N/A' }}
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Fuel Type:</strong><br>
+                        {{ inspection.vehicle_info.fuel_type or 'N/A' }}
+                    </div>
+                </div>
+
+                <!-- Manufacturing Information -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <h6 class="text-primary mb-2">
+                            <i class="fas fa-industry me-1"></i>
+                            Manufacturing Information
+                        </h6>
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Country of Origin:</strong><br>
+                        {{ inspection.vehicle_info.country_of_origin or 'N/A' }}
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Plant Code:</strong><br>
+                        {{ inspection.vehicle_info.plant_code or 'N/A' }}
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Serial Number:</strong><br>
+                        {{ inspection.vehicle_info.serial_number or 'N/A' }}
+                    </div>
+
+                </div>
+
+                <!-- Current Vehicle Information -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <h6 class="text-primary mb-2">
+                            <i class="fas fa-clipboard-list me-1"></i>
+                            Current Information
+                        </h6>
+                    </div>
+                    <div class="col-md-6">
                         <strong>License Plate:</strong><br>
                         {{ inspection.vehicle_info.license_plate or 'N/A' }}
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-6">
                         <strong>Mileage:</strong><br>
                         {{ inspection.vehicle_info.mileage or 'N/A' }}
                     </div>
                 </div>
+
+
             </div>
         </div>
         {% endif %}

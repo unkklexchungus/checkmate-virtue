@@ -8,7 +8,7 @@ from pathlib import Path
 # Application Settings
 APP_NAME = "CheckMate Virtue"
 APP_VERSION = "1.0.0"
-APP_DESCRIPTION = "Professional Vehicle Inspection System"
+APP_DESCRIPTION = "Professional Multi-Industry Inspection System"
 
 # Server Settings - Railway compatible
 HOST = "0.0.0.0"

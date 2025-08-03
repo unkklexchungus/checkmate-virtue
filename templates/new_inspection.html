@@ -90,17 +90,48 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="vehicleVin" class="form-label">VIN</label>
-                                        <input type="text" class="form-control" id="vehicleVin" name="vehicle_vin">
+                                        <input type="text" class="form-control" id="vehicleVin" name="vehicle_vin" 
+                                               placeholder="Enter 17-character VIN" maxlength="17">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
+                                        <label for="vehicleEngine" class="form-label">Engine (e.g., 2.0L, 3.5L)</label>
+                                        <input type="text" class="form-control" id="vehicleEngine" name="vehicle_engine" placeholder="Engine size in liters">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
                                         <label for="licensePlate" class="form-label">License Plate</label>
                                         <input type="text" class="form-control" id="licensePlate" name="license_plate">
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="vehicleMileage" class="form-label">Mileage</label>
                                         <input type="text" class="form-control" id="vehicleMileage" name="vehicle_mileage">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehicleTrim" class="form-label">Trim Level</label>
+                                        <input type="text" class="form-control" id="vehicleTrim" name="vehicle_trim" placeholder="e.g., LT, SE, Sport">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehicleBodyStyle" class="form-label">Body Style</label>
+                                        <input type="text" class="form-control" id="vehicleBodyStyle" name="vehicle_body_style" placeholder="e.g., Sedan, SUV, Truck">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehicleTransmission" class="form-label">Transmission</label>
+                                        <input type="text" class="form-control" id="vehicleTransmission" name="vehicle_transmission" placeholder="e.g., Automatic, Manual">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehicleDrivetrain" class="form-label">Drivetrain</label>
+                                        <input type="text" class="form-control" id="vehicleDrivetrain" name="vehicle_drivetrain" placeholder="e.g., FWD, RWD, AWD">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehicleFuelType" class="form-label">Fuel Type</label>
+                                        <input type="text" class="form-control" id="vehicleFuelType" name="vehicle_fuel_type" placeholder="e.g., Gasoline, Diesel, Electric">
                                     </div>
                                 </div>
                             </div>
@@ -135,6 +166,8 @@
         </div>
     </div>
 
+
+    
     <script>
         document.getElementById('newInspectionForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -144,11 +177,26 @@
                 title: formData.get('title'),
                 inspector_name: formData.get('inspector_name'),
                 inspector_id: formData.get('inspector_id'),
+                industry_info: {
+                    industry_type: 'automotive',
+                    facility_name: formData.get('facility_name') || 'Test Facility',
+                    location: formData.get('location') || 'Test Location',
+                    contact_person: formData.get('contact_person') || 'Test Contact',
+                    phone: formData.get('phone') || '123-456-7890',
+                    email: formData.get('email') || 'test@example.com'
+                },
+                industry_type: 'automotive',
                 vehicle_info: {
                     year: formData.get('vehicle_year'),
                     make: formData.get('vehicle_make'),
                     model: formData.get('vehicle_model'),
+                    engine: formData.get('vehicle_engine'),
                     vin: formData.get('vehicle_vin'),
+                    trim: formData.get('vehicle_trim'),
+                    body_style: formData.get('vehicle_body_style'),
+                    transmission: formData.get('vehicle_transmission'),
+                    drivetrain: formData.get('vehicle_drivetrain'),
+                    fuel_type: formData.get('vehicle_fuel_type'),
                     license_plate: formData.get('license_plate'),
                     mileage: formData.get('vehicle_mileage')
                 }

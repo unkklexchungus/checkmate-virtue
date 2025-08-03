@@ -1,5 +1,78 @@
 # Changelog
 
+## [1.0.2] - 2024-12-19
+
+### 🚀 New Features
+- **Vehicle Data Module**: Complete VIN decoding system for automotive inspections
+  - New `/modules/vehicle_data/` module with comprehensive vehicle information handling
+  - NHTSA VIN decoder API integration with offline fallback
+  - Auto-population of vehicle fields (year, make, model, trim, engine, transmission, etc.)
+  - Real-time VIN decoding with user feedback and error handling
+  - Static VIN data for offline operation with sample vehicles
+
+### 📁 New Files Added
+- `modules/vehicle_data/__init__.py` - Module initialization
+- `modules/vehicle_data/models.py` - VehicleInfo Pydantic model
+- `modules/vehicle_data/vin_decoder.py` - VIN parsing and field mapping
+- `modules/vehicle_data/service.py` - Async VIN decoding service
+- `modules/vehicle_data/routes.py` - Vehicle data API endpoints
+- `modules/vehicle_data/static_vin_data.json` - Static VIN data for offline use
+
+### 🔧 Technical Improvements
+- **Enhanced Vehicle Information**: Extended VehicleInfo model with comprehensive fields
+  - Added trim, body_style, engine_displacement, transmission_type, drivetrain, fuel_type
+  - Added country_of_origin, plant_code, serial_number for complete vehicle data
+- **API Integration**: New `/vehicle/decode/{vin}` endpoint for VIN decoding
+- **Frontend Integration**: Auto-population of vehicle fields in inspection forms
+- **Offline Support**: Static VIN data with sample vehicles for testing
+- **Error Handling**: Comprehensive error handling for API failures and invalid VINs
+
+### 🎨 UI/UX Enhancements
+- **VIN Decoder Interface**: Added search button and status indicators
+- **Auto-fill Functionality**: Vehicle fields automatically populate when VIN is decoded
+- **Real-time Feedback**: Loading states and success/error messages
+- **Debounced Input**: Auto-decode VIN after user stops typing (1-second delay)
+
+### 📦 Dependencies
+- Added `httpx==0.25.2` for async HTTP requests to NHTSA API
+
+### 🔄 Integration
+- **Inspection Creation**: Enhanced inspection creation to use decoded vehicle data
+- **Automotive Industry**: Special handling for automotive inspections with VIN decoding
+- **Backward Compatibility**: All existing functionality preserved
+
+## [1.0.1] - 2024-12-19
+
+### Removed
+- **Complete VIN Decoder Integration**: Removed all VIN decoding functionality including:
+  - `vin_decoder.py` - Core VIN decoder service
+  - `vin_routes.py` - VIN API routes
+  - `vehicle_data.py` - Vehicle data management module
+  - `vehicle_routes.py` - Vehicle API routes
+  - `static/js/vin_decoder.js` - Frontend VIN decoder functionality
+  - `static/css/vin_decoder.css` - VIN decoder styling
+  - `test_vin_decoder.py` - VIN decoder unit tests
+  - `test_vin_simple.py` - Simple VIN validation script
+  - `VIN_DECODER_README.md` - VIN decoder documentation
+  - `VIN_INTEGRATION_SUMMARY.md` - VIN integration summary
+  - `VEHICLE_DATA_MODULE_README.md` - Vehicle data module documentation
+  - `data/vin_cache.json` - VIN cache storage
+  - `data/vehicles.json` - Vehicle data storage
+  - `templates/test_vin_frontend.html` - VIN test frontend
+
+### Changed
+- **Simplified Vehicle Information**: Vehicle info is now manually entered without auto-fill
+- **Removed VIN Auto-fill**: Removed VIN decoder integration from forms
+- **Updated Templates**: Removed VIN confidence, source, and error displays
+- **Updated App Description**: Changed from "Vehicle Inspection System" to "Multi-Industry Inspection System"
+
+### Technical Changes
+- Removed VIN router imports and inclusions from `main.py`
+- Simplified vehicle info processing in inspection creation
+- Removed VIN decoder metadata fields from VehicleInfo model
+- Removed VIN auto-fill buttons and functionality from templates
+- Removed VIN decoder CSS and JS includes from templates
+
 ## [Unreleased] - Invoice View Fixes and Improvements
 
 ### 🐛 Fixed

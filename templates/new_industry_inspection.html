@@ -138,7 +138,19 @@
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <label for="vin" class="form-label">VIN</label>
-                        <input type="text" class="form-control" id="vin" name="vin">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="vin" name="vin" 
+                                   placeholder="Enter 17-character VIN" maxlength="17" value="1HGBH41JXMN109186">
+                            <button type="button" class="btn btn-outline-secondary" id="decodeVinBtn" 
+                                    onclick="decodeVIN()">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div id="vinStatus" class="mt-2"></div>
+                        <small class="text-muted">Try VIN: 1HGBH41JXMN109186 (1991 Honda Accord)</small>
+                        <button type="button" class="btn btn-sm btn-info mt-2" onclick="testAutoDecode()">
+                            <i class="fas fa-magic me-1"></i>Auto-Decode Test
+                        </button>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="license_plate" class="form-label">License Plate</label>
@@ -147,6 +159,36 @@
                     <div class="col-md-4 mb-3">
                         <label for="mileage" class="form-label">Mileage</label>
                         <input type="text" class="form-control" id="mileage" name="mileage">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="engine" class="form-label">Engine (e.g., 2.0L, 3.5L)</label>
+                        <input type="text" class="form-control" id="engine" name="engine" placeholder="Engine size in liters">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="trim" class="form-label">Trim Level</label>
+                        <input type="text" class="form-control" id="trim" name="trim" placeholder="e.g., LT, SE, Sport">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="body_style" class="form-label">Body Style</label>
+                        <input type="text" class="form-control" id="body_style" name="body_style" placeholder="e.g., Sedan, SUV, Truck">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="transmission" class="form-label">Transmission</label>
+                        <input type="text" class="form-control" id="transmission" name="transmission" placeholder="e.g., Automatic, Manual">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="drivetrain" class="form-label">Drivetrain</label>
+                        <input type="text" class="form-control" id="drivetrain" name="drivetrain" placeholder="e.g., FWD, RWD, AWD">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="fuel_type" class="form-label">Fuel Type</label>
+                        <input type="text" class="form-control" id="fuel_type" name="fuel_type" placeholder="e.g., Gasoline, Diesel, Electric">
                     </div>
                 </div>
             </div>
@@ -186,6 +228,117 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // VIN Decoding Function
+        async function decodeVIN() {
+            const vinInput = document.getElementById('vin');
+            const vinStatus = document.getElementById('vinStatus');
+            const decodeBtn = document.getElementById('decodeVinBtn');
+            
+            const vin = vinInput.value.trim();
+            
+            if (!vin) {
+                vinStatus.innerHTML = '<div class="alert alert-warning">Please enter a VIN to decode.</div>';
+                return;
+            }
+            
+            if (vin.length < 10) {
+                vinStatus.innerHTML = '<div class="alert alert-warning">VIN must be at least 10 characters long.</div>';
+                return;
+            }
+            
+            // Show loading state
+            decodeBtn.disabled = true;
+            decodeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            vinStatus.innerHTML = '<div class="alert alert-info">Decoding VIN...</div>';
+            
+            try {
+                const response = await fetch(`/vehicle/decode/${vin}`);
+                const vehicleData = await response.json();
+                
+                if (response.ok && vehicleData) {
+                    console.log('Vehicle data received:', vehicleData);
+                    
+                    // Auto-populate fields with decoded data
+                    const fields = [
+                        { api: 'year', element: 'year' },
+                        { api: 'make', element: 'make' },
+                        { api: 'model', element: 'model' },
+                        { api: 'trim', element: 'trim' },
+                        { api: 'engine_displacement', element: 'engine', suffix: 'L' },
+                        { api: 'transmission_type', element: 'transmission' },
+                        { api: 'body_style', element: 'body_style' },
+                        { api: 'drivetrain', element: 'drivetrain' },
+                        { api: 'fuel_type', element: 'fuel_type' }
+                    ];
+                    
+                    fields.forEach(field => {
+                        const element = document.getElementById(field.element);
+                        console.log(`Checking field: ${field.element}, element found: ${!!element}, data: ${vehicleData[field.api]}`);
+                        if (element && vehicleData[field.api]) {
+                            const value = vehicleData[field.api] + (field.suffix || '');
+                            element.value = value;
+                            console.log(`Set ${field.element} to: ${value}`);
+                        } else if (!element) {
+                            console.warn(`Element not found: ${field.element}`);
+                        } else {
+                            console.log(`No data for ${field.api}: ${vehicleData[field.api]}`);
+                        }
+                    });
+                    
+                    vinStatus.innerHTML = '<div class="alert alert-success">Vehicle information loaded successfully!</div>';
+                } else {
+                    vinStatus.innerHTML = '<div class="alert alert-warning">VIN not found or invalid. Please check the VIN and try again.</div>';
+                }
+            } catch (error) {
+                console.error('VIN decoding error:', error);
+                vinStatus.innerHTML = '<div class="alert alert-danger">Error decoding VIN. Please try again.</div>';
+            } finally {
+                // Reset button state
+                decodeBtn.disabled = false;
+                decodeBtn.innerHTML = '<i class="fas fa-search"></i>';
+            }
+        }
+        
+        // Auto-decode VIN when user finishes typing (with debounce)
+        let vinDecodeTimeout;
+        
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const vinInput = document.getElementById('vin');
+            if (vinInput) {
+                console.log('VIN input element found, adding event listener');
+                vinInput.addEventListener('input', function() {
+                    console.log('VIN input event triggered');
+                    clearTimeout(vinDecodeTimeout);
+                    const vin = this.value.trim();
+                    console.log('VIN length:', vin.length, 'VIN value:', vin);
+                    
+                    if (vin.length >= 17) {
+                        console.log('VIN length >= 17, setting timeout for auto-decode');
+                        vinDecodeTimeout = setTimeout(() => {
+                            console.log('Auto-decoding VIN:', vin);
+                            decodeVIN();
+                        }, 1000); // Wait 1 second after user stops typing
+                    }
+                });
+            } else {
+                console.warn('VIN input element not found');
+            }
+        });
+        
+        // Test function for auto-decoding
+        function testAutoDecode() {
+            console.log('Testing auto-decode...');
+            const vinInput = document.getElementById('vin');
+            if (vinInput) {
+                vinInput.value = '1HGBH41JXMN109186';
+                console.log('Set VIN to test value');
+                setTimeout(() => {
+                    decodeVIN();
+                }, 500);
+            }
+        }
+        
         document.getElementById('inspectionForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -218,7 +371,13 @@
                 model: formData.get('model'),
                 vin: formData.get('vin'),
                 license_plate: formData.get('license_plate'),
-                mileage: formData.get('mileage')
+                mileage: formData.get('mileage'),
+                engine: formData.get('engine'),
+                trim: formData.get('trim'),
+                body_style: formData.get('body_style'),
+                transmission: formData.get('transmission'),
+                drivetrain: formData.get('drivetrain'),
+                fuel_type: formData.get('fuel_type')
             };
             {% endif %}
 
