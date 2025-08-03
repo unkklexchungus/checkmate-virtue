@@ -1,16 +1,36 @@
-# CheckMate Virtue - Professional Vehicle Inspection System
+# CheckMate Virtue - Multi-Industry Professional Inspection System
 
-A modern, Pythonic FastAPI-based web application for professional vehicle inspections.
+A modern, Pythonic FastAPI-based web application for professional inspections across multiple industries, featuring a guided inspection flow with comprehensive vehicle data integration.
 
 ## 🚀 Features
 
-- **Professional Vehicle Inspections**: Complete inspection workflow with categories and items
-- **Photo Upload**: Support for uploading inspection photos with validation
-- **Report Generation**: Automatic report generation with statistics
-- **Modern Web Interface**: Clean, responsive HTML templates
-- **RESTful API**: Full API for programmatic access
-- **Data Validation**: Comprehensive input validation using Pydantic
-- **Error Handling**: Robust error handling with proper HTTP status codes
+### Guided Inspection System
+- **Three-Step Guided Flow**: Under the Hood → Wheels Off → Underbody
+- **Dynamic Template System**: JSON-based configuration for inspection items
+- **Three-Color Status System**: Pass (✅), Recommended (⚠️), Required (❌)
+- **Real-time Progress Tracking**: Visual progress bar with completion statistics
+- **Photo Documentation**: Upload photos for each inspection item
+- **Comprehensive Notes**: Detailed notes field for each item
+- **VIN Auto-fill**: Automatic vehicle data population from VIN input
+
+### Multi-Industry Support
+- **Automotive**: Vehicle inspections with VIN decoding
+- **Construction**: Site safety and structural integrity
+- **Healthcare**: Medical equipment and facility safety
+- **Manufacturing**: Equipment and quality control
+- **Food Safety**: Restaurant and kitchen hygiene
+- **Real Estate**: Property condition and maintenance
+- **IT & Data Centers**: Infrastructure and security
+- **Environmental**: Compliance and waste management
+
+### Technical Features
+- **Modular Architecture**: Clean separation with dedicated modules
+- **API-First Design**: RESTful endpoints for all operations
+- **Modern Web Interface**: Bootstrap 5 with responsive design
+- **Data Persistence**: JSON-based storage with backup
+- **PDF Report Generation**: Professional documentation export
+- **Photo Management**: Secure file upload with validation
+- **Vehicle Data Integration**: Comprehensive VIN decoding system
 
 ## 🏗️ Architecture
 
@@ -26,21 +46,40 @@ The application follows modern Python best practices:
 
 ```
 Lexicon-Re/
-├── main.py              # Main FastAPI application
-├── config.py            # Configuration settings
-├── requirements.txt     # Python dependencies
-├── README.md           # This file
-├── test_utils.py       # Utility function tests
-├── data/               # Data storage
-│   └── inspections.json
-├── static/             # Static files
-│   └── uploads/        # Uploaded photos
-├── templates/          # HTML templates
-│   ├── index.html
-│   ├── inspections.html
-│   ├── new_inspection.html
-│   └── view_inspection.html
-└── CheckMateVirtue/    # Original APK assets
+├── main.py                    # Main FastAPI application
+├── config.py                  # Configuration settings
+├── requirements.txt           # Python dependencies
+├── README.md                 # This file
+├── CHANGELOG.md              # Version history and changes
+├── data/                     # Data storage
+│   ├── inspections.json      # Legacy inspections
+│   ├── invoices.json         # Invoice data
+│   └── clients.json          # Client information
+├── static/                   # Static files
+│   ├── uploads/              # Uploaded photos
+│   ├── invoices/             # Invoice files
+│   ├── css/                  # Stylesheets
+│   └── js/                   # JavaScript files
+├── templates/                # HTML templates
+│   ├── index.html            # Home page
+│   ├── inspection_form.html  # Guided inspection form
+│   ├── inspection_list.html  # Inspection list view
+│   ├── industries.html       # Industry selection
+│   └── invoices/             # Invoice templates
+├── modules/                  # Modular components
+│   ├── inspection/           # Guided inspection module
+│   │   ├── __init__.py
+│   │   ├── models.py         # Pydantic models
+│   │   ├── service.py        # Business logic
+│   │   ├── routes.py         # API endpoints
+│   │   └── templates.json    # Dynamic configuration
+│   └── vehicle_data/         # Vehicle data module
+│       ├── __init__.py
+│       ├── models.py         # Vehicle models
+│       ├── service.py        # VIN decoding service
+│       ├── routes.py         # Vehicle API endpoints
+│       └── vin_decoder.py    # VIN parsing logic
+└── CheckMateVirtue/          # Original APK assets
     └── assets/
         └── basic_inspection.json
 ```
@@ -83,6 +122,39 @@ All configuration settings are centralized in `config.py`:
 - **CORS Settings**: Cross-origin resource sharing
 - **Upload Settings**: File size limits, allowed extensions
 - **Validation Settings**: Input validation rules
+
+## 🔍 Guided Inspection System
+
+The new guided inspection system provides a structured, step-by-step approach to vehicle inspections:
+
+### Three-Step Process
+1. **Under the Hood**: Engine fluids, filters, belts, and electrical systems
+2. **Wheels Off**: Brake systems, suspension components, and wheel assemblies  
+3. **Underbody**: Leaks, exhaust systems, and structural integrity
+
+### Key Features
+- **Dynamic Templates**: Inspection items are loaded from JSON configuration
+- **Status Tracking**: Three-color system (Pass/Recommended/Required)
+- **Photo Documentation**: Upload photos for each inspection item
+- **Progress Tracking**: Real-time completion statistics
+- **VIN Integration**: Automatic vehicle data population
+- **Comprehensive Reporting**: Detailed inspection reports with statistics
+
+### Usage
+1. Navigate to `/inspection/form` to start a new guided inspection
+2. Enter VIN for automatic vehicle data population
+3. Complete each step with checkboxes and status selections
+4. Add photos and notes as needed
+5. Save inspection and view results at `/inspection/list`
+
+### API Endpoints
+- `GET /inspection/template` - Get inspection template
+- `GET /inspection/form` - Render inspection form
+- `GET /inspection/list` - View inspection list
+- `POST /inspection/` - Create new inspection
+- `GET /inspection/{id}` - Get specific inspection
+- `PUT /inspection/{id}` - Update inspection
+- `POST /inspection/{id}/photos` - Upload photos
 
 ## 🔐 OAuth Authentication
 

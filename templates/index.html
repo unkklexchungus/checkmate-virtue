@@ -33,7 +33,9 @@
                         <i class="fas fa-user me-1"></i>
                         {{ user.name }}
                     </span>
-                    <a class="nav-link" href="/inspections">Inspections</a>
+                    <a class="nav-link" href="/inspection/form">New Inspection</a>
+                    <a class="nav-link" href="/inspection/list">Inspection List</a>
+                    <a class="nav-link" href="/inspections">Legacy Inspections</a>
                     <a class="nav-link" href="/invoices">Invoices</a>
                     <a class="nav-link" href="/industries">Industries</a>
                     <a class="nav-link" href="#" onclick="alert("OAuth disabled for demo")">Logout</a>
@@ -53,9 +55,9 @@
                     <i class="fas fa-industry me-2"></i>
                     Browse Industries
                 </a>
-                <a href="/inspections" class="btn btn-outline-light btn-lg">
-                    <i class="fas fa-list me-2"></i>
-                    View Inspections
+                <a href="/inspection/form" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-clipboard-check me-2"></i>
+                    Start Inspection
                 </a>
             </div>
         </div>

@@ -52,6 +52,7 @@ async def decode_vin(vin: str) -> VehicleInfo:
     
     # Try NHTSA API as fallback
     try:
+        print(f"Trying NHTSA API for VIN {vin}")
         async with httpx.AsyncClient(timeout=10.0) as client:
             response = await client.get(NHTSA_API.format(vin=vin))
             response.raise_for_status()
@@ -59,12 +60,16 @@ async def decode_vin(vin: str) -> VehicleInfo:
             
             # Check if API returned valid data
             if vin_data.get("Results") and len(vin_data["Results"]) > 0:
+                print(f"NHTSA API returned data for VIN {vin}")
                 return parse_vin_response(vin, vin_data)
+            else:
+                print(f"NHTSA API returned no data for VIN {vin}")
                 
     except Exception as e:
         print(f"NHTSA API failed for VIN {vin}: {e}")
     
     # Return minimal vehicle info with just the VIN
+    print(f"Returning minimal vehicle info for VIN {vin}")
     return VehicleInfo(vin=vin)
 
 def create_static_vin_data():

@@ -29,6 +29,7 @@ from config import *
 from auth import setup_auth_middleware, get_user_from_session
 from invoice_routes import router as invoice_router
 from modules.vehicle_data.routes import router as vehicle_router
+from modules.inspection.routes import router as inspection_router
 
 
 
@@ -344,6 +345,9 @@ app.include_router(invoice_router)
 # Include vehicle data routes
 app.include_router(vehicle_router)
 
+# Include inspection routes
+app.include_router(inspection_router)
+
 
 
 
@@ -397,19 +401,13 @@ async def get_inspection_template() -> Dict[str, Any]:
 
 @app.get("/inspections", response_class=HTMLResponse)
 async def list_inspections(request: Request) -> HTMLResponse:
-    """List all inspections."""
-    inspections = load_json_file(INSPECTIONS_FILE, [])
-    user = get_user_from_session(request)
-    return templates.TemplateResponse("inspections.html", {
-        "request": request,
-        "user": user,
-        "inspections": inspections
-    })
+    """List all inspections - redirect to new guided inspection list."""
+    return templates.TemplateResponse("redirect_to_guided_inspections.html", {"request": request})
 
 @app.get("/inspections/new", response_class=HTMLResponse)
 async def new_inspection(request: Request) -> HTMLResponse:
-    """New inspection form (redirect to industries)."""
-    return templates.TemplateResponse("redirect_to_industries.html", {"request": request})
+    """New inspection form - redirect to guided inspection form."""
+    return templates.TemplateResponse("redirect_to_guided_inspection.html", {"request": request})
 
 @app.post("/api/inspections")
 async def create_inspection(inspection: InspectionRequest) -> Dict[str, str]:

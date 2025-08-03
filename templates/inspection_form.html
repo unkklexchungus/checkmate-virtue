@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guided Inspection - CheckMate Virtue</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .status-pass { color: #28a745; }
+        .status-recommended { color: #ffc107; }
+        .status-required { color: #dc3545; }
+        .step-header { background-color: #f8f9fa; }
+        .subcategory-header { background-color: #e9ecef; }
+        .item-row { border-bottom: 1px solid #dee2e6; }
+        .photo-preview { max-width: 150px; max-height: 150px; }
+        .progress-bar { height: 8px; }
+        .vehicle-info-card { 
+            background-color: #f8f9fa; 
+            border: 1px solid #dee2e6; 
+            border-radius: 0.375rem; 
+            padding: 1rem; 
+        }
+        .vehicle-info-item { 
+            margin-bottom: 0.5rem; 
+            font-size: 0.875rem; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar with Progress -->
+            <div class="col-md-3 bg-light p-3">
+                <h4 class="mb-4">
+                    <i class="fas fa-clipboard-check"></i>
+                    Guided Inspection
+                </h4>
+                
+                <!-- VIN Input -->
+                <div class="mb-4">
+                    <label for="vin" class="form-label">VIN Number</label>
+                    <input type="text" id="vin" class="form-control" placeholder="Enter VIN for auto-fill" value="1HGBH41JXMN109186">
+                    <div class="mt-2">
+                        <button type="button" id="decode-vin" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-search"></i> Decode VIN
+                        </button>
+                        <button type="button" id="test-vin" class="btn btn-sm btn-outline-secondary ms-1">
+                            <i class="fas fa-flask"></i> Test
+                        </button>
+                    </div>
+                    <div class="mt-2">
+                        <label for="test-vin-select" class="form-label small">Test VINs:</label>
+                        <select id="test-vin-select" class="form-select form-select-sm">
+                            <option value="">Select a test VIN...</option>
+                            <option value="1HGBH41JXMN109186">1991 Honda Accord DX</option>
+                            <option value="1HGBH41JXMN109187">1991 Honda Accord LX</option>
+                            <option value="3CZRU6H33MM123456">2021 Honda Civic Sport</option>
+                            <option value="3CZRE38588G701073">2016 Honda Civic EX</option>
+                            <option value="1FADP3F25FL123456">2015 Ford Focus SE</option>
+                            <option value="1FADP3F25FL123457">2015 Ford Focus Titanium</option>
+                            <option value="5NPE34AF4FH123456">2015 Hyundai Sonata Sport</option>
+                            <option value="5NPE24AF7FH139757">2015 Hyundai Elantra GLS</option>
+                            <option value="WBA3B5C50FD123456">2015 BMW 3 Series 328i</option>
+                            <option value="WBA3B5C50FD123457">2015 BMW 3 Series 335i</option>
+                            <option value="JYARM06E9GA005809">2016 Mazda Mazda3 i Touring</option>
+                            <option value="1G1ZT51806F123456">2006 Chevrolet Corvette Z06</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Vehicle Info Display -->
+                <div id="vehicle-info" class="mb-4 vehicle-info-card" style="display: none;">
+                    <h6><i class="fas fa-car"></i> Vehicle Information</h6>
+                    <div id="vehicle-details" class="small text-muted"></div>
+                </div>
+
+                <!-- Progress -->
+                <div class="mb-4">
+                    <h6>Progress</h6>
+                    <div class="progress mb-2">
+                        <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <small id="progress-text">0% Complete</small>
+                </div>
+
+                <!-- Steps Navigation -->
+                <div class="mb-4">
+                    <h6>Steps</h6>
+                    <div id="steps-nav"></div>
+                </div>
+
+                <!-- Save Button -->
+                <div class="mb-4">
+                    <button type="button" id="save-inspection" class="btn btn-success w-100">
+                        <i class="fas fa-save"></i> Save Inspection
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 p-4">
+                <div id="inspection-content">
+                    <!-- Content will be dynamically loaded -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Upload Modal -->
+    <div class="modal fade" id="photoModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Upload Photo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="photo-form">
+                        <div class="mb-3">
+                            <label for="photo-file" class="form-label">Select Photo</label>
+                            <input type="file" id="photo-file" class="form-control" accept="image/*">
+                        </div>
+                        <div id="photo-preview" class="text-center" style="display: none;">
+                            <img id="preview-img" class="img-fluid" style="max-height: 200px;">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="upload-photo" class="btn btn-primary">Upload</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let inspectionTemplate = {{ template | tojson }};
+        let currentStep = 0;
+        let inspectionData = {
+            vin: '',
+            vehicle_id: null,
+            items: []
+        };
+
+        // Initialize the inspection form
+        document.addEventListener('DOMContentLoaded', function() {
+            loadInspectionTemplate();
+            setupEventListeners();
+            
+            // Auto-decode VIN on page load for testing
+            setTimeout(() => {
+                const vin = document.getElementById('vin').value.trim();
+                if (vin && vin.length >= 17) {
+                    decodeVIN();
+                }
+            }, 2000);
+        });
+
+        function loadInspectionTemplate() {
+            const content = document.getElementById('inspection-content');
+            const stepsNav = document.getElementById('steps-nav');
+            
+            content.innerHTML = '';
+            stepsNav.innerHTML = '';
+            
+            inspectionTemplate.steps.forEach((step, stepIndex) => {
+                // Create step navigation
+                const stepNav = document.createElement('div');
+                stepNav.className = 'mb-2';
+                stepNav.innerHTML = `
+                    <button class="btn btn-outline-primary btn-sm w-100 text-start" 
+                            onclick="showStep(${stepIndex})">
+                        <i class="fas fa-${getStepIcon(step.name)}"></i>
+                        ${step.name}
+                    </button>
+                `;
+                stepsNav.appendChild(stepNav);
+                
+                // Create step content
+                const stepContent = document.createElement('div');
+                stepContent.id = `step-${stepIndex}`;
+                stepContent.className = 'step-content';
+                stepContent.style.display = stepIndex === 0 ? 'block' : 'none';
+                
+                stepContent.innerHTML = `
+                    <div class="step-header p-3 mb-4 rounded">
+                        <h3><i class="fas fa-${getStepIcon(step.name)}"></i> ${step.name}</h3>
+                    </div>
+                    ${generateStepContent(step, stepIndex)}
+                `;
+                
+                content.appendChild(stepContent);
+            });
+            
+            showStep(0);
+        }
+
+        function getStepIcon(stepName) {
+            const icons = {
+                'Under the Hood': 'car',
+                'Wheels Off': 'cogs',
+                'Underbody': 'wrench'
+            };
+            return icons[stepName] || 'clipboard';
+        }
+
+        function generateStepContent(step, stepIndex) {
+            let html = '';
+            
+            step.subcategories.forEach((subcategory, subIndex) => {
+                html += `
+                    <div class="subcategory-header p-3 mb-3 rounded">
+                        <h5><i class="fas fa-folder"></i> ${subcategory.name}</h5>
+                    </div>
+                    <div class="table-responsive mb-4">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40%">Item</th>
+                                    <th style="width: 20%">Status</th>
+                                    <th style="width: 20%">Photo</th>
+                                    <th style="width: 20%">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                subcategory.items.forEach((item, itemIndex) => {
+                    const itemId = `${stepIndex}-${subIndex}-${itemIndex}`;
+                    html += `
+                        <tr class="item-row" data-step="${step.name}" data-subcategory="${subcategory.name}" data-item="${item}">
+                            <td>
+                                <label class="form-label">
+                                    ${item}
+                                </label>
+                            </td>
+                            <td>
+                                <select class="form-select form-select-sm status-select" id="status-${itemId}">
+                                    <option value="">Select Status</option>
+                                    <option value="pass" class="status-pass">✅ Pass</option>
+                                    <option value="recommended" class="status-recommended">⚠️ Recommended</option>
+                                    <option value="required" class="status-required">❌ Required</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-outline-secondary photo-btn" 
+                                        onclick="openPhotoModal('${step.name}', '${subcategory.name}', '${item}')">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                                <div id="photo-${itemId}" class="mt-1"></div>
+                            </td>
+                            <td>
+                                <textarea class="form-control form-control-sm notes-input" 
+                                          rows="2" placeholder="Notes..."></textarea>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            });
+            
+            return html;
+        }
+
+        function showStep(stepIndex) {
+            // Hide all steps
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            // Show selected step
+            const stepContent = document.getElementById(`step-${stepIndex}`);
+            if (stepContent) {
+                stepContent.style.display = 'block';
+                currentStep = stepIndex;
+            }
+            
+            // Update navigation
+            document.querySelectorAll('#steps-nav button').forEach((btn, index) => {
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline-primary');
+                if (index === stepIndex) {
+                    btn.classList.remove('btn-outline-primary');
+                    btn.classList.add('btn-primary');
+                }
+            });
+            
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const totalItems = document.querySelectorAll('.item-row').length;
+            const completedItems = document.querySelectorAll('.status-select').length;
+            const percentage = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+            
+            document.getElementById('progress-bar').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = `${percentage}% Complete`;
+        }
+
+        function setupEventListeners() {
+            // Status select change
+            document.addEventListener('change', function(e) {
+                if (e.target.classList.contains('status-select')) {
+                    updateProgress();
+                }
+            });
+
+            // VIN decode button
+            document.getElementById('decode-vin').addEventListener('click', decodeVIN);
+            
+            // Auto-decode VIN when user finishes typing (with debounce)
+            let vinDecodeTimeout;
+            document.getElementById('vin').addEventListener('input', function() {
+                clearTimeout(vinDecodeTimeout);
+                const vin = this.value.trim();
+                
+                if (vin.length >= 17) {
+                    vinDecodeTimeout = setTimeout(() => {
+                        decodeVIN();
+                    }, 1000); // Wait 1 second after user stops typing
+                }
+            });
+            
+            // Test VIN button
+            document.getElementById('test-vin').addEventListener('click', function() {
+                document.getElementById('vin').value = '1HGBH41JXMN109186';
+                decodeVIN();
+            });
+            
+            // Test VIN dropdown
+            document.getElementById('test-vin-select').addEventListener('change', function() {
+                const selectedVin = this.value;
+                if (selectedVin) {
+                    document.getElementById('vin').value = selectedVin;
+                    decodeVIN();
+                }
+            });
+
+            // Save inspection
+            document.getElementById('save-inspection').addEventListener('click', saveInspection);
+
+            // Photo upload
+            document.getElementById('upload-photo').addEventListener('click', uploadPhoto);
+            document.getElementById('photo-file').addEventListener('change', previewPhoto);
+        }
+
+        async function decodeVIN() {
+            const vin = document.getElementById('vin').value.trim();
+            if (!vin) {
+                alert('Please enter a VIN number');
+                return;
+            }
+
+            const decodeBtn = document.getElementById('decode-vin');
+            const originalText = decodeBtn.innerHTML;
+            
+            // Show loading state
+            decodeBtn.disabled = true;
+            decodeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Decoding...';
+            
+            console.log('Decoding VIN:', vin);
+            
+            try {
+                const response = await fetch(`/vehicle/decode/${vin}`);
+                console.log('Response status:', response.status);
+                console.log('Response ok:', response.ok);
+                
+                if (response.ok) {
+                    const vehicleData = await response.json();
+                    console.log('Vehicle data received:', vehicleData);
+                    displayVehicleInfo(vehicleData);
+                    inspectionData.vin = vin;
+                } else {
+                    const errorData = await response.json();
+                    console.error('VIN decode failed:', errorData);
+                    alert(`Failed to decode VIN: ${errorData.detail || 'Unknown error'}`);
+                }
+            } catch (error) {
+                console.error('Error decoding VIN:', error);
+                alert('Error decoding VIN: ' + error.message);
+            } finally {
+                // Reset button state
+                decodeBtn.disabled = false;
+                decodeBtn.innerHTML = originalText;
+            }
+        }
+
+        function displayVehicleInfo(vehicleData) {
+            const vehicleInfo = document.getElementById('vehicle-info');
+            const vehicleDetails = document.getElementById('vehicle-details');
+            
+            console.log('Vehicle data received:', vehicleData);
+            
+            // Check if we have meaningful data beyond just the VIN
+            const hasData = vehicleData.year || vehicleData.make || vehicleData.model;
+            
+            if (!hasData) {
+                vehicleDetails.innerHTML = `
+                    <div class="alert alert-warning small">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        VIN not found in database. This may be a valid VIN but not in our test data.
+                    </div>
+                `;
+            } else {
+                vehicleDetails.innerHTML = `
+                    <div class="vehicle-info-item"><strong>Year:</strong> ${vehicleData.year || 'N/A'}</div>
+                    <div class="vehicle-info-item"><strong>Make:</strong> ${vehicleData.make || 'N/A'}</div>
+                    <div class="vehicle-info-item"><strong>Model:</strong> ${vehicleData.model || 'N/A'}</div>
+                    <div class="vehicle-info-item"><strong>Trim:</strong> ${vehicleData.trim || 'N/A'}</div>
+                    <div class="vehicle-info-item"><strong>Engine:</strong> ${vehicleData.engine_displacement ? vehicleData.engine_displacement + 'L' : 'N/A'}</div>
+                    <div class="vehicle-info-item"><strong>Transmission:</strong> ${vehicleData.transmission_type || 'N/A'}</div>
+                    <div class="vehicle-info-item"><strong>Body Style:</strong> ${vehicleData.body_style || 'N/A'}</div>
+                    <div class="vehicle-info-item"><strong>Drivetrain:</strong> ${vehicleData.drivetrain || 'N/A'}</div>
+                    <div class="vehicle-info-item"><strong>Fuel Type:</strong> ${vehicleData.fuel_type || 'N/A'}</div>
+                `;
+            }
+            
+            vehicleInfo.style.display = 'block';
+        }
+
+        function openPhotoModal(step, subcategory, item) {
+            currentPhotoItem = { step, subcategory, item };
+            document.getElementById('photoModal').classList.add('show');
+            document.getElementById('photoModal').style.display = 'block';
+        }
+
+        function previewPhoto() {
+            const file = document.getElementById('photo-file').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview-img').src = e.target.result;
+                    document.getElementById('photo-preview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function uploadPhoto() {
+            const file = document.getElementById('photo-file').files[0];
+            if (!file) {
+                alert('Please select a photo');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('step', currentPhotoItem.step);
+            formData.append('subcategory', currentPhotoItem.subcategory);
+            formData.append('item', currentPhotoItem.item);
+
+            try {
+                const response = await fetch('/inspection/photos', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    // Close modal and update UI
+                    document.getElementById('photoModal').classList.remove('show');
+                    document.getElementById('photoModal').style.display = 'none';
+                    alert('Photo uploaded successfully');
+                } else {
+                    alert('Failed to upload photo');
+                }
+            } catch (error) {
+                console.error('Error uploading photo:', error);
+                alert('Error uploading photo');
+            }
+        }
+
+        async function saveInspection() {
+            // Collect all inspection data
+            const items = [];
+            document.querySelectorAll('.item-row').forEach(row => {
+                const step = row.dataset.step;
+                const subcategory = row.dataset.subcategory;
+                const item = row.dataset.item;
+                const status = row.querySelector('.status-select').value;
+                const notes = row.querySelector('.notes-input').value;
+
+                items.push({
+                    step: step,
+                    subcategory: subcategory,
+                    item: item,
+                    status: status,
+                    notes: notes,
+                    photo_url: null // Will be updated when photos are uploaded
+                });
+            });
+
+            inspectionData.items = items;
+
+            try {
+                const response = await fetch('/inspection/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(inspectionData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert('Inspection saved successfully!');
+                    window.location.href = '/inspection/list';
+                } else {
+                    alert('Failed to save inspection');
+                }
+            } catch (error) {
+                console.error('Error saving inspection:', error);
+                alert('Error saving inspection');
+            }
+        }
+    </script>
+</body>
+</html> 
