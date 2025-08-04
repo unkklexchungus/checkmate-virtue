@@ -158,9 +158,9 @@
                             </small>
                         </div>
                         
-                                                       <div class="amount {% if invoice.status == 'paid' %}paid{% elif invoice.status == 'overdue' %}overdue{% endif %}">
-                                   ${{ "%.2f"|format(invoice.total|float) }}
-                               </div>
+                        <div class="amount {% if invoice.status == 'paid' %}paid{% elif invoice.status == 'overdue' %}overdue{% endif %}">
+                            ${{ "%.2f"|format(invoice.total|float) }}
+                        </div>
                         
                         {% if invoice.inspection_id %}
                         <div class="mb-2">
