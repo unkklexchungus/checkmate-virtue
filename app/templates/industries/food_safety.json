@@ -1,0 +1,59 @@
+{
+  "inspection_name": "Food Safety & Hygiene Inspection",
+  "description": "Comprehensive food safety and kitchen hygiene inspection checklist.",
+  "industry": "food_safety",
+  "inspection_points": {
+    "kitchen_hygiene": {
+      "description": "Kitchen cleanliness and hygiene standards",
+      "items": [
+        "Food preparation surfaces",
+        "Utensil cleanliness and storage",
+        "Hand washing facilities",
+        "Personal hygiene practices",
+        "Food storage conditions",
+        "Temperature monitoring systems",
+        "Cross-contamination prevention",
+        "Waste disposal procedures"
+      ]
+    },
+    "food_safety": {
+      "description": "Food safety and handling procedures",
+      "items": [
+        "Food temperature monitoring",
+        "Food storage and labeling",
+        "Expiration date management",
+        "Allergen control procedures",
+        "Food preparation methods",
+        "Serving and display safety",
+        "Leftover food handling",
+        "Food recall procedures"
+      ]
+    },
+    "equipment_maintenance": {
+      "description": "Kitchen equipment and facility maintenance",
+      "items": [
+        "Refrigeration systems",
+        "Cooking equipment safety",
+        "Ventilation and exhaust systems",
+        "Dishwashing equipment",
+        "Water quality and supply",
+        "Pest control measures",
+        "Fire safety equipment",
+        "Emergency procedures"
+      ]
+    },
+    "compliance_documentation": {
+      "description": "Regulatory compliance and documentation",
+      "items": [
+        "Health department permits",
+        "Food handler certifications",
+        "HACCP plan implementation",
+        "Inspection records maintenance",
+        "Allergen information display",
+        "Nutritional information accuracy",
+        "Supplier verification records",
+        "Training documentation"
+      ]
+    }
+  }
+}

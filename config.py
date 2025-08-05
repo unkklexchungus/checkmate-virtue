@@ -89,7 +89,9 @@ PDF_TEMP_DIR = Path("/tmp") if IS_PRODUCTION else BASE_DIR / "temp"
 PDF_TEMP_DIR.mkdir(exist_ok=True)
 
 # Session settings
-SESSION_SECRET_KEY = os.getenv("SESSION_SECRET_KEY", "your-secret-key-change-in-production")
+SESSION_SECRET_KEY = os.getenv(
+    "SESSION_SECRET_KEY", "your-secret-key-change-in-production"
+)
 SESSION_COOKIE_SECURE = IS_PRODUCTION
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
@@ -107,4 +109,4 @@ METRICS_ENDPOINT = "/metrics"
 
 # Development settings
 DEBUG = not IS_PRODUCTION
-RELOAD = not IS_PRODUCTION 
+RELOAD = not IS_PRODUCTION

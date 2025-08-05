@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspections - CheckMate Virtue</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .inspection-card {
+            transition: transform 0.2s ease;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .inspection-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .status-badge {
+            font-size: 0.8rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        .industry-badge {
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-clipboard-check me-2"></i>
+                CheckMate Virtue
+            </a>
+            <div class="navbar-nav ms-auto">
+                {% if user %}
+                    <span class="navbar-text me-3">
+                        <i class="fas fa-user me-1"></i>
+                        {{ user.name }}
+                    </span>
+                {% endif %}
+                <a class="nav-link active" href="/inspections">Inspections</a>
+                <a class="nav-link" href="/industries">Industries</a>
+                {% if user %}
+                    <a class="nav-link" href="#" onclick="alert("OAuth disabled for demo")">Logout</a>
+                {% else %}
+                    <a class="nav-link" href="/login">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>
+                <i class="fas fa-list me-2"></i>
+                All Inspections
+            </h2>
+            <a href="/industries" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>
+                New Inspection
+            </a>
+        </div>
+
+        {% if inspections %}
+            <div class="row">
+                {% for inspection in inspections %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card inspection-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">{{ inspection.title }}</h6>
+                            <div>
+                                <span class="badge bg-{{ 'success' if inspection.status == 'completed' else 'warning' }} status-badge me-1">
+                                    {{ inspection.status.title() }}
+                                </span>
+                                <span class="badge bg-info industry-badge">
+                                    {{ inspection.industry_type.replace('_', ' ').title() if inspection.industry_type else 'Unknown' }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    {{ inspection.date.split('T')[0] if inspection.date else 'N/A' }}
+                                </small>
+                            </div>
+                            
+                            {% if inspection.industry_info %}
+                            <div class="mb-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-industry me-1"></i>
+                                    {% if inspection.industry_info.facility_name %}
+                                        {{ inspection.industry_info.facility_name }}
+                                    {% else %}
+                                        {{ inspection.industry_type.replace('_', ' ').title() if inspection.industry_type else 'Industry' }}
+                                    {% endif %}
+                                </small>
+                            </div>
+                            {% endif %}
+                            
+                            {% if inspection.vehicle_info %}
+                            <div class="mb-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-car me-1"></i>
+                                    {% if inspection.vehicle_info.year and inspection.vehicle_info.make and inspection.vehicle_info.model %}
+                                        {{ inspection.vehicle_info.year }} {{ inspection.vehicle_info.make }} {{ inspection.vehicle_info.model }}
+                                    {% else %}
+                                        Vehicle info not provided
+                                    {% endif %}
+                                </small>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="mb-3">
+                                <small class="text-muted">
+                                    <i class="fas fa-user me-1"></i>
+                                    {{ inspection.inspector_name }}
+                                </small>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <a href="/inspections/{{ inspection.id }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-eye me-1"></i>
+                                    View
+                                </a>
+                                <button class="btn btn-outline-success btn-sm" onclick="generateReport('{{ inspection.id }}')">
+                                    <i class="fas fa-file-pdf me-1"></i>
+                                    Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No inspections found</h4>
+                <p class="text-muted">Start your first inspection by selecting an industry.</p>
+                <a href="/industries" class="btn btn-primary">
+                    <i class="fas fa-industry me-2"></i>
+                    Browse Industries
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        async function generateReport(inspectionId) {
+            try {
+                const response = await fetch(`/api/inspections/${inspectionId}/report/pdf`);
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `inspection_report_${inspectionId}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                } else {
+                    alert('Error generating report');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error generating report');
+            }
+        }
+    </script>
+</body>
+</html>

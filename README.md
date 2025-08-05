@@ -1,337 +1,329 @@
-# CheckMate Virtue - Multi-Industry Professional Inspection System
+# CheckMate Virtue
 
-A modern, Pythonic FastAPI-based web application for professional inspections across multiple industries, featuring a guided inspection flow with comprehensive vehicle data integration.
+[![CI](https://github.com/your-org/checkmate-virtue/workflows/CI/badge.svg)](https://github.com/your-org/checkmate-virtue/actions)
+[![Deploy](https://github.com/your-org/checkmate-virtue/workflows/Deploy/badge.svg)](https://github.com/your-org/checkmate-virtue/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+
+> Professional Multi-Industry Inspection System
+
+CheckMate Virtue is a comprehensive web application for professional inspections across multiple industries including automotive, construction, healthcare, manufacturing, and more. Built with FastAPI and modern Python practices.
 
 ## 🚀 Features
 
-### Guided Inspection System
-- **Three-Step Guided Flow**: Under the Hood → Wheels Off → Underbody
-- **Dynamic Template System**: JSON-based configuration for inspection items
-- **Three-Color Status System**: Pass (✅), Recommended (⚠️), Required (❌)
-- **Real-time Progress Tracking**: Visual progress bar with completion statistics
-- **Photo Documentation**: Upload photos for each inspection item
-- **Comprehensive Notes**: Detailed notes field for each item
-- **VIN Auto-fill**: Automatic vehicle data population from VIN input
+- **Multi-Industry Support**: Automotive, Construction, Healthcare, Manufacturing, Real Estate, IT/Data Centers, Environmental, Food Safety
+- **VIN Decoding**: Advanced vehicle identification number decoding with comprehensive vehicle data
+- **Photo Management**: Upload and organize inspection photos
+- **PDF Reports**: Generate professional PDF inspection reports
+- **Invoice System**: Complete invoicing and client management
+- **RESTful API**: Modern API with automatic documentation
+- **Responsive UI**: Mobile-friendly web interface
+- **Docker Support**: Containerized deployment
+- **CI/CD Ready**: Automated testing and deployment
 
-### Multi-Industry Support
-- **Automotive**: Vehicle inspections with VIN decoding
-- **Construction**: Site safety and structural integrity
-- **Healthcare**: Medical equipment and facility safety
-- **Manufacturing**: Equipment and quality control
-- **Food Safety**: Restaurant and kitchen hygiene
-- **Real Estate**: Property condition and maintenance
-- **IT & Data Centers**: Infrastructure and security
-- **Environmental**: Compliance and waste management
+## 📋 Table of Contents
 
-### Technical Features
-- **Modular Architecture**: Clean separation with dedicated modules
-- **API-First Design**: RESTful endpoints for all operations
-- **Modern Web Interface**: Bootstrap 5 with responsive design
-- **Data Persistence**: JSON-based storage with backup
-- **PDF Report Generation**: Professional documentation export
-- **Photo Management**: Secure file upload with validation
-- **Vehicle Data Integration**: Comprehensive VIN decoding system
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [API Documentation](#api-documentation)
+- [Development](#development)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
 
-## 🏗️ Architecture
+## ⚡ Quick Start
 
-The application follows modern Python best practices:
+### Using Docker (Recommended)
 
-- **FastAPI**: Modern, fast web framework with automatic API documentation
-- **Pydantic**: Data validation and serialization
+```bash
+# Clone the repository
+git clone https://github.com/your-org/checkmate-virtue.git
+cd checkmate-virtue
+
+# Start the application
+docker-compose up --build
+
+# Access the application
+open http://localhost:8000
+```
+
+### Local Development
+
+```bash
+# Clone the repository
+git clone https://github.com/your-org/checkmate-virtue.git
+cd checkmate-virtue
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set up environment
+cp .env.example .env
+# Edit .env with your configuration
+
+# Run the application
+python -m app.main
+```
+
+## 🛠 Installation
+
+### Prerequisites
+
+- Python 3.9+
+- pip
+- Docker (optional, for containerized deployment)
+
+### Dependencies
+
+The application uses the following key dependencies:
+
+- **FastAPI**: Modern web framework for building APIs
+- **Pydantic**: Data validation and settings management
 - **Jinja2**: Template engine for HTML rendering
-- **Pathlib**: Modern path handling
-- **Type Hints**: Comprehensive type annotations for better code quality
+- **ReportLab**: PDF generation for reports
+- **Uvicorn**: ASGI server for running the application
 
-## 📁 Project Structure
+See [requirements.txt](requirements.txt) for the complete list.
 
-```
-Lexicon-Re/
-├── main.py                    # Main FastAPI application
-├── config.py                  # Configuration settings
-├── requirements.txt           # Python dependencies
-├── README.md                 # This file
-├── CHANGELOG.md              # Version history and changes
-├── data/                     # Data storage
-│   ├── inspections.json      # Legacy inspections
-│   ├── invoices.json         # Invoice data
-│   └── clients.json          # Client information
-├── static/                   # Static files
-│   ├── uploads/              # Uploaded photos
-│   ├── invoices/             # Invoice files
-│   ├── css/                  # Stylesheets
-│   └── js/                   # JavaScript files
-├── templates/                # HTML templates
-│   ├── index.html            # Home page
-│   ├── inspection_form.html  # Guided inspection form
-│   ├── inspection_list.html  # Inspection list view
-│   ├── industries.html       # Industry selection
-│   └── invoices/             # Invoice templates
-├── modules/                  # Modular components
-│   ├── inspection/           # Guided inspection module
-│   │   ├── __init__.py
-│   │   ├── models.py         # Pydantic models
-│   │   ├── service.py        # Business logic
-│   │   ├── routes.py         # API endpoints
-│   │   └── templates.json    # Dynamic configuration
-│   └── vehicle_data/         # Vehicle data module
-│       ├── __init__.py
-│       ├── models.py         # Vehicle models
-│       ├── service.py        # VIN decoding service
-│       ├── routes.py         # Vehicle API endpoints
-│       └── vin_decoder.py    # VIN parsing logic
-└── CheckMateVirtue/          # Original APK assets
-    └── assets/
-        └── basic_inspection.json
-```
-
-## 🛠️ Installation
-
-1. **Clone the repository**:
-   ```bash
-   git clone <repository-url>
-   cd Lexicon-Re
-   ```
-
-2. **Create virtual environment**:
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Run the application**:
-   ```bash
-   python main.py
-   ```
-
-5. **Access the application**:
-   - Web Interface: http://localhost:8000
-   - API Documentation: http://localhost:8000/docs
-
-## 🔧 Configuration
-
-All configuration settings are centralized in `config.py`:
-
-- **Application Settings**: Name, version, description
-- **Server Settings**: Host, port
-- **File Paths**: All file and directory paths
-- **CORS Settings**: Cross-origin resource sharing
-- **Upload Settings**: File size limits, allowed extensions
-- **Validation Settings**: Input validation rules
-
-## 🔍 Guided Inspection System
-
-The new guided inspection system provides a structured, step-by-step approach to vehicle inspections:
-
-### Three-Step Process
-1. **Under the Hood**: Engine fluids, filters, belts, and electrical systems
-2. **Wheels Off**: Brake systems, suspension components, and wheel assemblies  
-3. **Underbody**: Leaks, exhaust systems, and structural integrity
-
-### Key Features
-- **Dynamic Templates**: Inspection items are loaded from JSON configuration
-- **Status Tracking**: Three-color system (Pass/Recommended/Required)
-- **Photo Documentation**: Upload photos for each inspection item
-- **Progress Tracking**: Real-time completion statistics
-- **VIN Integration**: Automatic vehicle data population
-- **Comprehensive Reporting**: Detailed inspection reports with statistics
-
-### Usage
-1. Navigate to `/inspection/form` to start a new guided inspection
-2. Enter VIN for automatic vehicle data population
-3. Complete each step with checkboxes and status selections
-4. Add photos and notes as needed
-5. Save inspection and view results at `/inspection/list`
-
-### API Endpoints
-- `GET /inspection/template` - Get inspection template
-- `GET /inspection/form` - Render inspection form
-- `GET /inspection/list` - View inspection list
-- `POST /inspection/` - Create new inspection
-- `GET /inspection/{id}` - Get specific inspection
-- `PUT /inspection/{id}` - Update inspection
-- `POST /inspection/{id}/photos` - Upload photos
-
-## 🔐 OAuth Authentication
-
-The application supports OAuth authentication with Google and GitHub. To enable OAuth:
-
-### Google OAuth Setup
-
-1. Go to [Google Cloud Console](https://console.developers.google.com/)
-2. Create a new project or select existing one
-3. Enable Google+ API
-4. Go to Credentials → Create Credentials → OAuth 2.0 Client ID
-5. Set authorized redirect URI: `http://localhost:8000/auth/callback/google`
-6. Copy Client ID and Client Secret to your `.env` file
-
-### GitHub OAuth Setup
-
-1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
-2. Click "New OAuth App"
-3. Set Homepage URL: `http://localhost:8000`
-4. Set Authorization callback URL: `http://localhost:8000/auth/callback/github`
-5. Copy Client ID and Client Secret to your `.env` file
+## ⚙️ Configuration
 
 ### Environment Variables
 
-Create a `.env` file with the following variables:
+Create a `.env` file in the root directory:
 
-```env
-SECRET_KEY=your-secret-key-here
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-GITHUB_CLIENT_ID=your-github-client-id
-GITHUB_CLIENT_SECRET=your-github-client-secret
+```bash
+# Server Configuration
+PORT=8000
+HOST=0.0.0.0
+
+# Environment
+RAILWAY_ENVIRONMENT=development
+
+# Security
+SESSION_SECRET_KEY=your-secret-key-change-in-production
+
+# Database (for future expansion)
+DATABASE_URL=
+
+# Email (for future expansion)
+SMTP_HOST=
+SMTP_PORT=587
+SMTP_USERNAME=
+SMTP_PASSWORD=
+
+# File Storage
+STORAGE_TYPE=local
+CLOUD_STORAGE_URL=
 ```
 
-## 📋 API Endpoints
+### Configuration Files
 
-### Web Interface
-- `GET /` - Home page
-- `GET /inspections` - List all inspections
-- `GET /inspections/new` - New inspection form
-- `GET /inspections/{id}` - View specific inspection
+- `app/config.py`: Main application configuration
+- `config/dev/config.py`: Development-specific settings
+- `config/prod/config.py`: Production-specific settings
 
-### API Endpoints
-- `GET /api/inspection-template` - Get inspection template
-- `POST /api/inspections` - Create new inspection
-- `PUT /api/inspections/{id}` - Update inspection
-- `POST /api/inspections/{id}/photos` - Upload inspection photos
-- `GET /api/inspections/{id}/report` - Generate inspection report
+## 📚 API Documentation
 
-### OAuth Endpoints
-- `GET /login` - Login page
-- `GET /auth/google` - Google OAuth login
-- `GET /auth/github` - GitHub OAuth login
-- `GET /auth/callback/{provider}` - OAuth callback handler
-- `GET /auth/logout` - Logout user
-- `GET /auth/user` - Get current user info
+### Interactive Documentation
+
+- **Swagger UI**: `http://localhost:8000/docs`
+- **ReDoc**: `http://localhost:8000/redoc`
+
+### Key Endpoints
+
+#### Inspections
+```
+GET    /api/v1/inspections          # List all inspections
+POST   /api/v1/inspections          # Create new inspection
+GET    /api/v1/inspections/{id}     # Get inspection by ID
+PUT    /api/v1/inspections/{id}     # Update inspection
+POST   /api/v1/inspections/{id}/photos  # Upload photos
+POST   /api/v1/inspections/{id}/submit   # Submit inspection
+GET    /api/v1/inspections/{id}/report   # Generate report
+GET    /api/v1/inspections/{id}/report/pdf  # Generate PDF report
+```
+
+#### Vehicles
+```
+GET    /api/v1/vehicles/decode/{vin}  # Decode VIN
+GET    /api/v1/vehicles/test-vin      # VIN test page
+```
+
+#### Invoices
+```
+GET    /api/v1/invoices              # List all invoices
+POST   /api/v1/invoices              # Create new invoice
+GET    /api/v1/invoices/{id}         # Get invoice by ID
+PUT    /api/v1/invoices/{id}         # Update invoice
+GET    /api/v1/invoices/clients      # List all clients
+POST   /api/v1/invoices/clients      # Create new client
+```
+
+## 🏗 Development
+
+### Project Structure
+
+```
+CheckMate-Virtue/
+├── app/                    # Main application package
+│   ├── api/               # API routes and endpoints
+│   ├── models/            # Pydantic data models
+│   ├── services/          # Business logic services
+│   ├── utils/             # Utility functions
+│   ├── config.py          # Application configuration
+│   └── main.py            # Application entry point
+├── config/                # Environment-specific configs
+├── tests/                 # Test suite
+├── docs/                  # Documentation
+├── scripts/               # Utility scripts
+├── .github/              # CI/CD workflows
+├── Dockerfile            # Container configuration
+└── docker-compose.yml    # Local development setup
+```
+
+### Code Quality
+
+This project follows modern Python development practices:
+
+- **Black**: Code formatting
+- **isort**: Import sorting
+- **flake8**: Linting
+- **pytest**: Testing framework
+
+### Development Commands
+
+```bash
+# Format code
+black app/
+
+# Sort imports
+isort app/
+
+# Lint code
+flake8 app/
+
+# Run tests
+pytest
+
+# Run tests with coverage
+pytest --cov=app --cov-report=html
+
+# Install pre-commit hooks
+pre-commit install
+```
 
 ## 🧪 Testing
 
-Run the utility function tests:
+### Running Tests
 
 ```bash
-python3 test_utils.py
+# Run all tests
+pytest
+
+# Run specific test category
+pytest tests/unit/
+pytest tests/integration/
+
+# Run with coverage report
+pytest --cov=app --cov-report=xml --cov-report=html
+
+# Run with verbose output
+pytest -v
 ```
 
-## 🔍 Code Quality Improvements
+### Test Structure
 
-The codebase has been significantly improved with:
+- **Unit Tests**: Test individual functions and classes
+- **Integration Tests**: Test API endpoints and workflows
+- **Fixtures**: Reusable test data and setup
 
-### 1. **Better Organization**
-- Separated configuration into `config.py`
-- Centralized constants and settings
-- Clear separation of concerns
+## 🚀 Deployment
 
-### 2. **Enhanced Error Handling**
-- Proper HTTP status codes
-- Comprehensive exception handling
-- User-friendly error messages
+### Railway Deployment
 
-### 3. **Improved Type Safety**
-- Comprehensive type hints
-- Pydantic models for data validation
-- Better IDE support and code completion
+1. Connect your GitHub repository to Railway
+2. Set environment variables in Railway dashboard
+3. Deploy automatically on push to main branch
 
-### 4. **File Operations**
-- Centralized file handling utilities
-- Proper encoding handling
-- Error recovery mechanisms
+### Docker Deployment
 
-### 5. **Data Validation**
-- Input validation with Pydantic
-- File type validation for uploads
-- Data structure validation
+```bash
+# Build the Docker image
+docker build -t checkmate-virtue .
 
-### 6. **Pythonic Practices**
-- Pathlib for path handling
-- Context managers for file operations
-- List comprehensions and generator expressions
-- Modern Python syntax
+# Run the container
+docker run -p 8000:8000 checkmate-virtue
+```
 
-## 🚀 Running the Application
+### Environment Variables for Production
 
-1. **Start the server**:
-   ```bash
-   python main.py
-   ```
-
-2. **Access the web interface**:
-   - Open http://localhost:8000 in your browser
-
-3. **API Documentation**:
-   - Visit http://localhost:8000/docs for interactive API documentation
-
-## 📊 Data Models
-
-### VehicleInfo
-- `year`: Vehicle year
-- `make`: Vehicle make
-- `model`: Vehicle model
-- `vin`: Vehicle identification number
-- `license_plate`: License plate number
-- `mileage`: Vehicle mileage
-
-### InspectionRequest
-- `title`: Inspection title (1-200 characters)
-- `vehicle_info`: Vehicle information
-- `inspector_name`: Inspector name (1-100 characters)
-- `inspector_id`: Inspector ID
-
-### InspectionData
-- `id`: Unique inspection ID
-- `title`: Inspection title
-- `vehicle_info`: Vehicle information
-- `inspector_name`: Inspector name
-- `inspector_id`: Inspector ID
-- `date`: Inspection date
-- `categories`: List of inspection categories
-- `status`: Inspection status (default: "draft")
-
-## 🔒 Security Features
-
-- **File Upload Validation**: Only allowed image types
-- **Input Validation**: Comprehensive validation with Pydantic
-- **Error Handling**: Secure error messages without information leakage
-- **CORS Configuration**: Configurable cross-origin settings
-
-## 🛠️ Development
-
-### Adding New Features
-
-1. **Update models** in `main.py` if needed
-2. **Add configuration** in `config.py` for new settings
-3. **Create templates** in `templates/` for new pages
-4. **Add routes** in `main.py` for new endpoints
-5. **Update tests** in `test_utils.py` for new functionality
-
-### Code Style
-
-The code follows PEP 8 guidelines and modern Python practices:
-- Type hints for all functions
-- Docstrings for all classes and functions
-- Consistent naming conventions
-- Proper error handling
-- Clean, readable code structure
-
-## 📝 License
-
-This project is part of the CheckMate Virtue vehicle inspection system.
+```bash
+RAILWAY_ENVIRONMENT=production
+SESSION_SECRET_KEY=your-secure-secret-key
+DATABASE_URL=your-database-url
+SMTP_HOST=your-smtp-host
+SMTP_USERNAME=your-smtp-username
+SMTP_PASSWORD=your-smtp-password
+```
 
 ## 🤝 Contributing
 
+We welcome contributions! Please see our [Contributing Guide](docs/CONTRIBUTING.md) for details.
+
+### Development Workflow
+
 1. Fork the repository
-2. Create a feature branch
+2. Create a feature branch: `git checkout -b feature/your-feature`
 3. Make your changes
 4. Add tests for new functionality
-5. Submit a pull request
+5. Run tests and quality checks
+6. Commit your changes: `git commit -m "feat: add your feature"`
+7. Push to your fork: `git push origin feature/your-feature`
+8. Create a Pull Request
+
+### Commit Message Convention
+
+We use [Conventional Commits](https://www.conventionalcommits.org/):
+
+- `feat:` New features
+- `fix:` Bug fixes
+- `docs:` Documentation changes
+- `style:` Code style changes
+- `refactor:` Code refactoring
+- `test:` Test changes
+- `chore:` Maintenance tasks
+
+### Branch Naming Convention
+
+- `main`: Production-ready code
+- `develop`: Development branch
+- `feature/feature-name`: New features
+- `bugfix/bug-description`: Bug fixes
+- `hotfix/urgent-fix`: Critical fixes
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [FastAPI](https://fastapi.tiangolo.com/) for the excellent web framework
+- [Pydantic](https://pydantic-docs.helpmanual.io/) for data validation
+- [ReportLab](https://www.reportlab.com/) for PDF generation
+- [Railway](https://railway.app/) for hosting and deployment
+
+## 📞 Support
+
+- **Documentation**: [docs/README.md](docs/README.md)
+- **Issues**: [GitHub Issues](https://github.com/your-org/checkmate-virtue/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/your-org/checkmate-virtue/discussions)
 
 ---
 
-**CheckMate Virtue** - Professional Vehicle Inspection System 
+**CheckMate Virtue** - Professional Multi-Industry Inspection System 

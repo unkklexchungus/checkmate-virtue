@@ -1,0 +1,59 @@
+{
+  "inspection_name": "Manufacturing Quality Control Inspection",
+  "description": "Comprehensive manufacturing equipment and quality control inspection.",
+  "industry": "manufacturing",
+  "inspection_points": {
+    "production_equipment": {
+      "description": "Manufacturing equipment safety and performance",
+      "items": [
+        "Production line machinery",
+        "Robotics and automation systems",
+        "Conveyor systems and material handling",
+        "Packaging equipment",
+        "Quality control testing equipment",
+        "Preventive maintenance systems",
+        "Equipment calibration records",
+        "Safety interlocks and guards"
+      ]
+    },
+    "quality_control": {
+      "description": "Quality control and product standards",
+      "items": [
+        "Product specification compliance",
+        "Quality testing procedures",
+        "Statistical process control",
+        "Defect tracking and analysis",
+        "Supplier quality management",
+        "Product traceability systems",
+        "Quality documentation",
+        "Continuous improvement processes"
+      ]
+    },
+    "safety_compliance": {
+      "description": "Workplace safety and regulatory compliance",
+      "items": [
+        "Machine safety protocols",
+        "Personal protective equipment",
+        "Chemical safety and handling",
+        "Noise and vibration control",
+        "Ergonomic workplace design",
+        "Emergency response procedures",
+        "Safety training records",
+        "Incident reporting systems"
+      ]
+    },
+    "environmental_management": {
+      "description": "Environmental compliance and sustainability",
+      "items": [
+        "Waste management procedures",
+        "Energy efficiency measures",
+        "Emissions control systems",
+        "Recycling and reuse programs",
+        "Environmental monitoring",
+        "Regulatory compliance",
+        "Sustainability initiatives",
+        "Green manufacturing practices"
+      ]
+    }
+  }
+}

@@ -1,0 +1,2070 @@
+[
+  {
+    "id": "insp_20250803_102800",
+    "title": "twt",
+    "industry_info": {
+      "industry_type": "automotive",
+      "facility_name": "HomeBase ",
+      "location": "123 fake st",
+      "contact_person": "Bob Vance",
+      "phone": "5551234567",
+      "email": "client@example.com"
+    },
+    "vehicle_info": {
+      "year": "1991",
+      "make": "HONDA",
+      "model": "ACCORD",
+      "vin": "1HGBH41JXMN109186",
+      "license_plate": "420 bnzo",
+      "mileage": "147653",
+      "trim": "DX",
+      "body_style": "Sedan",
+      "engine": "2.2L",
+      "transmission": "Automatic",
+      "drivetrain": "FWD",
+      "fuel_type": "Gasoline",
+      "country_of_origin": "USA",
+      "plant_code": "H",
+      "serial_number": "ACCORD"
+    },
+    "inspector_name": "tw2",
+    "inspector_id": "8675308",
+    "date": "2025-08-03T10:28:00.581146",
+    "categories": [
+      {
+        "name": "Exhaust",
+        "description": "Inspect exhaust system components for leaks, damage, and proper operation.",
+        "items": [
+          {
+            "name": "Exhaust system",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "O2 sensor",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Exhaust pipe",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Muffler",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tips",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Steering Suspension",
+        "description": "Check steering and suspension components for wear, damage, and safety.",
+        "items": [
+          {
+            "name": "Shocks (front/rear)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Struts (front/rear)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Ball joints (upper/lower)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tie rods (inner/outer)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Control arms (upper/lower)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Bushings",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Sway bar links",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Center link",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Idler arm",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Pitman arm",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Rack & pinion",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Power steering pump",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Steering gear box",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Ignition",
+        "description": "Inspect ignition system components.",
+        "items": [
+          {
+            "name": "Spark plugs",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Plug wires",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Coil pack",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Distributor cap",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Rotor",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Ignition timing",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Battery Starting Check",
+        "description": "Check battery and starting system.",
+        "items": [
+          {
+            "name": "Battery condition",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Battery terminals",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Battery cables",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Starter operation",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Starter relay",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Alternator output",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Drive belt condition",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Belt tension",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Ground connections",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Fluid Leaks",
+        "description": "Check for fluid leaks in all major systems.",
+        "items": [
+          {
+            "name": "Engine oil leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Transmission fluid leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Coolant leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Brake fluid leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Power steering fluid leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Differential fluid leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Transfer case leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "AC refrigerant leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Maintenance Services",
+        "description": "Review and recommend maintenance services.",
+        "items": [
+          {
+            "name": "Oil change due",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Air filter replacement",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Cabin filter replacement",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Fuel filter replacement",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Spark plug replacement",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Timing belt/chain replacement",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Coolant flush",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Transmission service",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Brake fluid flush",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Power steering service",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Differential service",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Transfer case service",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Brakes",
+        "description": "Inspect brake system for safety and performance.",
+        "items": [
+          {
+            "name": "Pad thickness (LF, RF, LR, RR)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Rotor thickness (LF, RF, LR, RR)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Rotor condition (scoring, warping)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Brake lines and hoses",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Caliper operation",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Master cylinder",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Brake booster",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Parking brake operation",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "ABS operation",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Tires Tire Maintenance",
+        "description": "Inspect tires and recommend maintenance.",
+        "items": [
+          {
+            "name": "Tire tread depth (LF, RF, LR, RR)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire pressure (LF, RF, LR, RR)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire sidewall condition",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire wear patterns",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire age/date code",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Spare tire condition",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Wheel alignment",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire rotation",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire balance",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      }
+    ],
+    "status": "draft",
+    "industry_type": "automotive"
+  },
+  {
+    "id": "INSP_20250803_103857",
+    "vin": "1HGBH41JXMN109186",
+    "vehicle_id": null,
+    "vehicle_info": {
+      "vin": "1HGBH41JXMN109186",
+      "year": "1991",
+      "make": "HONDA",
+      "model": "ACCORD",
+      "trim": "DX",
+      "engine": "2.2",
+      "transmission": "Automatic",
+      "body_style": "Sedan",
+      "fuel_type": "Gasoline",
+      "drivetrain": "FWD",
+      "country_of_origin": "USA",
+      "plant_code": "H",
+      "serial_number": "ACCORD"
+    },
+    "items": [],
+    "created_at": "2025-08-03T10:38:57.190794",
+    "updated_at": "2025-08-03T10:38:57.190802"
+  },
+  {
+    "id": "INSP_20250803_190838",
+    "vin": "JYARM06E9GA005809",
+    "vehicle_id": null,
+    "vehicle_info": {
+      "vin": "JYARM06E9GA005809",
+      "year": "2016",
+      "make": "MAZDA",
+      "model": "MAZDA3",
+      "trim": "i Touring",
+      "engine": "2.0",
+      "transmission": "Automatic",
+      "body_style": "Sedan",
+      "fuel_type": "Gasoline",
+      "drivetrain": "FWD",
+      "country_of_origin": "Japan",
+      "plant_code": "A",
+      "serial_number": "MAZDA3"
+    },
+    "items": [
+      {
+        "step": "Under the Hood",
+        "subcategory": "Fluids",
+        "item": "Engine Oil",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Fluids",
+        "item": "Coolant",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Fluids",
+        "item": "Brake Fluid",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Fluids",
+        "item": "Power Steering Fluid",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Fluids",
+        "item": "Transmission Fluid",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Filters",
+        "item": "Engine Air Filter",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Filters",
+        "item": "Cabin Air Filter",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Belts & Hoses",
+        "item": "Serpentine Belt",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Belts & Hoses",
+        "item": "Hoses – Cracks/Leaks",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Electrical/Battery",
+        "item": "Battery Voltage/Condition",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Electrical/Battery",
+        "item": "Battery Terminals/Cables",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Wheels Off",
+        "subcategory": "Brakes",
+        "item": "Front Brake Pads",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Wheels Off",
+        "subcategory": "Brakes",
+        "item": "Rear Brake Pads",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Wheels Off",
+        "subcategory": "Brakes",
+        "item": "Rotors/Drums",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Wheels Off",
+        "subcategory": "Brakes",
+        "item": "Brake Calipers",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Wheels Off",
+        "subcategory": "Suspension",
+        "item": "Ball Joints",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Wheels Off",
+        "subcategory": "Suspension",
+        "item": "Tie Rod Ends",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Wheels Off",
+        "subcategory": "Suspension",
+        "item": "Struts/Shocks",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Wheels Off",
+        "subcategory": "Suspension",
+        "item": "Wheel Bearings",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Leaks & Seals",
+        "item": "Engine Leaks",
+        "status": "pass",
+        "notes": "",
+        "photo_url": "/static/uploads/inspections/temp_20250803_190823_Underbody_Leaks & Seals_Engine Leaks_20250803_190823.jpg"
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Leaks & Seals",
+        "item": "Transmission Leaks",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Leaks & Seals",
+        "item": "Differential Leaks",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Exhaust",
+        "item": "Exhaust Pipes/Muffler",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Exhaust",
+        "item": "Catalytic Converter",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Exhaust",
+        "item": "Exhaust Leaks",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Frame/Structure",
+        "item": "Rust/Corrosion",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Frame/Structure",
+        "item": "Frame Integrity",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Frame/Structure",
+        "item": "Mounts & Bushings",
+        "status": "",
+        "notes": "",
+        "photo_url": null
+      }
+    ],
+    "created_at": "2025-08-03T19:08:38.921701",
+    "updated_at": "2025-08-03T19:08:38.921730"
+  },
+  {
+    "id": "INSP_20250803_193229",
+    "vin": "1HGBH41JXMN109186",
+    "vehicle_id": null,
+    "vehicle_info": {
+      "vin": "1HGBH41JXMN109186",
+      "year": "1991",
+      "make": "HONDA",
+      "model": "ACCORD",
+      "trim": "DX",
+      "engine": "2.2",
+      "transmission": "Automatic",
+      "body_style": "Sedan",
+      "fuel_type": "Gasoline",
+      "drivetrain": "FWD",
+      "country_of_origin": "USA",
+      "plant_code": "H",
+      "serial_number": "ACCORD"
+    },
+    "items": [
+      {
+        "step": "Under the Hood",
+        "subcategory": "Fluids",
+        "item": "Engine Oil",
+        "status": "pass",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Fluids",
+        "item": "Coolant",
+        "status": "recommended",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Fluids",
+        "item": "Brake Fluid",
+        "status": "required",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Fluids",
+        "item": "Power Steering Fluid",
+        "status": "pass",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Fluids",
+        "item": "Transmission Fluid",
+        "status": "pass",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Filters",
+        "item": "Engine Air Filter",
+        "status": "recommended",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Filters",
+        "item": "Cabin Air Filter",
+        "status": "recommended",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Belts & Hoses",
+        "item": "Serpentine Belt",
+        "status": "required",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Belts & Hoses",
+        "item": "Hoses – Cracks/Leaks",
+        "status": "pass",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Electrical/Battery",
+        "item": "Battery Voltage/Condition",
+        "status": "recommended",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Under the Hood",
+        "subcategory": "Electrical/Battery",
+        "item": "Battery Terminals/Cables",
+        "status": "recommended",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Wheels Off",
+        "subcategory": "Brakes",
+        "item": "Front Brake Pads",
+        "status": "recommended",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Wheels Off",
+        "subcategory": "Brakes",
+        "item": "Rear Brake Pads",
+        "status": "recommended",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Wheels Off",
+        "subcategory": "Brakes",
+        "item": "Rotors/Drums",
+        "status": "required",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Wheels Off",
+        "subcategory": "Brakes",
+        "item": "Brake Calipers",
+        "status": "pass",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Wheels Off",
+        "subcategory": "Suspension",
+        "item": "Ball Joints",
+        "status": "pass",
+        "notes": "notes go here",
+        "photo_url": "/static/uploads/inspections/temp_20250803_194944_Wheels Off_Suspension_Ball Joints_20250803_194944.jpg"
+      },
+      {
+        "step": "Wheels Off",
+        "subcategory": "Suspension",
+        "item": "Tie Rod Ends",
+        "status": "recommended",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Wheels Off",
+        "subcategory": "Suspension",
+        "item": "Struts/Shocks",
+        "status": "required",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Wheels Off",
+        "subcategory": "Suspension",
+        "item": "Wheel Bearings",
+        "status": "recommended",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Leaks & Seals",
+        "item": "Engine Leaks",
+        "status": "required",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Leaks & Seals",
+        "item": "Transmission Leaks",
+        "status": "recommended",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Leaks & Seals",
+        "item": "Differential Leaks",
+        "status": "required",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Exhaust",
+        "item": "Exhaust Pipes/Muffler",
+        "status": "required",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Exhaust",
+        "item": "Catalytic Converter",
+        "status": "required",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Exhaust",
+        "item": "Exhaust Leaks",
+        "status": "pass",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Frame/Structure",
+        "item": "Rust/Corrosion",
+        "status": "recommended",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Frame/Structure",
+        "item": "Frame Integrity",
+        "status": "recommended",
+        "notes": "",
+        "photo_url": null
+      },
+      {
+        "step": "Underbody",
+        "subcategory": "Frame/Structure",
+        "item": "Mounts & Bushings",
+        "status": "pass",
+        "notes": "",
+        "photo_url": null
+      }
+    ],
+    "created_at": "2025-08-03T19:32:29.955521",
+    "updated_at": "2025-08-03T19:51:39.126312",
+    "status": "submitted"
+  },
+  {
+    "id": "insp_20250804_054353",
+    "title": "test 2",
+    "industry_info": {
+      "industry_type": "automotive",
+      "facility_name": "Shop",
+      "location": "123 fake st",
+      "contact_person": "Bob Vance",
+      "phone": "5551234567",
+      "email": "client@example.com"
+    },
+    "vehicle_info": {
+      "year": "2001",
+      "make": "FORD",
+      "model": "Windstar",
+      "vin": "2FMZA52431BB15964",
+      "license_plate": "",
+      "mileage": "",
+      "trim": "",
+      "body_style": "Minivan",
+      "engine": "3.8L",
+      "transmission": "",
+      "drivetrain": "4x2",
+      "fuel_type": "Gasoline",
+      "country_of_origin": "CANADA",
+      "plant_code": null,
+      "serial_number": "SE"
+    },
+    "inspector_name": "tester 2 ",
+    "inspector_id": "8675309",
+    "date": "2025-08-04T05:43:53.186643",
+    "categories": [
+      {
+        "name": "Exhaust",
+        "description": "Inspect exhaust system components for leaks, damage, and proper operation.",
+        "items": [
+          {
+            "name": "Exhaust system",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "O2 sensor",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Exhaust pipe",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Muffler",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tips",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Steering Suspension",
+        "description": "Check steering and suspension components for wear, damage, and safety.",
+        "items": [
+          {
+            "name": "Shocks (front/rear)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Struts (front/rear)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Ball joints (upper/lower)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tie rods (inner/outer)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Control arms (upper/lower)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Bushings",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Sway bar links",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Center link",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Idler arm",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Pitman arm",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Rack & pinion",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Power steering pump",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Steering gear box",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Ignition",
+        "description": "Inspect ignition system components.",
+        "items": [
+          {
+            "name": "Spark plugs",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Plug wires",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Coil pack",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Distributor cap",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Rotor",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Ignition timing",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Battery Starting Check",
+        "description": "Check battery and starting system.",
+        "items": [
+          {
+            "name": "Battery condition",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Battery terminals",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Battery cables",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Starter operation",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Starter relay",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Alternator output",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Drive belt condition",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Belt tension",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Ground connections",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Fluid Leaks",
+        "description": "Check for fluid leaks in all major systems.",
+        "items": [
+          {
+            "name": "Engine oil leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Transmission fluid leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Coolant leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Brake fluid leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Power steering fluid leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Differential fluid leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Transfer case leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "AC refrigerant leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Maintenance Services",
+        "description": "Review and recommend maintenance services.",
+        "items": [
+          {
+            "name": "Oil change due",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Air filter replacement",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Cabin filter replacement",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Fuel filter replacement",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Spark plug replacement",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Timing belt/chain replacement",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Coolant flush",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Transmission service",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Brake fluid flush",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Power steering service",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Differential service",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Transfer case service",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Brakes",
+        "description": "Inspect brake system for safety and performance.",
+        "items": [
+          {
+            "name": "Pad thickness (LF, RF, LR, RR)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Rotor thickness (LF, RF, LR, RR)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Rotor condition (scoring, warping)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Brake lines and hoses",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Caliper operation",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Master cylinder",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Brake booster",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Parking brake operation",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "ABS operation",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Tires Tire Maintenance",
+        "description": "Inspect tires and recommend maintenance.",
+        "items": [
+          {
+            "name": "Tire tread depth (LF, RF, LR, RR)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire pressure (LF, RF, LR, RR)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire sidewall condition",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire wear patterns",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire age/date code",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Spare tire condition",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Wheel alignment",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire rotation",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire balance",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      }
+    ],
+    "status": "draft",
+    "industry_type": "automotive"
+  },
+  {
+    "id": "INSP_20250804_055147",
+    "vin": null,
+    "vehicle_id": null,
+    "vehicle_info": null,
+    "items": [
+      {
+        "step": "test",
+        "subcategory": "test",
+        "item": "test",
+        "status": "pass",
+        "notes": "test",
+        "photo_url": null
+      }
+    ],
+    "created_at": "2025-08-04T05:51:47.716098",
+    "updated_at": "2025-08-04T05:51:47.716107"
+  },
+  {
+    "id": "insp_20250804_055359",
+    "title": "tester",
+    "industry_info": {
+      "industry_type": "automotive",
+      "facility_name": "Shop",
+      "location": "123 fake st",
+      "contact_person": "Bob Vance",
+      "phone": "5551234567",
+      "email": "client@example.com"
+    },
+    "vehicle_info": {
+      "year": "1995",
+      "make": "NISSAN",
+      "model": "240SX",
+      "vin": "JN1AS44D0SW003325",
+      "license_plate": "",
+      "mileage": "",
+      "trim": "",
+      "body_style": "Coupe",
+      "engine": "2.4L",
+      "transmission": "",
+      "drivetrain": "4x2",
+      "fuel_type": "Gasoline",
+      "country_of_origin": "JAPAN",
+      "plant_code": null,
+      "serial_number": null
+    },
+    "inspector_name": "mr test",
+    "inspector_id": "t35t",
+    "date": "2025-08-04T05:53:59.220739",
+    "categories": [
+      {
+        "name": "Exhaust",
+        "description": "Inspect exhaust system components for leaks, damage, and proper operation.",
+        "items": [
+          {
+            "name": "Exhaust system",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "O2 sensor",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Exhaust pipe",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Muffler",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tips",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Steering Suspension",
+        "description": "Check steering and suspension components for wear, damage, and safety.",
+        "items": [
+          {
+            "name": "Shocks (front/rear)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Struts (front/rear)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Ball joints (upper/lower)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tie rods (inner/outer)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Control arms (upper/lower)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Bushings",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Sway bar links",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Center link",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Idler arm",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Pitman arm",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Rack & pinion",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Power steering pump",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Steering gear box",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Ignition",
+        "description": "Inspect ignition system components.",
+        "items": [
+          {
+            "name": "Spark plugs",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Plug wires",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Coil pack",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Distributor cap",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Rotor",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Ignition timing",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Battery Starting Check",
+        "description": "Check battery and starting system.",
+        "items": [
+          {
+            "name": "Battery condition",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Battery terminals",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Battery cables",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Starter operation",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Starter relay",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Alternator output",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Drive belt condition",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Belt tension",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Ground connections",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Fluid Leaks",
+        "description": "Check for fluid leaks in all major systems.",
+        "items": [
+          {
+            "name": "Engine oil leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Transmission fluid leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Coolant leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Brake fluid leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Power steering fluid leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Differential fluid leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Transfer case leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "AC refrigerant leaks",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Maintenance Services",
+        "description": "Review and recommend maintenance services.",
+        "items": [
+          {
+            "name": "Oil change due",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Air filter replacement",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Cabin filter replacement",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Fuel filter replacement",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Spark plug replacement",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Timing belt/chain replacement",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Coolant flush",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Transmission service",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Brake fluid flush",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Power steering service",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Differential service",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Transfer case service",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Brakes",
+        "description": "Inspect brake system for safety and performance.",
+        "items": [
+          {
+            "name": "Pad thickness (LF, RF, LR, RR)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Rotor thickness (LF, RF, LR, RR)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Rotor condition (scoring, warping)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Brake lines and hoses",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Caliper operation",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Master cylinder",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Brake booster",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Parking brake operation",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "ABS operation",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      },
+      {
+        "name": "Tires Tire Maintenance",
+        "description": "Inspect tires and recommend maintenance.",
+        "items": [
+          {
+            "name": "Tire tread depth (LF, RF, LR, RR)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire pressure (LF, RF, LR, RR)",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire sidewall condition",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire wear patterns",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire age/date code",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Spare tire condition",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Wheel alignment",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire rotation",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          },
+          {
+            "name": "Tire balance",
+            "grade": "N/A",
+            "notes": "",
+            "photos": []
+          }
+        ]
+      }
+    ],
+    "status": "draft",
+    "industry_type": "automotive"
+  }
+]

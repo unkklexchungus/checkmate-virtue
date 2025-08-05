@@ -1,0 +1,55 @@
+{
+  "steps": [
+    {
+      "name": "Under the Hood",
+      "subcategories": [
+        {
+          "name": "Fluids",
+          "items": ["Engine Oil", "Coolant", "Brake Fluid", "Power Steering Fluid", "Transmission Fluid"]
+        },
+        {
+          "name": "Filters",
+          "items": ["Engine Air Filter", "Cabin Air Filter"]
+        },
+        {
+          "name": "Belts & Hoses",
+          "items": ["Serpentine Belt", "Hoses – Cracks/Leaks"]
+        },
+        {
+          "name": "Electrical/Battery",
+          "items": ["Battery Voltage/Condition", "Battery Terminals/Cables"]
+        }
+      ]
+    },
+    {
+      "name": "Wheels Off",
+      "subcategories": [
+        {
+          "name": "Brakes",
+          "items": ["Front Brake Pads", "Rear Brake Pads", "Rotors/Drums", "Brake Calipers"]
+        },
+        {
+          "name": "Suspension",
+          "items": ["Ball Joints", "Tie Rod Ends", "Struts/Shocks", "Wheel Bearings"]
+        }
+      ]
+    },
+    {
+      "name": "Underbody",
+      "subcategories": [
+        {
+          "name": "Leaks & Seals",
+          "items": ["Engine Leaks", "Transmission Leaks", "Differential Leaks"]
+        },
+        {
+          "name": "Exhaust",
+          "items": ["Exhaust Pipes/Muffler", "Catalytic Converter", "Exhaust Leaks"]
+        },
+        {
+          "name": "Frame/Structure",
+          "items": ["Rust/Corrosion", "Frame Integrity", "Mounts & Bushings"]
+        }
+      ]
+    }
+  ]
+} 

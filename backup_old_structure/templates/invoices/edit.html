@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Invoice - CheckMate Virtue</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-shield-alt me-2"></i>
+                CheckMate Virtue
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/industries">Industries</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/inspections">Inspections</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/invoices">Invoices</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>
+                <i class="fas fa-edit me-2"></i>
+                Edit Invoice
+            </h1>
+            <div>
+                <a href="/invoices" class="btn btn-outline-secondary me-2">
+                    <i class="fas fa-arrow-left me-2"></i>
+                    Back to Invoices
+                </a>
+                <a href="/invoices/{{ invoice.id }}" class="btn btn-primary">
+                    <i class="fas fa-eye me-2"></i>
+                    View Invoice
+                </a>
+            </div>
+        </div>
+
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            Edit functionality is coming soon. For now, please use the view page to see invoice details.
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Invoice #{{ invoice.invoice_number }}</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Status:</strong> {{ invoice.status }}</p>
+                <p><strong>Total:</strong> ${{ "%.2f"|format(invoice.total|float) }}</p>
+                <p><strong>Client:</strong> {{ invoice.client_id }}</p>
+                <p><strong>Issue Date:</strong> {{ invoice.issue_date }}</p>
+                <p><strong>Due Date:</strong> {{ invoice.due_date }}</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

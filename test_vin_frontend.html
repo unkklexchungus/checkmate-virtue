@@ -17,7 +17,7 @@
                     <label for="vin" class="form-label">VIN</label>
                     <div class="input-group">
                         <input type="text" class="form-control" id="vin" name="vin" 
-                               placeholder="Enter 17-character VIN" maxlength="17" value="1HGBH41JXMN109186">
+                               placeholder="Enter 17-character VIN" maxlength="17" value="">
                         <button type="button" class="btn btn-outline-secondary" id="decodeVinBtn" 
                                 onclick="decodeVIN()">
                             <i class="fas fa-search"></i>
@@ -200,11 +200,11 @@
             }
         });
         
-        // Auto-decode on page load
-        window.addEventListener('load', function() {
-            console.log('Page loaded, auto-decoding VIN...');
-            setTimeout(decodeVIN, 1000);
-        });
+        // Remove auto-decode on page load - let users enter their own VIN
+        // window.addEventListener('load', function() {
+        //     console.log('Page loaded, auto-decoding VIN...');
+        //     setTimeout(decodeVIN, 1000);
+        // });
     </script>
 </body>
 </html> 

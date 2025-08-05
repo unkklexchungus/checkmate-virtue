@@ -1,0 +1,78 @@
+================================================================================
+FASTAPI APP DIAGNOSTIC REPORT
+================================================================================
+Timestamp: 2025-08-04T19:44:10.057826
+Base URL: http://localhost:8000
+
+📊 SUMMARY
+----------------------------------------
+Total Routes Tested: 22
+✅ Passed: 22
+❌ Failed: 0
+Success Rate: 100.0%
+
+🔍 ROUTE TESTS
+----------------------------------------
+✅ GET / - Homepage
+✅ GET /inspections - Inspections list
+✅ GET /inspection/new - New inspection (redirect)
+✅ GET /industries - Industries page
+✅ GET /invoices - Invoices page
+✅ GET / - Homepage
+✅ GET /inspection/new - New Inspection (should redirect)
+✅ GET /industries - Industries page
+✅ GET /inspections - Inspections list
+✅ GET /inspection/9999999 - Invalid inspection (should 404)
+✅ GET /industries - Industries page
+✅ GET /industries/automotive/new - Automotive new inspection
+✅ GET /industries/invalid/new - Invalid industry (should 404)
+✅ GET /inspection/9999999 - Invalid inspection ID
+✅ GET /industries/invalid/new - Invalid industry
+✅ GET /nonexistent - Non-existent route
+✅ POST /api/inspections/9999999 - Invalid API endpoint
+✅ GET /api/inspections - List inspections API
+✅ GET /api/inspection-template - Inspection template API
+✅ GET /api/industries/automotive/template - Automotive template API
+✅ GET /vehicle/health - Vehicle service health
+✅ GET /invoices/api/invoices - Invoices API (should 404 without auth)
+
+🧭 NAVIGATION TESTS
+----------------------------------------
+✅ Homepage → New Inspection → Industries
+   ✅ GET / - Homepage
+   ✅ GET /inspection/new - New Inspection (should redirect)
+   ✅ GET /industries - Industries page
+✅ Inspections List → Inspection Detail
+   ✅ GET /inspections - Inspections list
+   ✅ GET /inspection/9999999 - Invalid inspection (should 404)
+✅ Industry Selection → New Industry Inspection
+   ✅ GET /industries - Industries page
+   ✅ GET /industries/automotive/new - Automotive new inspection
+   ✅ GET /industries/invalid/new - Invalid industry (should 404)
+
+🍞 BREADCRUMB TESTS
+----------------------------------------
+✅ / - Homepage breadcrumbs
+✅ /inspections - Inspections breadcrumbs
+✅ /industries - Industries breadcrumbs
+✅ /industries/automotive/new - Industry inspection breadcrumbs
+
+📄 TEMPLATE TESTS
+----------------------------------------
+✅ / - Homepage template
+✅ /inspections - Inspections list template
+✅ /industries - Industries template
+✅ /industries/automotive/new - Automotive inspection template
+
+⚠️ ERROR CASE TESTS
+----------------------------------------
+✅ GET /inspection/9999999 - Invalid inspection ID
+✅ GET /industries/invalid/new - Invalid industry
+✅ GET /nonexistent - Non-existent route
+✅ POST /api/inspections/9999999 - Invalid API endpoint
+
+🎉 NO ISSUES FOUND - All tests passed!
+
+================================================================================
+END OF DIAGNOSTIC REPORT
+================================================================================

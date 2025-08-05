@@ -1,0 +1,139 @@
+{
+  "id": "construction_template",
+  "name": "Construction Safety & Compliance",
+  "industry_type": "construction",
+  "description": "Construction site safety inspection and compliance services with job-based labor and materials",
+  "default_terms": "Payment due within 15 days. Net 15 terms apply. Late fees of 2% monthly interest.",
+  "default_notes": "All inspections performed by certified safety professionals. Reports submitted to regulatory authorities as required.",
+  "default_footer": "Safety is our priority. Thank you for maintaining compliance standards.",
+  "default_jobs": [
+    {
+      "name": "Site Safety Assessment",
+      "description": "Comprehensive site safety evaluation and hazard identification",
+      "job_number": "SAFETY-001",
+      "status": "completed"
+    },
+    {
+      "name": "Structural Integrity Review",
+      "description": "Engineering assessment of structural components and load-bearing elements",
+      "job_number": "STRUCT-002",
+      "status": "completed"
+    },
+    {
+      "name": "Electrical Safety Audit",
+      "description": "Electrical system compliance and safety verification",
+      "job_number": "ELEC-003",
+      "status": "completed"
+    }
+  ],
+  "default_items": [
+    {
+      "job_id": "SAFETY-001",
+      "item_type": "labor",
+      "description": "Site Safety Inspection",
+      "quantity": 4.0,
+      "unit_price": 75.00,
+      "unit": "hours",
+      "tax_rate": 0,
+      "notes": "Comprehensive safety assessment and hazard identification"
+    },
+    {
+      "job_id": "SAFETY-001",
+      "item_type": "materials",
+      "description": "Safety Equipment & Supplies",
+      "quantity": 1,
+      "unit_price": 250.00,
+      "unit": "kit",
+      "tax_rate": 0,
+      "notes": "Safety signage, barriers, and protective equipment"
+    },
+    {
+      "job_id": "SAFETY-001",
+      "item_type": "service",
+      "description": "OSHA Compliance Audit",
+      "quantity": 1,
+      "unit_price": 350.00,
+      "unit": "audit",
+      "tax_rate": 0,
+      "notes": "Full OSHA compliance review and documentation"
+    },
+    {
+      "job_id": "STRUCT-002",
+      "item_type": "labor",
+      "description": "Structural Engineering Review",
+      "quantity": 6.0,
+      "unit_price": 125.00,
+      "unit": "hours",
+      "tax_rate": 0,
+      "notes": "Engineering analysis of structural integrity"
+    },
+    {
+      "job_id": "STRUCT-002",
+      "item_type": "materials",
+      "description": "Structural Testing Equipment",
+      "quantity": 1,
+      "unit_price": 150.00,
+      "unit": "rental",
+      "tax_rate": 0,
+      "notes": "Load testing and measurement equipment"
+    },
+    {
+      "job_id": "STRUCT-002",
+      "item_type": "service",
+      "description": "Structural Integrity Assessment",
+      "quantity": 1,
+      "unit_price": 400.00,
+      "unit": "assessment",
+      "tax_rate": 0,
+      "notes": "Engineering review of structural components"
+    },
+    {
+      "job_id": "ELEC-003",
+      "item_type": "labor",
+      "description": "Electrical Safety Inspection",
+      "quantity": 3.0,
+      "unit_price": 85.00,
+      "unit": "hours",
+      "tax_rate": 0,
+      "notes": "Electrical system safety compliance review"
+    },
+    {
+      "job_id": "ELEC-003",
+      "item_type": "materials",
+      "description": "Electrical Testing Equipment",
+      "quantity": 1,
+      "unit_price": 200.00,
+      "unit": "rental",
+      "tax_rate": 0,
+      "notes": "Electrical testing and measurement tools"
+    },
+    {
+      "job_id": "ELEC-003",
+      "item_type": "service",
+      "description": "Electrical Compliance Certification",
+      "quantity": 1,
+      "unit_price": 275.00,
+      "unit": "certification",
+      "tax_rate": 0,
+      "notes": "Electrical safety certification and documentation"
+    },
+    {
+      "item_type": "service",
+      "description": "Safety Training Session",
+      "quantity": 1,
+      "unit_price": 150.00,
+      "unit": "session",
+      "tax_rate": 0,
+      "notes": "Workplace safety training for crew members"
+    },
+    {
+      "item_type": "service",
+      "description": "Environmental Compliance Check",
+      "quantity": 1,
+      "unit_price": 200.00,
+      "unit": "check",
+      "tax_rate": 0,
+      "notes": "Environmental impact and compliance verification"
+    }
+  ]
+} 

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Inspection - CheckMate Virtue</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .form-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-clipboard-check me-2"></i>
+                CheckMate Virtue
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/inspections">Inspections</a>
+                <a class="nav-link active" href="/inspections/new">New Inspection</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-plus me-2"></i>
+                            Start New Inspection
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="newInspectionForm">
+                            <!-- Inspector Information -->
+                            <div class="form-section">
+                                <h5 class="text-primary mb-3">
+                                    <i class="fas fa-user me-2"></i>
+                                    Inspector Information
+                                </h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="inspectorName" class="form-label">Inspector Name</label>
+                                        <input type="text" class="form-control" id="inspectorName" name="inspector_name" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="inspectorId" class="form-label">Inspector ID</label>
+                                        <input type="text" class="form-control" id="inspectorId" name="inspector_id" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Vehicle Information -->
+                            <div class="form-section">
+                                <h5 class="text-primary mb-3">
+                                    <i class="fas fa-car me-2"></i>
+                                    Vehicle Information
+                                </h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehicleYear" class="form-label">Year</label>
+                                        <input type="text" class="form-control" id="vehicleYear" name="vehicle_year">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehicleMake" class="form-label">Make</label>
+                                        <input type="text" class="form-control" id="vehicleMake" name="vehicle_make">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehicleModel" class="form-label">Model</label>
+                                        <input type="text" class="form-control" id="vehicleModel" name="vehicle_model">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehicleVin" class="form-label">VIN</label>
+                                        <input type="text" class="form-control" id="vehicleVin" name="vehicle_vin" 
+                                               placeholder="Enter 17-character VIN" maxlength="17">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehicleEngine" class="form-label">Engine (e.g., 2.0L, 3.5L)</label>
+                                        <input type="text" class="form-control" id="vehicleEngine" name="vehicle_engine" placeholder="Engine size in liters">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="licensePlate" class="form-label">License Plate</label>
+                                        <input type="text" class="form-control" id="licensePlate" name="license_plate">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehicleMileage" class="form-label">Mileage</label>
+                                        <input type="text" class="form-control" id="vehicleMileage" name="vehicle_mileage">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehicleTrim" class="form-label">Trim Level</label>
+                                        <input type="text" class="form-control" id="vehicleTrim" name="vehicle_trim" placeholder="e.g., LT, SE, Sport">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehicleBodyStyle" class="form-label">Body Style</label>
+                                        <input type="text" class="form-control" id="vehicleBodyStyle" name="vehicle_body_style" placeholder="e.g., Sedan, SUV, Truck">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehicleTransmission" class="form-label">Transmission</label>
+                                        <input type="text" class="form-control" id="vehicleTransmission" name="vehicle_transmission" placeholder="e.g., Automatic, Manual">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehicleDrivetrain" class="form-label">Drivetrain</label>
+                                        <input type="text" class="form-control" id="vehicleDrivetrain" name="vehicle_drivetrain" placeholder="e.g., FWD, RWD, AWD">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehicleFuelType" class="form-label">Fuel Type</label>
+                                        <input type="text" class="form-control" id="vehicleFuelType" name="vehicle_fuel_type" placeholder="e.g., Gasoline, Diesel, Electric">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Inspection Details -->
+                            <div class="form-section">
+                                <h5 class="text-primary mb-3">
+                                    <i class="fas fa-clipboard-list me-2"></i>
+                                    Inspection Details
+                                </h5>
+                                <div class="mb-3">
+                                    <label for="inspectionTitle" class="form-label">Inspection Title</label>
+                                    <input type="text" class="form-control" id="inspectionTitle" name="title" 
+                                           value="Detailed Vehicle Inspection" required>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="/inspections" class="btn btn-secondary me-md-2">
+                                    <i class="fas fa-times me-2"></i>
+                                    Cancel
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-play me-2"></i>
+                                    Start Inspection
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+    <script>
+        document.getElementById('newInspectionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {
+                title: formData.get('title'),
+                inspector_name: formData.get('inspector_name'),
+                inspector_id: formData.get('inspector_id'),
+                industry_info: {
+                    industry_type: 'automotive',
+                    facility_name: formData.get('facility_name') || 'Test Facility',
+                    location: formData.get('location') || 'Test Location',
+                    contact_person: formData.get('contact_person') || 'Test Contact',
+                    phone: formData.get('phone') || '123-456-7890',
+                    email: formData.get('email') || 'test@example.com'
+                },
+                industry_type: 'automotive',
+                vehicle_info: {
+                    year: formData.get('vehicle_year'),
+                    make: formData.get('vehicle_make'),
+                    model: formData.get('vehicle_model'),
+                    engine: formData.get('vehicle_engine'),
+                    vin: formData.get('vehicle_vin'),
+                    trim: formData.get('vehicle_trim'),
+                    body_style: formData.get('vehicle_body_style'),
+                    transmission: formData.get('vehicle_transmission'),
+                    drivetrain: formData.get('vehicle_drivetrain'),
+                    fuel_type: formData.get('vehicle_fuel_type'),
+                    license_plate: formData.get('license_plate'),
+                    mileage: formData.get('vehicle_mileage')
+                }
+            };
+
+            try {
+                const response = await fetch('/api/inspections', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    window.location.href = `/inspections/${result.inspection_id}`;
+                } else {
+                    alert('Error creating inspection: ' + result.error);
+                }
+            } catch (error) {
+                alert('Error creating inspection: ' + error);
+            }
+        });
+    </script>
+</body>
+</html> 
