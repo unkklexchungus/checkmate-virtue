@@ -118,6 +118,14 @@ async def update_inspection_data(inspection_id: str, data: InspectionCreate):
     else:
         raise HTTPException(status_code=500, detail="Failed to update inspection")
 
+@router.post("/photos")
+async def upload_photo_no_id():
+    """Handle photo upload requests without inspection ID."""
+    raise HTTPException(
+        status_code=400, 
+        detail="Inspection ID is required. Use /inspection/{inspection_id}/photos"
+    )
+
 @router.post("/{inspection_id}/photos")
 async def upload_photo(
     inspection_id: str,

@@ -59,12 +59,7 @@ The module integrates with the automotive inspection form to provide:
 
 ## Static VIN Data
 
-The module includes static VIN data for offline operation with sample vehicles:
-
-- 1991 Honda Accord DX
-- 2006 Chevrolet Corvette Z06
-- 2015 BMW 3 Series 328i
-- 2015 Hyundai Sonata Sport
+The module includes static VIN data for offline operation. The static data file is empty by default for MVP readiness.
 
 ## Dependencies
 
@@ -112,8 +107,4 @@ The module handles various error scenarios:
 
 ## Testing
 
-Test VINs included in static data:
-- `1HGBH41JXMN109186` - 1991 Honda Accord DX
-- `1G1ZT51806F123456` - 2006 Chevrolet Corvette Z06
-- `WBA3B5C50FD123456` - 2015 BMW 3 Series 328i
-- `5NPE34AF4FH123456` - 2015 Hyundai Sonata Sport 
+The static VIN data file is empty by default for MVP readiness. Test VINs can be added to the static data file as needed for development and testing purposes. 

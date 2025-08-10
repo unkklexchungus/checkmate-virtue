@@ -1,0 +1,21 @@
+{
+  "api/industries": "inspection-service",
+  "api/inspections": "inspection-service",
+  "api/inspection-template": "inspection-service",
+  "inspection": "inspection-service",
+  "inspections": "inspection-service",
+  "industries": "inspection-service",
+  "api/vehicle": "vehicle-service",
+  "vehicle": "vehicle-service",
+  "api/invoices": "invoice-service",
+  "api/clients": "invoice-service",
+  "invoices": "invoice-service",
+  "clients": "invoice-service",
+  "api/auth": "auth-service",
+  "login": "auth-service",
+  "logout": "auth-service",
+  "static": "static-service",
+  "uploads": "file-service",
+  "test-vin": "vehicle-service",
+  "test-vin-simple": "vehicle-service"
+}

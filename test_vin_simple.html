@@ -7,7 +7,7 @@
     <h1>Simple VIN Decoder Test</h1>
     
     <div>
-        <label>VIN: <input type="text" id="vin" value="1HGBH41JXMN109186"></label>
+        <label>VIN: <input type="text" id="vin"></label>
         <button onclick="testDecode()">Decode</button>
     </div>
     
@@ -29,6 +29,11 @@
         async function testDecode() {
             const vin = document.getElementById('vin').value;
             const status = document.getElementById('status');
+            
+            if (!vin || vin.trim() === '') {
+                status.textContent = 'Please enter a VIN number';
+                return;
+            }
             
             status.textContent = 'Decoding...';
             
@@ -60,10 +65,10 @@
             }
         }
         
-        // Auto-test on load
-        window.onload = function() {
-            setTimeout(testDecode, 1000);
-        };
+        // Auto-test on load - removed for MVP readiness
+        // window.onload = function() {
+        //     setTimeout(testDecode, 1000);
+        // };
     </script>
 </body>
 </html> 

@@ -1,6 +1,6 @@
 """
-CheckMate Virtue - Multi-Industry Professional Inspection System
-A FastAPI-based web application for professional inspections across multiple industries.
+CheckMate Virtue - Automotive Professional Inspection System
+A FastAPI-based web application for professional automotive inspections.
 """
 
 import json
@@ -38,63 +38,19 @@ UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 TEMPLATES_DIR.mkdir(exist_ok=True)
 DATA_DIR.mkdir(exist_ok=True)
 
-# Available Industries
-AVAILABLE_INDUSTRIES = {
-    "automotive": {
-        "name": "Automotive",
-        "icon": "fas fa-car",
-        "description": "Vehicle inspections and maintenance",
-        "template_file": "templates/industries/automotive.json"
-    },
-    "construction": {
-        "name": "Construction",
-        "icon": "fas fa-hard-hat",
-        "description": "Site safety and structural integrity",
-        "template_file": "templates/industries/construction.json"
-    },
-    "food_safety": {
-        "name": "Food Safety",
-        "icon": "fas fa-utensils",
-        "description": "Restaurant and kitchen hygiene",
-        "template_file": "templates/industries/food_safety.json"
-    },
-    "healthcare": {
-        "name": "Healthcare",
-        "icon": "fas fa-hospital",
-        "description": "Medical equipment and facility safety",
-        "template_file": "templates/industries/healthcare.json"
-    },
-    "manufacturing": {
-        "name": "Manufacturing",
-        "icon": "fas fa-industry",
-        "description": "Equipment and quality control",
-        "template_file": "templates/industries/manufacturing.json"
-    },
-    "real_estate": {
-        "name": "Real Estate",
-        "icon": "fas fa-building",
-        "description": "Property condition and maintenance",
-        "template_file": "templates/industries/real_estate.json"
-    },
-    "it_datacenter": {
-        "name": "IT & Data Centers",
-        "icon": "fas fa-server",
-        "description": "Infrastructure and security",
-        "template_file": "templates/industries/it_datacenter.json"
-    },
-    "environmental": {
-        "name": "Environmental",
-        "icon": "fas fa-leaf",
-        "description": "Compliance and waste management",
-        "template_file": "templates/industries/environmental.json"
-    }
+# Automotive Industry Configuration
+AUTOMOTIVE_INDUSTRY = {
+    "name": "Automotive",
+    "icon": "fas fa-car",
+    "description": "Vehicle inspections and maintenance",
+    "template_file": "templates/industries/automotive.json"
 }
 
 # Pydantic Models
 class IndustryInfo(BaseModel):
-    """Industry-specific information model."""
-    industry_type: str = Field(..., description="Type of industry")
-    facility_name: Optional[str] = Field(None, description="Facility name")
+    """Automotive industry information model."""
+    industry_type: str = Field(default="automotive", description="Type of industry")
+    facility_name: Optional[str] = Field(None, description="Dealership/Shop name")
     location: Optional[str] = Field(None, description="Location/address")
     contact_person: Optional[str] = Field(None, description="Contact person")
     phone: Optional[str] = Field(None, description="Contact phone")
@@ -139,7 +95,7 @@ class InspectionRequest(BaseModel):
         description="Inspector name"
     )
     inspector_id: str = Field(..., description="Inspector ID")
-    industry_type: str = Field(..., description="Industry type for template selection")
+    industry_type: str = Field(default="automotive", description="Industry type for template selection")
 
 class InspectionItem(BaseModel):
     """Individual inspection item model."""
@@ -210,11 +166,11 @@ def validate_inspection_data(data: Dict[str, Any]) -> bool:
     return all(field in data for field in required_fields)
 
 def get_industry_template(industry_type: str) -> Optional[Dict[str, Any]]:
-    """Get inspection template for specific industry."""
-    if industry_type not in AVAILABLE_INDUSTRIES:
+    """Get inspection template for automotive industry."""
+    if industry_type != "automotive":
         return None
     
-    template_file = Path(AVAILABLE_INDUSTRIES[industry_type]["template_file"])
+    template_file = Path(AUTOMOTIVE_INDUSTRY["template_file"])
     return load_json_file(template_file)
 
 def generate_pdf_report(inspection: Dict[str, Any]) -> str:
@@ -339,6 +295,31 @@ templates = Jinja2Templates(directory="templates")
 # Setup auth middleware
 setup_auth_middleware(app)
 
+# Global exception handler for 405 Method Not Allowed
+@app.exception_handler(405)
+async def method_not_allowed_handler(request: Request, exc: HTTPException):
+    """Handle 405 Method Not Allowed errors gracefully."""
+    if request.method == "OPTIONS":
+        # Handle CORS preflight requests
+        return JSONResponse(
+            status_code=200,
+            content={"message": "OK"},
+            headers={
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                "Access-Control-Allow-Headers": "*",
+            }
+        )
+    
+    return JSONResponse(
+        status_code=405,
+        content={
+            "error": "Method Not Allowed",
+            "message": f"The {request.method} method is not allowed for this endpoint",
+            "allowed_methods": ["GET"] if request.url.path == "/" else []
+        }
+    )
+
 # Include invoice routes
 app.include_router(invoice_router)
 
@@ -359,37 +340,12 @@ async def root(request: Request) -> HTMLResponse:
     user = get_user_from_session(request)
     return templates.TemplateResponse("index.html", {"request": request, "user": user})
 
-@app.get("/industries")
-async def list_industries(request: Request) -> HTMLResponse:
-    """List available industries."""
-    user = get_user_from_session(request)
-    return templates.TemplateResponse("industries.html", {
-        "request": request, 
-        "user": user,
-        "industries": AVAILABLE_INDUSTRIES
-    })
+@app.options("/")
+async def root_options():
+    """Handle OPTIONS requests for root route."""
+    return {"message": "OK"}
 
-@app.get("/industries/{industry_id}/new")
-async def new_industry_inspection(request: Request, industry_id: str) -> HTMLResponse:
-    """New inspection form for specific industry."""
-    if industry_id not in AVAILABLE_INDUSTRIES:
-        raise HTTPException(status_code=404, detail="Industry not found")
-    
-    user = get_user_from_session(request)
-    return templates.TemplateResponse("new_industry_inspection.html", {
-        "request": request, 
-        "user": user,
-        "industry_id": industry_id,
-        "industry": AVAILABLE_INDUSTRIES[industry_id]
-    })
 
-@app.get("/api/industries/{industry_id}/template")
-async def get_industry_template_api(industry_id: str) -> Dict[str, Any]:
-    """Get inspection template for specific industry."""
-    template = get_industry_template(industry_id)
-    if template is None:
-        raise HTTPException(status_code=404, detail="Industry template not found")
-    return template
 
 @app.get("/api/inspection-template")
 async def get_inspection_template() -> Dict[str, Any]:
@@ -554,16 +510,57 @@ async def upload_photo(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
     
-    # Update inspection data
-    for category_data in inspection["categories"]:
-        if category_data["name"].lower().replace(" ", "_") == category.lower():
-            for item_data in category_data["items"]:
-                if item_data["name"] == item:
-                    item_data["photos"].append(filename)
-                    update_inspection_data(inspection_id, inspection)
-                    return {"message": "Photo uploaded successfully", "filename": filename}
+    # Update inspection data - handle both old and new data structures
+    if "categories" in inspection:
+        # Old structure with categories
+        for category_data in inspection["categories"]:
+            if category_data["name"].lower().replace(" ", "_") == category.lower():
+                for item_data in category_data["items"]:
+                    if item_data["name"] == item:
+                        if "photos" not in item_data:
+                            item_data["photos"] = []
+                        item_data["photos"].append(filename)
+                        update_inspection_data(inspection_id, inspection)
+                        return {"message": "Photo uploaded successfully", "filename": filename}
+    elif "items" in inspection:
+        # New structure with items array
+        if not inspection["items"]:
+            # If items array is empty, create a new item for this photo
+            new_item = {
+                "step": category.split(" - ")[0] if " - " in category else category,
+                "subcategory": category.split(" - ")[1] if " - " in category else "",
+                "item": item,
+                "status": "",
+                "notes": "",
+                "photo_url": f"/static/uploads/{filename}"
+            }
+            inspection["items"].append(new_item)
+            update_inspection_data(inspection_id, inspection)
+            return {"message": "Photo uploaded successfully", "filename": filename}
+        
+        # Check existing items
+        for item_data in inspection["items"]:
+            # Check if this item matches the category and item name
+            # The category parameter contains "step - subcategory" format
+            if (item_data.get("step", "").lower().replace(" ", "_") + "_" + 
+                item_data.get("subcategory", "").lower().replace(" ", "_") == category.lower().replace(" ", "_") and
+                item_data.get("item", "").lower().replace(" ", "_") == item.lower().replace(" ", "_")):
+                
+                if "photo_url" not in item_data:
+                    item_data["photo_url"] = ""
+                item_data["photo_url"] = f"/static/uploads/{filename}"
+                update_inspection_data(inspection_id, inspection)
+                return {"message": "Photo uploaded successfully", "filename": filename}
     
     raise HTTPException(status_code=404, detail="Category or item not found")
+
+@app.get("/api/inspections/{inspection_id}")
+async def get_inspection_api(inspection_id: str) -> Dict[str, Any]:
+    """Get a specific inspection by ID via API."""
+    inspection = find_inspection(inspection_id)
+    if not inspection:
+        raise HTTPException(status_code=404, detail="Inspection not found")
+    return inspection
 
 @app.put("/api/inspections/{inspection_id}")
 async def update_inspection(inspection_id: str, inspection: Dict[str, Any]) -> Dict[str, str]:

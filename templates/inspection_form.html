@@ -40,32 +40,11 @@
                 <!-- VIN Input -->
                 <div class="mb-4">
                     <label for="vin" class="form-label">VIN Number</label>
-                    <input type="text" id="vin" class="form-control" placeholder="Enter VIN for auto-fill" value="1HGBH41JXMN109186">
+                    <input type="text" id="vin" class="form-control" placeholder="Enter VIN for auto-fill">
                     <div class="mt-2">
                         <button type="button" id="decode-vin" class="btn btn-sm btn-outline-primary">
                             <i class="fas fa-search"></i> Decode VIN
                         </button>
-                        <button type="button" id="test-vin" class="btn btn-sm btn-outline-secondary ms-1">
-                            <i class="fas fa-flask"></i> Test
-                        </button>
-                    </div>
-                    <div class="mt-2">
-                        <label for="test-vin-select" class="form-label small">Test VINs:</label>
-                        <select id="test-vin-select" class="form-select form-select-sm">
-                            <option value="">Select a test VIN...</option>
-                            <option value="1HGBH41JXMN109186">1991 Honda Accord DX</option>
-                            <option value="1HGBH41JXMN109187">1991 Honda Accord LX</option>
-                            <option value="3CZRU6H33MM123456">2021 Honda Civic Sport</option>
-                            <option value="3CZRE38588G701073">2016 Honda Civic EX</option>
-                            <option value="1FADP3F25FL123456">2015 Ford Focus SE</option>
-                            <option value="1FADP3F25FL123457">2015 Ford Focus Titanium</option>
-                            <option value="5NPE34AF4FH123456">2015 Hyundai Sonata Sport</option>
-                            <option value="5NPE24AF7FH139757">2015 Hyundai Elantra GLS</option>
-                            <option value="WBA3B5C50FD123456">2015 BMW 3 Series 328i</option>
-                            <option value="WBA3B5C50FD123457">2015 BMW 3 Series 335i</option>
-                            <option value="JYARM06E9GA005809">2016 Mazda Mazda3 i Touring</option>
-                            <option value="1G1ZT51806F123456">2006 Chevrolet Corvette Z06</option>
-                        </select>
                     </div>
                 </div>
 
@@ -143,19 +122,13 @@
             vehicle_id: null,
             items: []
         };
+        let inspectionId = null; // Store the inspection ID once created
 
         // Initialize the inspection form
         document.addEventListener('DOMContentLoaded', function() {
             loadInspectionTemplate();
             setupEventListeners();
-            
-            // Auto-decode VIN on page load for testing
-            setTimeout(() => {
-                const vin = document.getElementById('vin').value.trim();
-                if (vin && vin.length >= 17) {
-                    decodeVIN();
-                }
-            }, 2000);
+            createInspection(); // Create inspection immediately
         });
 
         function loadInspectionTemplate() {
@@ -328,20 +301,7 @@
                 }
             });
             
-            // Test VIN button
-            document.getElementById('test-vin').addEventListener('click', function() {
-                document.getElementById('vin').value = '1HGBH41JXMN109186';
-                decodeVIN();
-            });
-            
-            // Test VIN dropdown
-            document.getElementById('test-vin-select').addEventListener('change', function() {
-                const selectedVin = this.value;
-                if (selectedVin) {
-                    document.getElementById('vin').value = selectedVin;
-                    decodeVIN();
-                }
-            });
+            // Test VIN button and dropdown removed for MVP readiness
 
             // Save inspection
             document.getElementById('save-inspection').addEventListener('click', saveInspection);
@@ -377,6 +337,11 @@
                     console.log('Vehicle data received:', vehicleData);
                     displayVehicleInfo(vehicleData);
                     inspectionData.vin = vin;
+                    
+                    // Update the inspection with VIN if we have an inspection ID
+                    if (inspectionId) {
+                        updateInspectionWithVIN(vin, vehicleData);
+                    }
                 } else {
                     const errorData = await response.json();
                     console.error('VIN decode failed:', errorData);
@@ -425,6 +390,33 @@
             vehicleInfo.style.display = 'block';
         }
 
+        async function updateInspectionWithVIN(vin, vehicleData) {
+            if (!inspectionId) return;
+            
+            try {
+                const response = await fetch(`/inspection/${inspectionId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        vin: vin,
+                        vehicle_id: null,
+                        vehicle_info: vehicleData,
+                        items: inspectionData.items
+                    })
+                });
+
+                if (response.ok) {
+                    console.log('Inspection updated with VIN:', vin);
+                } else {
+                    console.error('Failed to update inspection with VIN');
+                }
+            } catch (error) {
+                console.error('Error updating inspection with VIN:', error);
+            }
+        }
+
         function openPhotoModal(step, subcategory, item) {
             currentPhotoItem = { step, subcategory, item };
             document.getElementById('photoModal').classList.add('show');
@@ -443,7 +435,39 @@
             }
         }
 
+        async function createInspection() {
+            // Create a basic inspection immediately when form loads
+            try {
+                const response = await fetch('/inspection/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        vin: '',
+                        vehicle_id: null,
+                        items: []
+                    })
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    inspectionId = result.inspection_id;
+                    console.log('Inspection created with ID:', inspectionId);
+                } else {
+                    console.error('Failed to create inspection');
+                }
+            } catch (error) {
+                console.error('Error creating inspection:', error);
+            }
+        }
+
         async function uploadPhoto() {
+            if (!inspectionId) {
+                alert('Please wait for inspection to be created, or try again');
+                return;
+            }
+
             const file = document.getElementById('photo-file').files[0];
             if (!file) {
                 alert('Please select a photo');
@@ -452,12 +476,11 @@
 
             const formData = new FormData();
             formData.append('file', file);
-            formData.append('step', currentPhotoItem.step);
-            formData.append('subcategory', currentPhotoItem.subcategory);
+            formData.append('category', currentPhotoItem.step + ' - ' + currentPhotoItem.subcategory);
             formData.append('item', currentPhotoItem.item);
 
             try {
-                const response = await fetch('/inspection/photos', {
+                const response = await fetch(`/api/inspections/${inspectionId}/photos`, {
                     method: 'POST',
                     body: formData
                 });
@@ -469,7 +492,8 @@
                     document.getElementById('photoModal').style.display = 'none';
                     alert('Photo uploaded successfully');
                 } else {
-                    alert('Failed to upload photo');
+                    const errorData = await response.json();
+                    alert('Failed to upload photo: ' + (errorData.detail || 'Unknown error'));
                 }
             } catch (error) {
                 console.error('Error uploading photo:', error);
@@ -478,6 +502,11 @@
         }
 
         async function saveInspection() {
+            if (!inspectionId) {
+                alert('Inspection not created yet. Please wait and try again.');
+                return;
+            }
+
             // Collect all inspection data
             const items = [];
             document.querySelectorAll('.item-row').forEach(row => {
@@ -500,8 +529,8 @@
             inspectionData.items = items;
 
             try {
-                const response = await fetch('/inspection/', {
-                    method: 'POST',
+                const response = await fetch(`/api/inspections/${inspectionId}`, {
+                    method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
                     },

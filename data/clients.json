@@ -1,23 +1,23 @@
 [
   {
-    "id": "CLIENT_20250801_073335",
-    "name": "Bob Vance",
-    "company": "Vance Refrigeration",
+    "id": "test_client_001",
+    "name": "Test Client",
+    "company": "Test Company",
     "address": {
-      "street": "123 fake st",
-      "city": "spring hill",
-      "state": "TN",
-      "zip_code": "37174",
+      "street": "123 Test St",
+      "city": "Test City",
+      "state": "CA",
+      "zip_code": "90210",
       "country": "USA"
     },
     "contact": {
-      "phone": "5551234567",
-      "email": "client@example.com",
+      "phone": "555-123-4567",
+      "email": "test@example.com",
       "website": null
     },
-    "tax_id": "3333333333",
-    "notes": "Bob's van isn't blowing cold when the AC is on, performed AC service, no leaks visible. Added dye to system. If it blows anything other than cold, come back for further leak detection.",
-    "created_at": "2025-08-01T07:33:35.916784",
-    "updated_at": "2025-08-01T07:33:35.916795"
+    "tax_id": "123456789",
+    "notes": "Test client for browser testing",
+    "created_at": "2025-08-10T06:00:00.000000",
+    "updated_at": "2025-08-10T06:00:00.000000"
   }
 ]

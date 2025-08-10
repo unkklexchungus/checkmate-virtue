@@ -128,6 +128,21 @@ async def new_invoice_form(request: Request) -> HTMLResponse:
         "clients": clients
     })
 
+# Client routes
+@router.get("/clients", response_class=HTMLResponse)
+async def list_clients(request: Request) -> HTMLResponse:
+    """List all clients."""
+    clients = load_json_file(CLIENTS_FILE, [])
+    return templates.TemplateResponse("invoices/clients.html", {
+        "request": request,
+        "clients": clients
+    })
+
+@router.get("/clients/new", response_class=HTMLResponse)
+async def new_client_form(request: Request) -> HTMLResponse:
+    """New client form."""
+    return templates.TemplateResponse("invoices/new_client.html", {"request": request})
+
 @router.get("/{invoice_id}", response_class=HTMLResponse)
 async def view_invoice(request: Request, invoice_id: str) -> HTMLResponse:
     """View a specific invoice."""
@@ -403,21 +418,6 @@ async def generate_invoice_pdf(invoice_id: str) -> FileResponse:
         "message": "PDF generation not yet implemented",
         "invoice_id": invoice_id
     })
-
-# Client routes
-@router.get("/clients", response_class=HTMLResponse)
-async def list_clients(request: Request) -> HTMLResponse:
-    """List all clients."""
-    clients = load_json_file(CLIENTS_FILE, [])
-    return templates.TemplateResponse("invoices/clients.html", {
-        "request": request,
-        "clients": clients
-    })
-
-@router.get("/clients/new", response_class=HTMLResponse)
-async def new_client_form(request: Request) -> HTMLResponse:
-    """New client form."""
-    return templates.TemplateResponse("invoices/new_client.html", {"request": request})
 
 @router.post("/api/clients")
 async def create_client(request: CreateClientRequest) -> Dict[str, Any]:
