@@ -150,6 +150,56 @@ async def view_invoice(request: Request, invoice_id: str) -> HTMLResponse:
     if not invoice:
         raise HTTPException(status_code=404, detail="Invoice not found")
     
+    # Ensure numeric fields are properly formatted
+    if invoice.get("total") is not None:
+        try:
+            invoice["total"] = float(invoice["total"])
+        except (ValueError, TypeError):
+            invoice["total"] = 0.0
+    
+    if invoice.get("subtotal") is not None:
+        try:
+            invoice["subtotal"] = float(invoice["subtotal"])
+        except (ValueError, TypeError):
+            invoice["subtotal"] = 0.0
+    
+    if invoice.get("tax_amount") is not None:
+        try:
+            invoice["tax_amount"] = float(invoice["tax_amount"])
+        except (ValueError, TypeError):
+            invoice["tax_amount"] = 0.0
+    
+    if invoice.get("discount_amount") is not None:
+        try:
+            invoice["discount_amount"] = float(invoice["discount_amount"])
+        except (ValueError, TypeError):
+            invoice["discount_amount"] = 0.0
+    
+    # Calculate totals for each item
+    if invoice.get("items"):
+        for item in invoice["items"]:
+            try:
+                quantity = float(item.get("quantity", 0))
+                unit_price = float(item.get("unit_price", 0))
+                tax_rate = float(item.get("tax_rate", 0))
+                discount_percent = float(item.get("discount_percent", 0))
+                
+                subtotal = quantity * unit_price
+                discount_amount = subtotal * (discount_percent / 100)
+                taxable_amount = subtotal - discount_amount
+                tax_amount = taxable_amount * (tax_rate / 100)
+                total = subtotal - discount_amount + tax_amount
+                
+                item["subtotal"] = subtotal
+                item["discount_amount"] = discount_amount
+                item["tax_amount"] = tax_amount
+                item["total"] = total
+            except (ValueError, TypeError):
+                item["subtotal"] = 0.0
+                item["discount_amount"] = 0.0
+                item["tax_amount"] = 0.0
+                item["total"] = 0.0
+    
     client = find_client(invoice.get("client_id", ""))
     company = load_company_info()
     
