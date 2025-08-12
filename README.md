@@ -1,337 +1,484 @@
-# CheckMate Virtue - Multi-Industry Professional Inspection System
+# Automotive Service-Based Architecture
 
-A modern, Pythonic FastAPI-based web application for professional inspections across multiple industries, featuring a guided inspection flow with comprehensive vehicle data integration.
+A modern, microservices-based automotive management system built with FastAPI, SQLModel, PostgreSQL, and Docker Compose.
 
-## 🚀 Features
+## 🏗️ Architecture Overview
 
-### Guided Inspection System
-- **Three-Step Guided Flow**: Under the Hood → Wheels Off → Underbody
-- **Dynamic Template System**: JSON-based configuration for inspection items
-- **Three-Color Status System**: Pass (✅), Recommended (⚠️), Required (❌)
-- **Real-time Progress Tracking**: Visual progress bar with completion statistics
-- **Photo Documentation**: Upload photos for each inspection item
-- **Comprehensive Notes**: Detailed notes field for each item
-- **VIN Auto-fill**: Automatic vehicle data population from VIN input
+This system is built as a collection of focused microservices, each handling a specific domain:
 
-### Multi-Industry Support
-- **Automotive**: Vehicle inspections with VIN decoding
-- **Construction**: Site safety and structural integrity
-- **Healthcare**: Medical equipment and facility safety
-- **Manufacturing**: Equipment and quality control
-- **Food Safety**: Restaurant and kitchen hygiene
-- **Real Estate**: Property condition and maintenance
-- **IT & Data Centers**: Infrastructure and security
-- **Environmental**: Compliance and waste management
+- **API Gateway**: Single entry point for all client requests
+- **Customer Service**: Customer and contact management
+- **Vehicle Service**: Vehicle data and VIN decoding
+- **Appointment Service**: Appointment scheduling and calendar management
+- **Workshop Service**: Estimates, work orders, and invoice lifecycle
+- **Inventory Service**: Parts catalog and supplier management
+- **Notification Service**: Email/SMS notifications and templating
 
-### Technical Features
-- **Modular Architecture**: Clean separation with dedicated modules
-- **API-First Design**: RESTful endpoints for all operations
-- **Modern Web Interface**: Bootstrap 5 with responsive design
-- **Data Persistence**: JSON-based storage with backup
-- **PDF Report Generation**: Professional documentation export
-- **Photo Management**: Secure file upload with validation
-- **Vehicle Data Integration**: Comprehensive VIN decoding system
+## 🚀 Quick Start
 
-## 🏗️ Architecture
+### Prerequisites
 
-The application follows modern Python best practices:
+- Docker and Docker Compose
+- Python 3.12+ (for local development)
+- Git
 
-- **FastAPI**: Modern, fast web framework with automatic API documentation
-- **Pydantic**: Data validation and serialization
-- **Jinja2**: Template engine for HTML rendering
-- **Pathlib**: Modern path handling
-- **Type Hints**: Comprehensive type annotations for better code quality
+### 1. Clone and Setup
 
-## 📁 Project Structure
-
-```
-Lexicon-Re/
-├── main.py                    # Main FastAPI application
-├── config.py                  # Configuration settings
-├── requirements.txt           # Python dependencies
-├── README.md                 # This file
-├── CHANGELOG.md              # Version history and changes
-├── data/                     # Data storage
-│   ├── inspections.json      # Legacy inspections
-│   ├── invoices.json         # Invoice data
-│   └── clients.json          # Client information
-├── static/                   # Static files
-│   ├── uploads/              # Uploaded photos
-│   ├── invoices/             # Invoice files
-│   ├── css/                  # Stylesheets
-│   └── js/                   # JavaScript files
-├── templates/                # HTML templates
-│   ├── index.html            # Home page
-│   ├── inspection_form.html  # Guided inspection form
-│   ├── inspection_list.html  # Inspection list view
-│   ├── industries.html       # Industry selection
-│   └── invoices/             # Invoice templates
-├── modules/                  # Modular components
-│   ├── inspection/           # Guided inspection module
-│   │   ├── __init__.py
-│   │   ├── models.py         # Pydantic models
-│   │   ├── service.py        # Business logic
-│   │   ├── routes.py         # API endpoints
-│   │   └── templates.json    # Dynamic configuration
-│   └── vehicle_data/         # Vehicle data module
-│       ├── __init__.py
-│       ├── models.py         # Vehicle models
-│       ├── service.py        # VIN decoding service
-│       ├── routes.py         # Vehicle API endpoints
-│       └── vin_decoder.py    # VIN parsing logic
-└── CheckMateVirtue/          # Original APK assets
-    └── assets/
-        └── basic_inspection.json
+```bash
+git clone <repository-url>
+cd Lexicon-Re-clone
+cp env.example .env
 ```
 
-## 🛠️ Installation
+### 2. Configure Base URL
 
-1. **Clone the repository**:
-   ```bash
-   git clone <repository-url>
-   cd Lexicon-Re
-   ```
+The application uses `APP_BASE_URL` as a single source of truth for all service URLs:
 
-2. **Create virtual environment**:
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Run the application**:
-   ```bash
-   python main.py
-   ```
-
-5. **Access the application**:
-   - Web Interface: http://localhost:8000
-   - API Documentation: http://localhost:8000/docs
-
-## 🔧 Configuration
-
-All configuration settings are centralized in `config.py`:
-
-- **Application Settings**: Name, version, description
-- **Server Settings**: Host, port
-- **File Paths**: All file and directory paths
-- **CORS Settings**: Cross-origin resource sharing
-- **Upload Settings**: File size limits, allowed extensions
-- **Validation Settings**: Input validation rules
-
-## 🔍 Guided Inspection System
-
-The new guided inspection system provides a structured, step-by-step approach to vehicle inspections:
-
-### Three-Step Process
-1. **Under the Hood**: Engine fluids, filters, belts, and electrical systems
-2. **Wheels Off**: Brake systems, suspension components, and wheel assemblies  
-3. **Underbody**: Leaks, exhaust systems, and structural integrity
-
-### Key Features
-- **Dynamic Templates**: Inspection items are loaded from JSON configuration
-- **Status Tracking**: Three-color system (Pass/Recommended/Required)
-- **Photo Documentation**: Upload photos for each inspection item
-- **Progress Tracking**: Real-time completion statistics
-- **VIN Integration**: Automatic vehicle data population
-- **Comprehensive Reporting**: Detailed inspection reports with statistics
-
-### Usage
-1. Navigate to `/inspection/form` to start a new guided inspection
-2. Enter VIN for automatic vehicle data population
-3. Complete each step with checkboxes and status selections
-4. Add photos and notes as needed
-5. Save inspection and view results at `/inspection/list`
-
-### API Endpoints
-- `GET /inspection/template` - Get inspection template
-- `GET /inspection/form` - Render inspection form
-- `GET /inspection/list` - View inspection list
-- `POST /inspection/` - Create new inspection
-- `GET /inspection/{id}` - Get specific inspection
-- `PUT /inspection/{id}` - Update inspection
-- `POST /inspection/{id}/photos` - Upload photos
-
-## 🔐 OAuth Authentication
-
-The application supports OAuth authentication with Google and GitHub. To enable OAuth:
-
-### Google OAuth Setup
-
-1. Go to [Google Cloud Console](https://console.developers.google.com/)
-2. Create a new project or select existing one
-3. Enable Google+ API
-4. Go to Credentials → Create Credentials → OAuth 2.0 Client ID
-5. Set authorized redirect URI: `http://localhost:8000/auth/callback/google`
-6. Copy Client ID and Client Secret to your `.env` file
-
-### GitHub OAuth Setup
-
-1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
-2. Click "New OAuth App"
-3. Set Homepage URL: `http://localhost:8000`
-4. Set Authorization callback URL: `http://localhost:8000/auth/callback/github`
-5. Copy Client ID and Client Secret to your `.env` file
-
-### Environment Variables
-
-Create a `.env` file with the following variables:
-
-```env
-SECRET_KEY=your-secret-key-here
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-GITHUB_CLIENT_ID=your-github-client-id
-GITHUB_CLIENT_SECRET=your-github-client-secret
+**For Local Development:**
+```bash
+export APP_BASE_URL=http://127.0.0.1:8000
 ```
 
-## 📋 API Endpoints
+**For Docker Compose:**
+```bash
+export APP_BASE_URL=http://api-gateway:8000
+```
 
-### Web Interface
-- `GET /` - Home page
-- `GET /inspections` - List all inspections
-- `GET /inspections/new` - New inspection form
-- `GET /inspections/{id}` - View specific inspection
+**For Individual Services:**
+```bash
+export APP_BASE_URL=http://customer-service:8000  # For customer service
+export APP_BASE_URL=http://vehicle-service:8000   # For vehicle service
+# etc.
+```
 
-### API Endpoints
-- `GET /api/inspection-template` - Get inspection template
-- `POST /api/inspections` - Create new inspection
-- `PUT /api/inspections/{id}` - Update inspection
-- `POST /api/inspections/{id}/photos` - Upload inspection photos
-- `GET /api/inspections/{id}/report` - Generate inspection report
+This configuration ensures consistent URL handling across all environments and prevents IPv6/IPv4 connection issues.
 
-### OAuth Endpoints
-- `GET /login` - Login page
-- `GET /auth/google` - Google OAuth login
-- `GET /auth/github` - GitHub OAuth login
-- `GET /auth/callback/{provider}` - OAuth callback handler
-- `GET /auth/logout` - Logout user
-- `GET /auth/user` - Get current user info
+### 3. Start the System
+
+```bash
+# Start all services
+docker compose up --build
+
+# Or start in background
+docker compose up -d --build
+```
+
+### 4. Verify Services
+
+Check that all services are running:
+
+```bash
+docker compose ps
+```
+
+You can also check the health of individual services:
+
+```bash
+# Check API Gateway health
+curl http://localhost:8080/healthz
+
+# Check individual service health
+curl http://localhost:8002/healthz  # Customer Service
+curl http://localhost:8003/healthz  # Vehicle Service
+# etc.
+```
+
+### 5. Access Services
+
+- **API Gateway**: http://localhost:8080
+- **Customer Service**: http://localhost:8002
+- **Vehicle Service**: http://localhost:8003
+- **Appointment Service**: http://localhost:8004
+- **Workshop Service**: http://localhost:8005
+- **Inventory Service**: http://localhost:8006
+- **Notification Service**: http://localhost:8007
+- **pgAdmin**: http://localhost:5050 (admin@automotive.com / admin123)
+
+## 📋 Service Details
+
+### API Gateway (Port 8080)
+- Routes requests to appropriate services
+- Handles authentication and authorization
+- Provides unified API documentation
+- Manages CORS and rate limiting
+
+
+
+### Customer Service (Port 8002)
+- Customer management
+- Contact information
+- Address management
+- Search and pagination
+
+**Key Endpoints:**
+- `GET /v1/customers` - List customers
+- `POST /v1/customers` - Create customer
+- `GET /v1/customers/{id}` - Get customer details
+- `PUT /v1/customers/{id}` - Update customer
+- `DELETE /v1/customers/{id}` - Delete customer
+
+### Vehicle Service (Port 8003)
+- Vehicle data management
+- VIN decoding
+- Vehicle specifications
+- Trim and engine data
+
+**Key Endpoints:**
+- `GET /v1/vehicles` - List vehicles
+- `POST /v1/vehicles` - Create vehicle
+- `GET /v1/vehicles/decode/{vin}` - Decode VIN
+- `GET /v1/vehicles/{id}` - Get vehicle details
+
+### Workshop Service (Port 8005)
+- Estimate creation and management
+- Work order lifecycle
+- Invoice generation
+- Payment tracking
+
+**Key Endpoints:**
+- `GET /v1/workshop/estimates` - List estimates
+- `POST /v1/workshop/estimates` - Create estimate
+- `POST /v1/workshop/estimates/{id}/convert` - Convert to work order
+- `GET /v1/workshop/work-orders` - List work orders
+- `POST /v1/workshop/work-orders/{id}/convert` - Convert to invoice
+- `GET /v1/workshop/invoices` - List invoices
+
+## 🔧 Development
+
+### Local Development Setup
+
+1. **Install Dependencies**
+```bash
+# For each service
+cd services/auth-service
+pip install poetry
+poetry install
+```
+
+2. **Database Migrations**
+```bash
+# Run migrations for each service
+cd services/auth-service
+alembic upgrade head
+```
+
+3. **Environment Variables**
+```bash
+# Copy and customize environment variables
+cp env.example .env
+# Edit .env with your local settings
+```
+
+### Testing
+
+The project includes comprehensive testing with health checks and browser automation:
+
+#### Health Check System
+All services include a `/healthz` endpoint that returns `{"status": "ok"}` when healthy.
+
+#### Browser Testing
+```bash
+# Run browser tests with health check
+python qa/run_browser_tests.py
+
+# Run custom test example
+python qa/test_example.py
+
+# Run health check unit tests
+python qa/test_health_check.py
+```
+
+#### CI Pipeline
+```bash
+# Run complete CI pipeline (starts server, waits for health, runs tests)
+./qa/ci_test.sh
+```
+
+#### Manual Health Check
+```bash
+# Check if service is healthy
+curl http://127.0.0.1:8000/healthz
+
+# Wait for service to become healthy (with timeout)
+python qa/health_check.py
+```
+
+#### Service-Specific Tests
+```bash
+# Run tests for a specific service
+cd services/auth-service
+pytest
+
+# Run all tests
+pytest services/*/tests/
+```
+
+### Code Quality
+
+```bash
+# Format code
+black services/
+ruff check services/
+
+# Type checking
+mypy services/
+```
+
+## 📊 Database Schema
+
+Each service has its own schema in the shared PostgreSQL database:
+
+- `auth` - Authentication and user management
+- `customers` - Customer and contact data
+- `vehicles` - Vehicle information and VIN data
+- `appointments` - Appointment scheduling
+- `workshop` - Estimates, work orders, invoices
+- `inventory` - Parts and supplier data
+- `notifications` - Notification queue and templates
+
+## 🔐 Authentication
+
+The system uses JWT tokens for authentication:
+
+1. **Register/Login** to get access and refresh tokens
+2. **Include Bearer token** in Authorization header
+3. **Refresh tokens** when access tokens expire
+
+Example:
+```bash
+# Login
+curl -X POST http://localhost:8080/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email": "user@example.com", "password": "password"}'
+
+# Use token
+curl -X GET http://localhost:8080/v1/customers \
+  -H "Authorization: Bearer <access_token>"
+```
+
+## 🚗 Example Workflow
+
+### 1. Create Customer
+```bash
+curl -X POST http://localhost:8080/v1/customers \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Doe",
+    "company": "ABC Corp",
+    "address": {
+      "street": "123 Main St",
+      "city": "Anytown",
+      "state": "CA",
+      "zip_code": "90210"
+    },
+    "contact": {
+      "phone": "555-123-4567",
+      "email": "john@abc.com"
+    }
+  }'
+```
+
+### 2. Add Vehicle
+```bash
+curl -X POST http://localhost:8080/v1/vehicles \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vin": "1HGBH41JXMN109186",
+    "year": "2021",
+    "make": "Honda",
+    "model": "Civic"
+  }'
+```
+
+### 3. Create Appointment
+```bash
+curl -X POST http://localhost:8080/v1/appointments \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "customer_id": 1,
+    "vehicle_id": 1,
+    "appointment_date": "2024-01-15T10:00:00Z",
+    "service_type": "oil_change"
+  }'
+```
+
+### 4. Create Estimate
+```bash
+curl -X POST http://localhost:8080/v1/workshop/estimates \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "customer_id": 1,
+    "vehicle_id": 1,
+    "appointment_id": 1,
+    "items": [
+      {
+        "description": "Oil Change",
+        "quantity": 1,
+        "unit_price": 29.99
+      }
+    ]
+  }'
+```
+
+## 🛠️ Troubleshooting
+
+### Common Issues
+
+1. **Services not starting**
+   ```bash
+   # Check logs
+   docker compose logs <service-name>
+   
+   # Restart specific service
+   docker compose restart <service-name>
+   ```
+
+2. **Database connection issues**
+   ```bash
+   # Check PostgreSQL logs
+   docker compose logs postgres
+   
+   # Access database directly
+   docker compose exec postgres psql -U appuser -d appdb
+   ```
+
+3. **Port conflicts**
+   ```bash
+   # Check what's using a port
+   lsof -i :8080
+   
+   # Change ports in docker-compose.yml
+   ```
+
+### Health Checks
+
+All services provide health check endpoints:
+- `GET /health` - Basic health status
+- `GET /ready` - Readiness check (includes database)
+
+## 📈 Monitoring
+
+### Service Health
+```bash
+# Check all services
+curl http://localhost:8080/health
+curl http://localhost:8001/health
+# ... etc for each service
+```
+
+### Database Monitoring
+- Access pgAdmin at http://localhost:5050
+- Connect to PostgreSQL using:
+  - Host: `postgres`
+  - Port: `5432`
+  - Username: `appuser`
+  - Password: `apppass`
+  - Database: `appdb`
+
+## 🔄 Deployment
+
+### Production Considerations
+
+1. **Environment Variables**
+   - Change default passwords
+   - Use strong JWT secrets
+   - Configure proper CORS origins
+
+2. **Security**
+   - Enable HTTPS
+   - Use proper SSL certificates
+   - Configure firewall rules
+
+3. **Scaling**
+   - Use load balancers
+   - Configure database replication
+   - Set up monitoring and alerting
+
+### Docker Production Build
+
+```bash
+# Build production images
+docker compose -f docker-compose.yml -f docker-compose.prod.yml build
+
+# Deploy
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```
 
 ## 🧪 Testing
 
-Run the utility function tests:
+### Browser Testing Suite
+
+The project includes a comprehensive browser testing system using Playwright for end-to-end testing:
 
 ```bash
-python3 test_utils.py
+# Install testing dependencies
+pip install playwright
+playwright install
+
+# Run browser tests (headless)
+python qa/run_browser_tests.py
+
+# Run with visible browser
+HEADLESS=false python qa/run_browser_tests.py
+
+# Run custom test scenarios
+python qa/test_example.py
 ```
 
-## 🔍 Code Quality Improvements
+**Features:**
+- **End-to-end browser testing** of all public and authenticated routes
+- **Error logging by service and type** (JS errors, network errors, HTTP errors, etc.)
+- **Automatic screenshot capture** for first error per page
+- **Service detection** from API request URLs
+- **Retry logic** with exponential backoff
+- **Comprehensive reporting** in JSON and human-readable formats
 
-The codebase has been significantly improved with:
+**Test Coverage:**
+- Public routes (home, industries, inspections, invoices)
+- API endpoints (VIN decoding, inspection creation, invoice creation)
+- Form submissions and interactions
+- Authentication flows (if available)
 
-### 1. **Better Organization**
-- Separated configuration into `config.py`
-- Centralized constants and settings
-- Clear separation of concerns
+**Output:**
+- `qa/logs/error-log.json` - Structured JSON format
+- `qa/logs/error-log.txt` - Human-readable format
+- `qa/logs/screenshots/` - Error screenshots
 
-### 2. **Enhanced Error Handling**
-- Proper HTTP status codes
-- Comprehensive exception handling
-- User-friendly error messages
+For detailed testing documentation, see [qa/README.md](qa/README.md).
 
-### 3. **Improved Type Safety**
-- Comprehensive type hints
-- Pydantic models for data validation
-- Better IDE support and code completion
+## 📚 API Documentation
 
-### 4. **File Operations**
-- Centralized file handling utilities
-- Proper encoding handling
-- Error recovery mechanisms
+Each service provides its own OpenAPI documentation:
 
-### 5. **Data Validation**
-- Input validation with Pydantic
-- File type validation for uploads
-- Data structure validation
-
-### 6. **Pythonic Practices**
-- Pathlib for path handling
-- Context managers for file operations
-- List comprehensions and generator expressions
-- Modern Python syntax
-
-## 🚀 Running the Application
-
-1. **Start the server**:
-   ```bash
-   python main.py
-   ```
-
-2. **Access the web interface**:
-   - Open http://localhost:8000 in your browser
-
-3. **API Documentation**:
-   - Visit http://localhost:8000/docs for interactive API documentation
-
-## 📊 Data Models
-
-### VehicleInfo
-- `year`: Vehicle year
-- `make`: Vehicle make
-- `model`: Vehicle model
-- `vin`: Vehicle identification number
-- `license_plate`: License plate number
-- `mileage`: Vehicle mileage
-
-### InspectionRequest
-- `title`: Inspection title (1-200 characters)
-- `vehicle_info`: Vehicle information
-- `inspector_name`: Inspector name (1-100 characters)
-- `inspector_id`: Inspector ID
-
-### InspectionData
-- `id`: Unique inspection ID
-- `title`: Inspection title
-- `vehicle_info`: Vehicle information
-- `inspector_name`: Inspector name
-- `inspector_id`: Inspector ID
-- `date`: Inspection date
-- `categories`: List of inspection categories
-- `status`: Inspection status (default: "draft")
-
-## 🔒 Security Features
-
-- **File Upload Validation**: Only allowed image types
-- **Input Validation**: Comprehensive validation with Pydantic
-- **Error Handling**: Secure error messages without information leakage
-- **CORS Configuration**: Configurable cross-origin settings
-
-## 🛠️ Development
-
-### Adding New Features
-
-1. **Update models** in `main.py` if needed
-2. **Add configuration** in `config.py` for new settings
-3. **Create templates** in `templates/` for new pages
-4. **Add routes** in `main.py` for new endpoints
-5. **Update tests** in `test_utils.py` for new functionality
-
-### Code Style
-
-The code follows PEP 8 guidelines and modern Python practices:
-- Type hints for all functions
-- Docstrings for all classes and functions
-- Consistent naming conventions
-- Proper error handling
-- Clean, readable code structure
-
-## 📝 License
-
-This project is part of the CheckMate Virtue vehicle inspection system.
+- **API Gateway**: http://localhost:8080/docs
+- **Auth Service**: http://localhost:8001/docs
+- **Customer Service**: http://localhost:8002/docs
+- **Vehicle Service**: http://localhost:8003/docs
+- **Workshop Service**: http://localhost:8005/docs
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Add tests for new functionality
+4. Add tests
 5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🆘 Support
+
+For support and questions:
+- Create an issue in the repository
+- Check the documentation
+- Review the troubleshooting section
 
 ---
 
-**CheckMate Virtue** - Professional Vehicle Inspection System 
+**Note**: This is a development setup. For production deployment, ensure proper security configurations, monitoring, and backup strategies are in place. 

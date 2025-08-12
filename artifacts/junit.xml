@@ -1,0 +1,12 @@
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="1.7731280000000003">
+<testsuite name="inspection.spec.ts" timestamp="2025-08-12T09:38:34.596Z" hostname="chromium" tests="1" failures="0" skipped="0" time="0.49" errors="0">
+<testcase name="Inspection Module E2E Tests › S5: FE↔BE Data Contract Assertions" classname="inspection.spec.ts" time="0.49">
+<system-out>
+<![CDATA[✅ Template API contract validated
+✅ Inspection list API contract validated
+✅ CORS headers validated
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

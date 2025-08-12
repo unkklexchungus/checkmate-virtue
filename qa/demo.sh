@@ -30,15 +30,16 @@ fi
 
 # Check if server is running
 echo "🔍 Checking if server is running..."
-if ! curl -s http://localhost:8000 > /dev/null; then
-    echo "⚠️  Server not running on port 8000. Starting server..."
+APP_BASE_URL=${APP_BASE_URL:-http://127.0.0.1:8000}
+if ! curl -s $APP_BASE_URL > /dev/null; then
+    echo "⚠️  Server not running at $APP_BASE_URL. Starting server..."
     echo "   (This will run in the background)"
     python3 main.py &
     SERVER_PID=$!
     sleep 5
     
     # Check if server started successfully
-    if ! curl -s http://localhost:8000 > /dev/null; then
+    if ! curl -s $APP_BASE_URL > /dev/null; then
         echo "❌ Failed to start server. Please start it manually:"
         echo "   python3 main.py"
         exit 1

@@ -2,6 +2,142 @@
 
 All notable changes to the Automotive Service-Based Architecture project will be documented in this file.
 
+## [1.4.0] - 2025-08-12
+
+### 🔧 CORS Configuration: Environment-Driven Origins & S5 Test Fix
+
+#### ✨ Changes Made
+
+**CORS Middleware Configuration**
+- **Environment-Driven Origins**: Added `CORS_ALLOW_ORIGINS` environment variable support
+- **Proper CORS Specification**: Fixed wildcard origin issue with credentials (CORS spec compliance)
+- **Default Development Origins**: Set defaults to `http://localhost:8000,http://127.0.0.1:8000`
+- **Security Best Practices**: No wildcard origins when `allow_credentials=True`
+
+**FastAPI CORS Setup**
+- **CORSMiddleware Configuration**: Properly configured with environment-driven origins
+- **Preflight Support**: OPTIONS requests handled correctly with proper CORS headers
+- **Credentials Support**: `Access-Control-Allow-Credentials: true` properly set
+- **Method & Header Support**: All methods and headers allowed for development
+
+**Testing & Validation**
+- **S5 Test Fix**: Updated E2E test to properly assert CORS headers
+- **Playwright Context**: Configured test context to send Origin header for realistic CORS testing
+- **Header Validation**: Tests now verify `access-control-allow-origin` and `access-control-allow-credentials`
+- **Origin Validation**: Ensures allowed origins are used (not wildcard with credentials)
+
+**Code Quality**
+- **Environment Configuration**: CORS origins configurable via environment variables
+- **Type Safety**: Proper list handling and validation of CORS origins
+- **Documentation**: Clear comments explaining CORS configuration
+- **Error Handling**: Graceful fallback to default origins
+
+#### 🎯 Impact
+
+**S5 Test Success**
+- **Fixed CORS Headers**: S5 "FE↔BE Data Contract Assertions" test now passes
+- **Proper Headers**: `access-control-allow-origin` and `access-control-allow-credentials` correctly set
+- **Browser Compatibility**: Frontend-backend communication now works properly
+- **Test Reliability**: E2E tests now properly validate CORS configuration
+
+**Security & Compliance**
+- **CORS Specification**: Follows CORS specification correctly (no wildcard with credentials)
+- **Environment Flexibility**: Origins configurable for different environments
+- **Production Ready**: Proper CORS setup for production deployment
+
+**Development Experience**
+- **Local Development**: Works seamlessly with local development setup
+- **Environment Variables**: Easy configuration via `CORS_ALLOW_ORIGINS` environment variable
+- **Testing**: Comprehensive CORS testing in E2E test suite
+
+#### 📋 Technical Details
+
+**Files Modified**
+- `config.py`: Updated CORS configuration with environment-driven origins
+- `main.py`: Fixed CORSMiddleware configuration and exception handler
+- `tests/e2e/inspection.spec.ts`: Updated S5 test to properly test CORS headers
+
+**Environment Variables**
+- `CORS_ALLOW_ORIGINS`: Comma-separated list of allowed origins (default: localhost origins)
+
+**CORS Headers**
+- `Access-Control-Allow-Origin`: Set to allowed origin (not wildcard)
+- `Access-Control-Allow-Credentials`: Set to `true`
+- `Access-Control-Allow-Methods`: Set to `*` for development
+- `Access-Control-Allow-Headers`: Set to `*` for development
+
+**Test Configuration**
+- Playwright context configured with `Origin: http://localhost:8000` header
+- S5 test validates CORS headers are present and correct
+- Tests ensure no wildcard origins with credentials
+
+## [1.3.0] - 2025-08-11
+
+### 🔧 API Consistency: Canonical Invoice Endpoint & Backward Compatibility
+
+#### ✨ Changes Made
+
+**Canonical API Endpoint**
+- **Added `/api/invoices`**: Created canonical invoice creation endpoint following REST conventions
+- **Consistent API Pattern**: Aligned with existing `/api/inspections` pattern for API consistency
+- **Proper Status Codes**: Returns 200 OK with invoice creation response
+- **OpenAPI Documentation**: Automatically included in FastAPI docs at `/docs`
+
+**Backward Compatibility**
+- **Maintained `/invoices/api/invoices`**: Existing endpoint continues to work unchanged
+- **No Breaking Changes**: All existing clients continue to function without modification
+- **Dual Endpoint Support**: Both endpoints use the same underlying invoice creation logic
+
+**Testing & Validation**
+- **Smoke Test Suite**: Created `qa/test_invoice_api.py` with comprehensive endpoint testing
+- **Canonical Endpoint Test**: Validates POST `/api/invoices` with minimal valid payload
+- **Backward Compatibility Test**: Ensures `/invoices/api/invoices` still works
+- **Response Validation**: Verifies 201 Created status and JSON response with invoice ID
+- **Browser Test Updates**: Updated browser tests to test both endpoints
+
+**Code Quality**
+- **Pythonic Implementation**: Clean, maintainable code with proper error handling
+- **Type Safety**: Full type hints and Pydantic model validation
+- **Documentation**: Clear docstrings and inline comments
+- **Error Handling**: Proper HTTP status codes and error messages
+
+#### 🎯 API Impact
+
+**Consistency**
+- Invoice API now follows the same pattern as inspection API (`/api/invoices` vs `/api/inspections`)
+- Unified API structure across all endpoints
+- Better developer experience with predictable URL patterns
+
+**Future-Proofing**
+- Canonical endpoint ready for future API versioning
+- Backward compatibility ensures smooth migration path
+- OpenAPI documentation automatically generated for new endpoint
+
+**Testing Coverage**
+- Comprehensive smoke tests ensure endpoint reliability
+- Both endpoints validated for correct behavior
+- Browser tests updated to maintain coverage
+
+#### 📋 Technical Details
+
+**Files Modified**
+- `main.py`: Added canonical `/api/invoices` endpoint
+- `qa/test_invoice_api.py`: New smoke test suite
+- `qa/run_browser_tests.py`: Updated to test both endpoints
+
+**API Endpoints**
+- `POST /api/invoices` (canonical) - Creates new invoice
+- `POST /invoices/api/invoices` (legacy) - Maintains backward compatibility
+
+**Response Format**
+```json
+{
+  "message": "Invoice created successfully",
+  "invoice_id": "INV_20250811_044341",
+  "invoice_number": "INV-20250811-044341"
+}
+```
+
 ## [1.2.0] - 2025-08-10
 
 ### 🧹 MVP Readiness: Removed All Test Data & Fixed Missing Endpoints

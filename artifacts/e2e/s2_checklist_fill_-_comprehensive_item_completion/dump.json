@@ -1,0 +1,24 @@
+{
+  "title": "S2: Checklist Fill - comprehensive item completion",
+  "status": "timedOut",
+  "duration": 30522,
+  "artifacts": [
+    {
+      "type": "har",
+      "path": "artifacts/e2e/s2_checklist_fill_-_comprehensive_item_completion/fe-be.har",
+      "description": "HTTP Archive (HAR) file with all requests"
+    },
+    {
+      "type": "log",
+      "path": "artifacts/e2e/s2_checklist_fill_-_comprehensive_item_completion/console-and-network.log",
+      "description": "Console and network activity log"
+    },
+    {
+      "type": "response",
+      "path": "artifacts/e2e/s2_checklist_fill_-_comprehensive_item_completion/sample-response.json",
+      "description": "Sample API response data"
+    }
+  ],
+  "errorMessage": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+  "timestamp": "2025-08-12T09:24:32.505Z"
+}

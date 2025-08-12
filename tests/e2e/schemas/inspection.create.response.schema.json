@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string",
+      "description": "Success message"
+    },
+    "inspection_id": {
+      "type": "string",
+      "pattern": "^INSP_\\d{8}_\\d{6}$",
+      "description": "Unique inspection ID"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^INSP_\\d{8}_\\d{6}$"
+        },
+        "vin": {
+          "type": ["string", "null"]
+        },
+        "vehicle_id": {
+          "type": ["integer", "null"]
+        },
+        "vehicle_info": {
+          "type": ["object", "null"],
+          "properties": {
+            "vin": {"type": "string"},
+            "year": {"type": "string"},
+            "make": {"type": "string"},
+            "model": {"type": "string"},
+            "trim": {"type": "string"},
+            "engine": {"type": "string"},
+            "transmission": {"type": "string"},
+            "body_style": {"type": "string"},
+            "fuel_type": {"type": "string"},
+            "drivetrain": {"type": "string"},
+            "country_of_origin": {"type": "string"},
+            "plant_code": {"type": "string"},
+            "serial_number": {"type": "string"}
+          }
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "step": {"type": "string"},
+              "subcategory": {"type": "string"},
+              "item": {"type": "string"},
+              "status": {
+                "type": "string",
+                "enum": ["pass", "recommended", "required"]
+              },
+              "notes": {"type": ["string", "null"]},
+              "photo_url": {"type": ["string", "null"]}
+            },
+            "required": ["step", "subcategory", "item", "status"]
+          }
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "items", "created_at", "updated_at"]
+    }
+  },
+  "required": ["message", "inspection_id", "data"]
+}

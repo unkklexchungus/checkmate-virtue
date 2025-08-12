@@ -8,7 +8,14 @@ from pathlib import Path
 # Application Settings
 APP_NAME = "CheckMate Virtue"
 APP_VERSION = "1.0.0"
-APP_DESCRIPTION = "Professional Multi-Industry Inspection System"
+APP_DESCRIPTION = "Professional Automotive Inspection System"
+
+# Import the new runtime configuration
+from app.config.runtime import BASE_URL, build_url, log_startup_info, validate_base_url
+
+# Base URL Configuration - Single source of truth for all environments
+# Now handled by app.config.runtime
+APP_BASE_URL = BASE_URL
 
 # Server Settings - Railway compatible
 HOST = "0.0.0.0"
@@ -27,8 +34,9 @@ UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 TEMPLATES_DIR.mkdir(exist_ok=True)
 DATA_DIR.mkdir(exist_ok=True)
 
-# CORS Settings - Railway compatible
-CORS_ORIGINS = ["*"]  # Configure for production domains
+# CORS Settings - Environment-driven with proper defaults
+CORS_ALLOW_ORIGINS = os.getenv("CORS_ALLOW_ORIGINS", "http://localhost:8000,http://127.0.0.1:8000").split(",")
+CORS_ORIGINS = [origin.strip() for origin in CORS_ALLOW_ORIGINS if origin.strip()]
 CORS_CREDENTIALS = True
 CORS_METHODS = ["*"]
 CORS_HEADERS = ["*"]
@@ -101,7 +109,7 @@ RATE_LIMIT_WINDOW = 60  # seconds
 
 # Monitoring settings
 ENABLE_HEALTH_CHECK = True
-HEALTH_CHECK_ENDPOINT = "/health"
+HEALTH_CHECK_ENDPOINT = "/healthz"
 ENABLE_METRICS = IS_PRODUCTION
 METRICS_ENDPOINT = "/metrics"
 

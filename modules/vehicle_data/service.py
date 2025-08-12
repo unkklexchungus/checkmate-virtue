@@ -10,13 +10,8 @@ from typing import Optional
 from .vin_decoder import parse_vin_response
 from .models import VehicleInfo
 
-# Try to import API Verve service (optional)
-try:
-    from .api_verve_service import decode_vin_with_api_verve
-    API_VERVE_AVAILABLE = True
-except ImportError:
-    API_VERVE_AVAILABLE = False
-    print("API Verve service not available - using NHTSA API only")
+# API Verve service removed - using NHTSA API only
+API_VERVE_AVAILABLE = False
 
 # NHTSA API endpoint
 NHTSA_API = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/{vin}?format=json"
@@ -156,7 +151,7 @@ def enrich_vehicle_data(vehicle_info: VehicleInfo, vin: str) -> VehicleInfo:
 
 async def decode_vin(vin: str) -> VehicleInfo:
     """
-    Decode VIN using API Verve service with enhanced fallbacks and data enrichment.
+    Decode VIN using NHTSA API with enhanced fallbacks and data enrichment.
     
     Args:
         vin: Vehicle Identification Number to decode
@@ -168,20 +163,6 @@ async def decode_vin(vin: str) -> VehicleInfo:
         Exception: If all services fail
     """
     vehicle_info = None
-    
-    # Try API Verve service first (primary service)
-    if API_VERVE_AVAILABLE:
-        try:
-            print(f"Trying API Verve service for VIN {vin}")
-            vehicle_info = await decode_vin_with_api_verve(vin)
-            if vehicle_info and vehicle_info.make:
-                print(f"API Verve service returned data for VIN {vin}")
-            else:
-                print(f"API Verve service returned no data for VIN {vin}")
-                vehicle_info = None
-        except Exception as e:
-            print(f"API Verve service failed for VIN {vin}: {e}")
-            vehicle_info = None
     
     # Try NHTSA API to supplement or replace limited data
     try:

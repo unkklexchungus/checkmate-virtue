@@ -124,7 +124,7 @@ class CustomTestRunner(BrowserTestRunner):
 def main():
     """Main entry point for custom tests."""
     # Set default configuration
-    os.environ.setdefault("BASE_URL", "http://localhost:8000")
+    os.environ.setdefault("APP_BASE_URL", "http://127.0.0.1:8000")
     os.environ.setdefault("HEADLESS", "true")
     
     try:

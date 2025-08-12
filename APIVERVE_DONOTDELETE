@@ -1,0 +1,419 @@
+# API VERVE BACKUP - DO NOT DELETE
+# This file contains all API Verve related code that was removed from the main codebase
+# Date: 2025-08-11
+# Reason: API tokens depleted, switching to NHTSA API only
+
+# ============================================================================
+# FILE: modules/vehicle_data/api_verve_service.py
+# ============================================================================
+
+"""
+API Verve VIN Decoder service integration for CheckMate Virtue.
+This module provides a Python interface to the Node.js VIN decoder CLI.
+"""
+
+import asyncio
+import json
+import subprocess
+import os
+from pathlib import Path
+from typing import Optional, Dict, Any
+from .models import VehicleInfo
+from .vin_decoder import parse_vin_response
+
+class APIVerveVINDecoder:
+    """
+    Python wrapper for the API Verve VIN decoder CLI.
+    """
+    
+    def __init__(self, cli_path: str = None):
+        """
+        Initialize the API Verve VIN decoder.
+        
+        Args:
+            cli_path: Path to the VIN decoder CLI script
+        """
+        if cli_path is None:
+            # Default to the CLI in the project root
+            cli_path = Path(__file__).parent.parent.parent / "vin_decoder_cli.js"
+        
+        self.cli_path = Path(cli_path)
+        
+        if not self.cli_path.exists():
+            raise FileNotFoundError(f"VIN decoder CLI not found at {self.cli_path}")
+    
+    async def decode_vin(self, vin: str) -> Optional[VehicleInfo]:
+        """
+        Decode a VIN using the API Verve service.
+        
+        Args:
+            vin: Vehicle Identification Number to decode
+            
+        Returns:
+            VehicleInfo object with decoded vehicle data, or None if failed
+        """
+        try:
+            # Run the Node.js CLI as a subprocess
+            process = await asyncio.create_subprocess_exec(
+                'node', str(self.cli_path), vin,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+                env=os.environ.copy()
+            )
+            
+            stdout, stderr = await process.communicate()
+            
+            if process.returncode != 0:
+                stderr_output = stderr.decode()
+                print(f"API Verve CLI failed for VIN {vin}: {stderr_output}")
+                
+                # Check if tokens are depleted
+                if "tokens have been depleted" in stderr_output.lower():
+                    raise Exception("API Verve tokens have been depleted")
+                
+                return None
+            
+            # Parse the output to extract vehicle data
+            output = stdout.decode()
+            vehicle_data = self._parse_cli_output(output, vin)
+            
+            if vehicle_data:
+                return parse_vin_response(vin, vehicle_data)
+            else:
+                return None
+                
+        except Exception as e:
+            print(f"API Verve service error for VIN {vin}: {e}")
+            return None
+    
+    def _parse_cli_output(self, output: str, vin: str) -> Optional[Dict[str, Any]]:
+        """
+        Parse the CLI output to extract vehicle data.
+        
+        Args:
+            output: Raw CLI output
+            vin: The VIN that was decoded
+            
+        Returns:
+            Dictionary with vehicle data in NHTSA format, or None if parsing failed
+        """
+        try:
+            # Look for the vehicle information in the output
+            lines = output.split('\n')
+            vehicle_data = {}
+            
+            # Extract vehicle information from the formatted output
+            for line in lines:
+                line = line.strip()
+                if line.startswith('📅 Year:'):
+                    year = line.split(':', 1)[1].strip()
+                    if year != 'N/A':
+                        vehicle_data['ModelYear'] = year
+                elif line.startswith('🏭 Make:'):
+                    make = line.split(':', 1)[1].strip()
+                    if make != 'N/A':
+                        vehicle_data['Make'] = make
+                elif line.startswith('🚗 Model:'):
+                    model = line.split(':', 1)[1].strip()
+                    if model != 'N/A':
+                        vehicle_data['Model'] = model
+                elif line.startswith('🎨 Trim:'):
+                    trim = line.split(':', 1)[1].strip()
+                    if trim != 'N/A':
+                        vehicle_data['Trim'] = trim
+                elif line.startswith('🔧 Engine:'):
+                    engine = line.split(':', 1)[1].strip()
+                    if engine != 'N/A':
+                        vehicle_data['Engine'] = engine
+                elif line.startswith('⚙️ Transmission:'):
+                    transmission = line.split(':', 1)[1].strip()
+                    if transmission != 'N/A':
+                        vehicle_data['Transmission'] = transmission
+                elif line.startswith('🚪 Body Style:'):
+                    body_style = line.split(':', 1)[1].strip()
+                    if body_style != 'N/A':
+                        vehicle_data['BodyStyle'] = body_style
+                elif line.startswith('⛽ Fuel Type:'):
+                    fuel_type = line.split(':', 1)[1].strip()
+                    if fuel_type != 'N/A':
+                        vehicle_data['FuelType'] = fuel_type
+                elif line.startswith('🌍 Country:'):
+                    country = line.split(':', 1)[1].strip()
+                    if country != 'N/A':
+                        vehicle_data['Country'] = country
+                elif line.startswith('🏢 Manufacturer:'):
+                    manufacturer = line.split(':', 1)[1].strip()
+                    if manufacturer != 'N/A':
+                        vehicle_data['Manufacturer'] = manufacturer
+            
+            # Add the VIN
+            vehicle_data['VIN'] = vin
+            
+            return vehicle_data if len(vehicle_data) > 1 else None
+            
+        except Exception as e:
+            print(f"Error parsing CLI output: {e}")
+            return None
+
+# Convenience function for direct use
+async def decode_vin_with_api_verve(vin: str) -> Optional[VehicleInfo]:
+    """
+    Decode VIN using API Verve service.
+    
+    Args:
+        vin: Vehicle Identification Number to decode
+        
+    Returns:
+        VehicleInfo object with decoded vehicle data, or None if failed
+    """
+    decoder = APIVerveVINDecoder()
+    return await decoder.decode_vin(vin)
+
+# ============================================================================
+# FILE: vin_decoder_cli.js
+# ============================================================================
+
+#!/usr/bin/env node
+
+const VINDecoderAPI = require('@apiverve/vindecoder');
+const readline = require('readline');
+
+// Configuration
+const config = {
+    api_key: process.env.VIN_DECODER_API_KEY || 'a2319a72-88ff-4298-9bdb-0393d46ad3a4',
+    secure: true
+};
+
+// Create API instance
+const api = new VINDecoderAPI(config);
+
+// Create readline interface for interactive input
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+// Function to decode VIN
+function decodeVIN(vin) {
+    return new Promise((resolve, reject) => {
+        console.log(`🔍 Decoding VIN: ${vin}`);
+        
+        api.execute({ vin: vin }, (error, result) => {
+            if (error) {
+                console.error('❌ Error decoding VIN:', error.message || error);
+                
+                // Check if tokens are depleted
+                if (error.message && error.message.toLowerCase().includes('tokens have been depleted')) {
+                    console.error('💳 API tokens depleted - please refill your API Verve account');
+                }
+                
+                reject(error);
+                return;
+            }
+            
+            if (result && result.data) {
+                console.log('\n✅ VIN Decoded Successfully!');
+                console.log('='.repeat(50));
+                
+                const vehicle = result.data;
+                
+                // Display vehicle information in a formatted way
+                console.log(`📅 Year: ${vehicle.year || 'N/A'}`);
+                console.log(`🏭 Make: ${vehicle.make || 'N/A'}`);
+                console.log(`🚗 Model: ${vehicle.model || 'N/A'}`);
+                console.log(`🎨 Trim: ${vehicle.trim || 'N/A'}`);
+                console.log(`🔧 Engine: ${vehicle.engine || 'N/A'}`);
+                console.log(`⚙️ Transmission: ${vehicle.transmission || 'N/A'}`);
+                console.log(`🚪 Body Style: ${vehicle.body_style || 'N/A'}`);
+                console.log(`⛽ Fuel Type: ${vehicle.fuel_type || 'N/A'}`);
+                console.log(`🌍 Country: ${vehicle.country || 'N/A'}`);
+                console.log(`🏢 Manufacturer: ${vehicle.manufacturer || 'N/A'}`);
+                
+                if (vehicle.recalls) {
+                    console.log(`⚠️ Recalls: ${vehicle.recalls.length || 0}`);
+                }
+                
+                console.log('='.repeat(50));
+                
+                // Return the data for programmatic use
+                resolve(vehicle);
+            } else {
+                console.log('❌ No data returned from API');
+                resolve(null);
+            }
+        });
+    });
+}
+
+// Function to prompt for VIN input
+function promptForVIN() {
+    return new Promise((resolve) => {
+        rl.question('Enter VIN to decode (or "quit" to exit): ', (vin) => {
+            resolve(vin.trim().toUpperCase());
+        });
+    });
+}
+
+// Function to validate VIN format
+function validateVIN(vin) {
+    // Basic VIN validation (17 characters, alphanumeric)
+    const vinRegex = /^[A-HJ-NPR-Z0-9]{17}$/;
+    return vinRegex.test(vin);
+}
+
+// Main function
+async function main() {
+    console.log('🚗 VIN Decoder CLI');
+    console.log('==================');
+    console.log(`API Key: ${config.api_key === 'your-api-key-here' ? '❌ Not configured' : '✅ Configured'}`);
+    console.log('');
+    
+    // Check if VIN was provided as command line argument
+    const args = process.argv.slice(2);
+    
+    if (args.length > 0) {
+        const vin = args[0].toUpperCase();
+        
+        if (!validateVIN(vin)) {
+            console.log('❌ Invalid VIN format. VIN must be 17 characters long and contain only letters and numbers (excluding I, O, Q).');
+            process.exit(1);
+        }
+        
+        try {
+            const result = await decodeVIN(vin);
+            if (result) {
+                console.log('\n🎉 VIN decoding completed successfully!');
+            } else {
+                console.log('\n❌ VIN decoding failed.');
+                process.exit(1);
+            }
+        } catch (error) {
+            console.log('\n❌ VIN decoding failed with error:', error.message);
+            process.exit(1);
+        }
+        
+        rl.close();
+        return;
+    }
+    
+    // Interactive mode
+    console.log('Interactive mode - enter VINs to decode');
+    console.log('Type "quit" to exit\n');
+    
+    while (true) {
+        try {
+            const vin = await promptForVIN();
+            
+            if (vin.toLowerCase() === 'quit') {
+                console.log('👋 Goodbye!');
+                break;
+            }
+            
+            if (!validateVIN(vin)) {
+                console.log('❌ Invalid VIN format. Please enter a valid 17-character VIN.\n');
+                continue;
+            }
+            
+            const result = await decodeVIN(vin);
+            if (result) {
+                console.log('\n🎉 VIN decoding completed successfully!\n');
+            } else {
+                console.log('\n❌ VIN decoding failed.\n');
+            }
+            
+        } catch (error) {
+            console.log('\n❌ Error:', error.message, '\n');
+        }
+    }
+    
+    rl.close();
+}
+
+// Handle process termination
+process.on('SIGINT', () => {
+    console.log('\n👋 Goodbye!');
+    rl.close();
+    process.exit(0);
+});
+
+// Run the main function
+if (require.main === module) {
+    main().catch(error => {
+        console.error('❌ Fatal error:', error);
+        process.exit(1);
+    });
+}
+
+module.exports = { decodeVIN, validateVIN };
+
+# ============================================================================
+# API VERVE INTEGRATION CODE FROM service.py (REMOVED PARTS)
+# ============================================================================
+
+# Try to import API Verve service (optional)
+try:
+    from .api_verve_service import decode_vin_with_api_verve
+    API_VERVE_AVAILABLE = True
+except ImportError:
+    API_VERVE_AVAILABLE = False
+    print("API Verve service not available - using NHTSA API only")
+
+# Global flag to track API Verve token depletion
+API_VERVE_TOKENS_DEPLETED = False
+
+# API Verve integration code that was in decode_vin function:
+"""
+    # Try API Verve service first (primary service) - skip if tokens depleted
+    if API_VERVE_AVAILABLE and not API_VERVE_TOKENS_DEPLETED:
+        try:
+            print(f"Trying API Verve service for VIN {vin}")
+            vehicle_info = await decode_vin_with_api_verve(vin)
+            if vehicle_info and vehicle_info.make:
+                print(f"API Verve service returned data for VIN {vin}")
+            else:
+                print(f"API Verve service returned no data for VIN {vin}")
+                vehicle_info = None
+        except Exception as e:
+            error_msg = str(e).lower()
+            if "tokens have been depleted" in error_msg or "token" in error_msg:
+                print(f"API Verve tokens depleted - skipping API Verve for future requests")
+                API_VERVE_TOKENS_DEPLETED = True
+            else:
+                print(f"API Verve service failed for VIN {vin}: {e}")
+            vehicle_info = None
+    elif API_VERVE_TOKENS_DEPLETED:
+        print(f"Skipping API Verve service - tokens depleted")
+"""
+
+# ============================================================================
+# PACKAGE.JSON SCRIPTS (if they existed)
+# ============================================================================
+
+"""
+{
+  "scripts": {
+    "decode": "node vin_decoder_cli.js",
+    "test": "node vin_decoder_cli.js 1HGBH41JXMN109186"
+  }
+}
+"""
+
+# ============================================================================
+# ENVIRONMENT VARIABLES
+# ============================================================================
+
+"""
+VIN_DECODER_API_KEY=a2319a72-88ff-4298-9bdb-0393d46ad3a4
+"""
+
+# ============================================================================
+# NPM PACKAGE DEPENDENCIES
+# ============================================================================
+
+"""
+@apiverve/vindecoder
+"""
+
+# ============================================================================
+# END OF API VERVE BACKUP
+# ============================================================================

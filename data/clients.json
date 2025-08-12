@@ -19,5 +19,194 @@
     "notes": "Test client for browser testing",
     "created_at": "2025-08-10T06:00:00.000000",
     "updated_at": "2025-08-10T06:00:00.000000"
+  },
+  {
+    "id": "test_client_002",
+    "name": "John Smith",
+    "company": "Smith Automotive",
+    "address": {
+      "street": "456 Main Ave",
+      "city": "Downtown",
+      "state": "NY",
+      "zip_code": "10001",
+      "country": "USA"
+    },
+    "contact": {
+      "phone": "555-987-6543",
+      "email": "john@smithauto.com",
+      "website": "https://smithauto.com"
+    },
+    "tax_id": "987654321",
+    "notes": "Premium automotive client",
+    "created_at": "2025-08-10T07:00:00.000000",
+    "updated_at": "2025-08-10T07:00:00.000000"
+  },
+  {
+    "id": "test_client_003",
+    "name": "Jane Doe",
+    "company": "Doe's Garage",
+    "address": {
+      "street": "789 Oak Blvd",
+      "city": "Suburbia",
+      "state": "TX",
+      "zip_code": "75001",
+      "country": "USA"
+    },
+    "contact": {
+      "phone": "555-456-7890",
+      "email": "jane@doesgarage.com",
+      "website": null
+    },
+    "tax_id": "456789123",
+    "notes": "Family-owned garage",
+    "created_at": "2025-08-10T08:00:00.000000",
+    "updated_at": "2025-08-10T08:00:00.000000"
+  },
+  {
+    "id": "CLIENT_20250811_044242",
+    "name": "Test Client",
+    "company": "Test Company",
+    "address": {
+      "street": "123 Test St",
+      "city": "Test City",
+      "state": "CA",
+      "zip_code": "90210",
+      "country": "USA"
+    },
+    "contact": {
+      "phone": "(555) 123-4567",
+      "email": "test@example.com",
+      "website": null
+    },
+    "tax_id": null,
+    "notes": null,
+    "created_at": "2025-08-11T04:42:42.687258",
+    "updated_at": "2025-08-11T04:42:42.687263"
+  },
+  {
+    "id": "CLIENT_20250811_044322",
+    "name": "Test Client",
+    "company": "Test Company",
+    "address": {
+      "street": "123 Test St",
+      "city": "Test City",
+      "state": "CA",
+      "zip_code": "90210",
+      "country": "USA"
+    },
+    "contact": {
+      "phone": "(555) 123-4567",
+      "email": "test@example.com",
+      "website": null
+    },
+    "tax_id": null,
+    "notes": null,
+    "created_at": "2025-08-11T04:43:22.256666",
+    "updated_at": "2025-08-11T04:43:22.256670"
+  },
+  {
+    "id": "CLIENT_20250811_044322",
+    "name": "Test Client",
+    "company": "Test Company",
+    "address": {
+      "street": "123 Test St",
+      "city": "Test City",
+      "state": "CA",
+      "zip_code": "90210",
+      "country": "USA"
+    },
+    "contact": {
+      "phone": "(555) 123-4567",
+      "email": "test@example.com",
+      "website": null
+    },
+    "tax_id": null,
+    "notes": null,
+    "created_at": "2025-08-11T04:43:22.264521",
+    "updated_at": "2025-08-11T04:43:22.264524"
+  },
+  {
+    "id": "CLIENT_20250811_044341",
+    "name": "Test Client",
+    "company": "Test Company",
+    "address": {
+      "street": "123 Test St",
+      "city": "Test City",
+      "state": "CA",
+      "zip_code": "90210",
+      "country": "USA"
+    },
+    "contact": {
+      "phone": "(555) 123-4567",
+      "email": "test@example.com",
+      "website": null
+    },
+    "tax_id": null,
+    "notes": null,
+    "created_at": "2025-08-11T04:43:41.719572",
+    "updated_at": "2025-08-11T04:43:41.719576"
+  },
+  {
+    "id": "CLIENT_20250811_044341",
+    "name": "Test Client",
+    "company": "Test Company",
+    "address": {
+      "street": "123 Test St",
+      "city": "Test City",
+      "state": "CA",
+      "zip_code": "90210",
+      "country": "USA"
+    },
+    "contact": {
+      "phone": "(555) 123-4567",
+      "email": "test@example.com",
+      "website": null
+    },
+    "tax_id": null,
+    "notes": null,
+    "created_at": "2025-08-11T04:43:41.727610",
+    "updated_at": "2025-08-11T04:43:41.727614"
+  },
+  {
+    "id": "CLIENT_20250811_044517",
+    "name": "Test Client",
+    "company": "Test Company",
+    "address": {
+      "street": "123 Test St",
+      "city": "Test City",
+      "state": "CA",
+      "zip_code": "90210",
+      "country": "USA"
+    },
+    "contact": {
+      "phone": "(555) 123-4567",
+      "email": "test@example.com",
+      "website": null
+    },
+    "tax_id": null,
+    "notes": null,
+    "created_at": "2025-08-11T04:45:17.354164",
+    "updated_at": "2025-08-11T04:45:17.354169"
+  },
+  {
+    "id": "CLIENT_20250811_044517",
+    "name": "Test Client",
+    "company": "Test Company",
+    "address": {
+      "street": "123 Test St",
+      "city": "Test City",
+      "state": "CA",
+      "zip_code": "90210",
+      "country": "USA"
+    },
+    "contact": {
+      "phone": "(555) 123-4567",
+      "email": "test@example.com",
+      "website": null
+    },
+    "tax_id": null,
+    "notes": null,
+    "created_at": "2025-08-11T04:45:17.362131",
+    "updated_at": "2025-08-11T04:45:17.362135"
   }
 ]

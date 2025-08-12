@@ -1,0 +1,24 @@
+{
+  "title": "S5: FE↔BE Data Contract Assertions",
+  "status": "failed",
+  "duration": 513,
+  "artifacts": [
+    {
+      "type": "har",
+      "path": "artifacts/e2e/s5_febe_data_contract_assertions/fe-be.har",
+      "description": "HTTP Archive (HAR) file with all requests"
+    },
+    {
+      "type": "log",
+      "path": "artifacts/e2e/s5_febe_data_contract_assertions/console-and-network.log",
+      "description": "Console and network activity log"
+    },
+    {
+      "type": "response",
+      "path": "artifacts/e2e/s5_febe_data_contract_assertions/sample-response.json",
+      "description": "Sample API response data"
+    }
+  ],
+  "errorMessage": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m",
+  "timestamp": "2025-08-12T09:38:18.922Z"
+}

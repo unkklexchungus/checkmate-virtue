@@ -170,9 +170,9 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h6 class="mb-0">
                             <i class="fas fa-clipboard-check"></i>
-                            ${inspection.id}
+                            ${inspection.title || inspection.id}
                         </h6>
-                        <span class="badge bg-secondary">${formatDate(inspection.created_at)}</span>
+                        <span class="badge bg-secondary">${formatDate(inspection.created_at || inspection.date)}</span>
                     </div>
                     <div class="card-body">
                         ${inspection.vehicle_info ? `
@@ -215,7 +215,7 @@
                         </div>
                         
                         <small class="text-muted">
-                            ${inspection.items.length} items inspected
+                            ${stats.total} items inspected
                         </small>
                     </div>
                     <div class="card-footer">
@@ -235,18 +235,31 @@
                 pass: 0,
                 recommended: 0,
                 required: 0,
-                total: inspection.items.length
+                total: 0
             };
 
-            inspection.items.forEach(item => {
-                switch(item.status) {
+            // Use new format (categories)
+            const items = inspection.categories ? 
+                inspection.categories.flatMap(category => category.items || []) : [];
+
+            stats.total = items.length;
+
+            items.forEach(item => {
+                const grade = item.grade || 'N/A';
+                switch(grade.toLowerCase()) {
                     case 'pass':
+                    case 'good':
+                    case 'excellent':
                         stats.pass++;
                         break;
                     case 'recommended':
+                    case 'warning':
                         stats.recommended++;
                         break;
                     case 'required':
+                    case 'fail':
+                    case 'poor':
+                    case 'critical':
                         stats.required++;
                         break;
                 }
@@ -266,15 +279,26 @@
             let totalRequired = 0;
 
             inspections.forEach(inspection => {
-                inspection.items.forEach(item => {
-                    switch(item.status) {
+                // Use new format (categories)
+                const items = inspection.categories ? 
+                    inspection.categories.flatMap(category => category.items || []) : [];
+
+                items.forEach(item => {
+                    const grade = item.grade || 'N/A';
+                    switch(grade.toLowerCase()) {
                         case 'pass':
+                        case 'good':
+                        case 'excellent':
                             totalPassed++;
                             break;
                         case 'recommended':
+                        case 'warning':
                             totalRecommended++;
                             break;
                         case 'required':
+                        case 'fail':
+                        case 'poor':
+                        case 'critical':
                             totalRequired++;
                             break;
                     }

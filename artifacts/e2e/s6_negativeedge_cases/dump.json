@@ -1,0 +1,23 @@
+{
+  "title": "S6: Negative/Edge Cases",
+  "status": "skipped",
+  "duration": 0,
+  "artifacts": [
+    {
+      "type": "har",
+      "path": "artifacts/e2e/s6_negativeedge_cases/fe-be.har",
+      "description": "HTTP Archive (HAR) file with all requests"
+    },
+    {
+      "type": "log",
+      "path": "artifacts/e2e/s6_negativeedge_cases/console-and-network.log",
+      "description": "Console and network activity log"
+    },
+    {
+      "type": "response",
+      "path": "artifacts/e2e/s6_negativeedge_cases/sample-response.json",
+      "description": "Sample API response data"
+    }
+  ],
+  "timestamp": "2025-08-12T09:31:54.987Z"
+}

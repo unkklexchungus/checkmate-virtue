@@ -26,8 +26,10 @@ import tempfile
 import os
 
 from config import *
+from app.config.runtime import log_startup_info, validate_base_url
 from auth import setup_auth_middleware, get_user_from_session
 from invoice_routes import router as invoice_router
+from models import CreateInvoiceRequest
 from modules.vehicle_data.routes import router as vehicle_router
 from modules.inspection.routes import router as inspection_router
 
@@ -277,13 +279,13 @@ app = FastAPI(
     version=APP_VERSION
 )
 
-# CORS middleware
+# CORS middleware - Environment-driven configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=CORS_ORIGINS,
-    allow_credentials=CORS_CREDENTIALS,
-    allow_methods=CORS_METHODS,
-    allow_headers=CORS_HEADERS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Static files
@@ -305,9 +307,10 @@ async def method_not_allowed_handler(request: Request, exc: HTTPException):
             status_code=200,
             content={"message": "OK"},
             headers={
-                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Origin": CORS_ORIGINS[0] if CORS_ORIGINS else "http://localhost:8000",
                 "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
                 "Access-Control-Allow-Headers": "*",
+                "Access-Control-Allow-Credentials": "true",
             }
         )
     
@@ -334,6 +337,11 @@ app.include_router(inspection_router)
 
 
 # Routes
+@app.get("/healthz")
+async def health_check() -> Dict[str, str]:
+    """Health check endpoint for service monitoring and test setup."""
+    return {"status": "ok"}
+
 @app.get("/")
 async def root(request: Request) -> HTMLResponse:
     """Home page."""
@@ -458,6 +466,15 @@ async def create_inspection(inspection: InspectionRequest) -> Dict[str, str]:
         "inspection_id": inspection_data["id"]
     }
 
+@app.post("/api/invoices")
+async def create_invoice_canonical(request: CreateInvoiceRequest) -> Dict[str, Any]:
+    """Create a new invoice - canonical API endpoint."""
+    # Import the invoice creation logic from invoice_routes
+    from invoice_routes import create_invoice
+    
+    # Call the existing invoice creation function
+    return await create_invoice(request)
+
 @app.get("/inspections/{inspection_id}", response_class=HTMLResponse)
 async def view_inspection(request: Request, inspection_id: str) -> HTMLResponse:
     """View a specific inspection."""
@@ -521,7 +538,7 @@ async def upload_photo(
                             item_data["photos"] = []
                         item_data["photos"].append(filename)
                         update_inspection_data(inspection_id, inspection)
-                        return {"message": "Photo uploaded successfully", "filename": filename}
+                        return {"message": "Photo uploaded successfully", "photo_url": f"/static/uploads/{filename}"}
     elif "items" in inspection:
         # New structure with items array
         if not inspection["items"]:
@@ -536,23 +553,34 @@ async def upload_photo(
             }
             inspection["items"].append(new_item)
             update_inspection_data(inspection_id, inspection)
-            return {"message": "Photo uploaded successfully", "filename": filename}
+            return {"message": "Photo uploaded successfully", "photo_url": f"/static/uploads/{filename}"}
         
         # Check existing items
         for item_data in inspection["items"]:
             # Check if this item matches the category and item name
             # The category parameter contains "step - subcategory" format
-            if (item_data.get("step", "").lower().replace(" ", "_") + "_" + 
-                item_data.get("subcategory", "").lower().replace(" ", "_") == category.lower().replace(" ", "_") and
-                item_data.get("item", "").lower().replace(" ", "_") == item.lower().replace(" ", "_")):
+            expected_category = f"{item_data.get('step', '')} - {item_data.get('subcategory', '')}"
+            if (expected_category.lower() == category.lower() and
+                item_data.get("item", "").lower() == item.lower()):
                 
                 if "photo_url" not in item_data:
                     item_data["photo_url"] = ""
                 item_data["photo_url"] = f"/static/uploads/{filename}"
                 update_inspection_data(inspection_id, inspection)
-                return {"message": "Photo uploaded successfully", "filename": filename}
-    
-    raise HTTPException(status_code=404, detail="Category or item not found")
+                return {"message": "Photo uploaded successfully", "photo_url": f"/static/uploads/{filename}"}
+        
+        # If we get here, the item doesn't exist, so create it
+        new_item = {
+            "step": category.split(" - ")[0] if " - " in category else category,
+            "subcategory": category.split(" - ")[1] if " - " in category else "",
+            "item": item,
+            "status": "",
+            "notes": "",
+            "photo_url": f"/static/uploads/{filename}"
+        }
+        inspection["items"].append(new_item)
+        update_inspection_data(inspection_id, inspection)
+        return {"message": "Photo uploaded successfully", "photo_url": f"/static/uploads/{filename}"}
 
 @app.get("/api/inspections/{inspection_id}")
 async def get_inspection_api(inspection_id: str) -> Dict[str, Any]:
@@ -647,5 +675,9 @@ async def generate_pdf_report_endpoint(inspection_id: str) -> FileResponse:
 
 
 if __name__ == "__main__":
+    # Log startup information and validate configuration
+    log_startup_info()
+    validate_base_url()
+    
     port = int(os.getenv("PORT", PORT))
     uvicorn.run(app, host=HOST, port=port)

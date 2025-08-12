@@ -21,4 +21,5 @@ class VehicleInfo(BaseModel):
     drivetrain: Optional[str] = Field(None, description="Drivetrain type")
     country_of_origin: Optional[str] = Field(None, description="Country of origin")
     plant_code: Optional[str] = Field(None, description="Manufacturing plant code")
-    serial_number: Optional[str] = Field(None, description="Serial number") 
+    serial_number: Optional[str] = Field(None, description="Serial number")
+    vehicle_type: Optional[str] = Field(None, description="Vehicle type (PASSENGER CAR, TRUCK, etc.)") 

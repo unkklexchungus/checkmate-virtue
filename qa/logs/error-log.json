@@ -1,1 +1,146 @@
-{}
+{
+  "navigation": {
+    "NAVIGATION_ERROR": [
+      {
+        "message": "Failed to navigate to http://localhost:8000/: Page.goto: 'str' object is not callable",
+        "url": "http://localhost:8000/",
+        "timestamp": "2025-08-11T03:27:11.935815",
+        "screenshot_path": "screenshots/error_navigation_NAVIGATION_ERROR_1754900831.png",
+        "html_snapshot": null,
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to navigate to http://localhost:8000/inspection/form: Page.goto: 'str' object is not callable",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-11T03:27:12.944532",
+        "screenshot_path": "screenshots/error_navigation_NAVIGATION_ERROR_1754900832.png",
+        "html_snapshot": null,
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to navigate to http://localhost:8000/inspections: Page.goto: 'str' object is not callable",
+        "url": "http://localhost:8000/inspections",
+        "timestamp": "2025-08-11T03:27:14.271279",
+        "screenshot_path": "screenshots/error_navigation_NAVIGATION_ERROR_1754900834.png",
+        "html_snapshot": null,
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to navigate to http://localhost:8000/inspections/new: Page.goto: 'str' object is not callable",
+        "url": "http://localhost:8000/inspections/new",
+        "timestamp": "2025-08-11T03:27:15.279505",
+        "screenshot_path": "screenshots/error_navigation_NAVIGATION_ERROR_1754900835.png",
+        "html_snapshot": null,
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to navigate to http://localhost:8000/invoices: Page.goto: 'str' object is not callable",
+        "url": "http://localhost:8000/invoices",
+        "timestamp": "2025-08-11T03:27:16.288491",
+        "screenshot_path": "screenshots/error_navigation_NAVIGATION_ERROR_1754900836.png",
+        "html_snapshot": null,
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to navigate to http://localhost:8000/invoices/new: Page.goto: 'str' object is not callable",
+        "url": "http://localhost:8000/invoices/new",
+        "timestamp": "2025-08-11T03:27:17.296499",
+        "screenshot_path": "screenshots/error_navigation_NAVIGATION_ERROR_1754900837.png",
+        "html_snapshot": null,
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to navigate to http://localhost:8000/invoices/clients: Page.goto: 'str' object is not callable",
+        "url": "http://localhost:8000/invoices/clients",
+        "timestamp": "2025-08-11T03:27:18.305276",
+        "screenshot_path": "screenshots/error_navigation_NAVIGATION_ERROR_1754900838.png",
+        "html_snapshot": null,
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to navigate to http://localhost:8000/invoices/clients/new: Page.goto: 'str' object is not callable",
+        "url": "http://localhost:8000/invoices/clients/new",
+        "timestamp": "2025-08-11T03:27:19.313183",
+        "screenshot_path": "screenshots/error_navigation_NAVIGATION_ERROR_1754900839.png",
+        "html_snapshot": null,
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to navigate to http://localhost:8000/test-vin: Page.goto: 'str' object is not callable",
+        "url": "http://localhost:8000/test-vin",
+        "timestamp": "2025-08-11T03:27:20.321740",
+        "screenshot_path": "screenshots/error_navigation_NAVIGATION_ERROR_1754900840.png",
+        "html_snapshot": null,
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to navigate to http://localhost:8000/test-vin-simple: Page.goto: 'str' object is not callable",
+        "url": "http://localhost:8000/test-vin-simple",
+        "timestamp": "2025-08-11T03:27:21.333110",
+        "screenshot_path": "screenshots/error_navigation_NAVIGATION_ERROR_1754900841.png",
+        "html_snapshot": null,
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to navigate to http://localhost:8000/inspections: Page.goto: 'str' object is not callable",
+        "url": "http://localhost:8000/inspections",
+        "timestamp": "2025-08-11T03:27:23.561421",
+        "screenshot_path": null,
+        "html_snapshot": null,
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to navigate to http://localhost:8000/invoices: Page.goto: 'str' object is not callable",
+        "url": "http://localhost:8000/invoices",
+        "timestamp": "2025-08-11T03:27:24.569865",
+        "screenshot_path": null,
+        "html_snapshot": null,
+        "stack_trace": null
+      }
+    ]
+  },
+  "inspection-service": {
+    "API_ERROR": [
+      {
+        "message": "Automotive template API exception: APIRequestContext.get: connect ECONNREFUSED ::1:8000\nCall log:\n  - \u2192 GET http://localhost:8000/api/inspection-template\n    - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n",
+        "url": "http://localhost:8000/api/inspection-template",
+        "timestamp": "2025-08-11T03:27:13.263083",
+        "screenshot_path": null,
+        "html_snapshot": null,
+        "stack_trace": null
+      },
+      {
+        "message": "Inspection creation API exception: APIRequestContext.post: connect ECONNREFUSED ::1:8000\nCall log:\n  - \u2192 POST http://localhost:8000/api/inspections\n    - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n    - Content-Type: application/json\n    - content-length: 246\n",
+        "url": "http://localhost:8000/api/inspections",
+        "timestamp": "2025-08-11T03:27:22.248783",
+        "screenshot_path": null,
+        "html_snapshot": null,
+        "stack_trace": null
+      }
+    ]
+  },
+  "vehicle-service": {
+    "API_ERROR": [
+      {
+        "message": "VIN decoder API exception: APIRequestContext.get: connect ECONNREFUSED ::1:8000\nCall log:\n  - \u2192 GET http://localhost:8000/vehicle/decode/1HGBH41JXMN109186\n    - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n",
+        "url": "http://localhost:8000/vehicle/decode/1HGBH41JXMN109186",
+        "timestamp": "2025-08-11T03:27:21.639360",
+        "screenshot_path": null,
+        "html_snapshot": null,
+        "stack_trace": null
+      }
+    ]
+  },
+  "invoice-service": {
+    "API_ERROR": [
+      {
+        "message": "Invoice creation API exception: APIRequestContext.post: connect ECONNREFUSED ::1:8000\nCall log:\n  - \u2192 POST http://localhost:8000/invoices/api/invoices\n    - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n    - Content-Type: application/json\n    - content-length: 235\n",
+        "url": "http://localhost:8000/invoices/api/invoices",
+        "timestamp": "2025-08-11T03:27:22.553617",
+        "screenshot_path": null,
+        "html_snapshot": null,
+        "stack_trace": null
+      }
+    ]
+  }
+}

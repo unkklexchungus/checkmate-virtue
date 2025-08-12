@@ -424,9 +424,28 @@ test.describe.serial('Inspection Module E2E Tests', () => {
     });
 
     await test.step('Test CORS headers', async () => {
-      const response = await page.request.get('/inspection/template');
-      expect(response.headers()['access-control-allow-origin']).toBeTruthy();
+      // Create a new context with proper headers to simulate browser behavior
+      const context = await page.context().browser().newContext({
+        extraHTTPHeaders: {
+          'Origin': 'http://localhost:8000'
+        }
+      });
+      const newPage = await context.newPage();
       
+      const response = await newPage.request.get('/inspection/template');
+      
+      // Check that CORS headers are present and valid
+      const corsOrigin = response.headers()['access-control-allow-origin'];
+      expect(corsOrigin).toBeTruthy();
+      
+      // Should be one of the allowed origins (not wildcard with credentials)
+      const allowedOrigins = ['http://localhost:8000', 'http://127.0.0.1:8000'];
+      expect(allowedOrigins).toContain(corsOrigin);
+      
+      // Check credentials header (should be present in GET requests)
+      expect(response.headers()['access-control-allow-credentials']).toBe('true');
+      
+      await context.close();
       console.log('✅ CORS headers validated');
     });
   });

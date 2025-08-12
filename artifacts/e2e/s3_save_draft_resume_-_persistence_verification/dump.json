@@ -1,0 +1,24 @@
+{
+  "title": "S3: Save Draft + Resume - persistence verification",
+  "status": "timedOut",
+  "duration": 30087,
+  "artifacts": [
+    {
+      "type": "har",
+      "path": "artifacts/e2e/s3_save_draft_resume_-_persistence_verification/fe-be.har",
+      "description": "HTTP Archive (HAR) file with all requests"
+    },
+    {
+      "type": "log",
+      "path": "artifacts/e2e/s3_save_draft_resume_-_persistence_verification/console-and-network.log",
+      "description": "Console and network activity log"
+    },
+    {
+      "type": "response",
+      "path": "artifacts/e2e/s3_save_draft_resume_-_persistence_verification/sample-response.json",
+      "description": "Sample API response data"
+    }
+  ],
+  "errorMessage": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+  "timestamp": "2025-08-12T09:26:49.901Z"
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "inspection_id": {
+      "type": "string",
+      "pattern": "^INSP_\\d{8}_\\d{6}$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "customer_info": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "email": {"type": "string"},
+        "phone": {"type": "string"}
+      }
+    },
+    "vehicle_info": {
+      "type": "object",
+      "properties": {
+        "year": {"type": "string"},
+        "make": {"type": "string"},
+        "model": {"type": "string"},
+        "vin": {"type": "string"}
+      }
+    },
+    "inspector_info": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "id": {"type": "string"}
+      }
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "total_items": {"type": "integer"},
+        "pass_count": {"type": "integer"},
+        "recommended_count": {"type": "integer"},
+        "required_count": {"type": "integer"},
+        "photo_count": {"type": "integer"}
+      }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": ["inspection_id", "title", "summary", "generated_at"]
+}

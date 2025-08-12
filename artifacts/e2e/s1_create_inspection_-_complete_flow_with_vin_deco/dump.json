@@ -1,0 +1,24 @@
+{
+  "title": "S1: Create Inspection - complete flow with VIN decode",
+  "status": "timedOut",
+  "duration": 31306,
+  "artifacts": [
+    {
+      "type": "har",
+      "path": "artifacts/e2e/s1_create_inspection_-_complete_flow_with_vin_deco/fe-be.har",
+      "description": "HTTP Archive (HAR) file with all requests"
+    },
+    {
+      "type": "log",
+      "path": "artifacts/e2e/s1_create_inspection_-_complete_flow_with_vin_deco/console-and-network.log",
+      "description": "Console and network activity log"
+    },
+    {
+      "type": "response",
+      "path": "artifacts/e2e/s1_create_inspection_-_complete_flow_with_vin_deco/sample-response.json",
+      "description": "Sample API response data"
+    }
+  ],
+  "errorMessage": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+  "timestamp": "2025-08-12T09:21:36.383Z"
+}

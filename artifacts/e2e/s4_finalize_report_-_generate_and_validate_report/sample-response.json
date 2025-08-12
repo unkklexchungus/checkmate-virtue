@@ -1,0 +1,7 @@
+{
+  "test": "S4: Finalize + Report - generate and validate report",
+  "status": "failed",
+  "error": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator('[data-testid=\"inspection-status\"]')\n\u001b[32m- Expected string  - 1\u001b[39m\n\u001b[31m+ Received string  + 3\u001b[39m\n\n\u001b[32m- finalized\u001b[39m\n\u001b[31m+\u001b[39m\n\u001b[31m+                          Status: Draft\u001b[39m\n\u001b[31m+ \u001b[43m                    \u001b[49m\u001b[39m\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"inspection-status\"]')\u001b[22m\n\u001b[2m    9 × locator resolved to <div id=\"inspection-status\" class=\"alert alert-info\" data-testid=\"inspection-status\">…</div>\u001b[22m\n\u001b[2m      - unexpected value \"\u001b[22m\n\u001b[2m                         Status: Draft\u001b[22m\n\u001b[2m                    \"\u001b[22m\n",
+  "timestamp": "2025-08-12T09:30:35.172Z",
+  "note": "This is a placeholder. Actual API responses would be captured during test execution."
+}
