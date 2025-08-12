@@ -2,6 +2,91 @@
 
 All notable changes to the Automotive Service-Based Architecture project will be documented in this file.
 
+## [1.5.0] - 2025-08-12
+
+### 🎯 Validation Error Display: S6 Test Fix & User Experience Enhancement
+
+#### ✨ Changes Made
+
+**Frontend Validation System**
+- **Validation Error Container**: Added `data-testid="validation-error"` container with Bootstrap styling
+- **Client-Side Validation**: Implemented comprehensive form validation for required fields
+- **Field Highlighting**: Invalid fields highlighted with red border and `aria-invalid="true"`
+- **Real-Time Feedback**: Validation errors clear when user starts typing in fields
+- **Error Message Display**: Clear, user-friendly error messages with proper formatting
+
+**Server-Side Validation Enhancement**
+- **Pydantic Model Validation**: Enhanced `InspectionUpdate` model with proper field validation
+- **422 Error Responses**: Proper HTTP 422 status codes for validation failures
+- **Detailed Error Messages**: Structured validation error responses with field-specific messages
+- **VIN Validation**: Client-side VIN length validation (must be exactly 17 characters)
+
+**JavaScript Validation Functions**
+- **showValidationError()**: Displays validation errors in the UI container
+- **hideValidationError()**: Hides validation errors when resolved
+- **highlightField()**: Highlights invalid fields with visual feedback
+- **validateForm()**: Comprehensive form validation with multiple error handling
+
+**Testing & Validation**
+- **S6 Test Fix**: Updated E2E test to properly trigger and verify validation errors
+- **Multiple Test Scenarios**: Tests for missing required fields, invalid VIN, and network failures
+- **Validation Error Assertions**: Tests verify `data-testid="validation-error"` elements are visible
+- **Error Message Validation**: Tests confirm error messages contain expected validation text
+
+**Code Quality**
+- **CSS Styling**: Added `.validation-error` and `.field-error` styles for visual feedback
+- **Accessibility**: Proper `aria-invalid` attributes and role="alert" for screen readers
+- **Error Handling**: Graceful handling of both client-side and server-side validation errors
+- **User Experience**: Immediate feedback with clear error messages and field highlighting
+
+#### 🎯 Impact
+
+**S6 Test Success**
+- **Fixed Validation Display**: S6 "Negative/Edge Cases" test now passes completely
+- **Visible Error Messages**: Validation errors properly displayed with `data-testid="validation-error"`
+- **User Feedback**: Clear error messages for missing required fields and invalid VIN
+- **Test Reliability**: E2E tests now properly validate error display functionality
+
+**User Experience Enhancement**
+- **Immediate Feedback**: Users see validation errors immediately when submitting invalid forms
+- **Field Highlighting**: Invalid fields are visually highlighted for easy identification
+- **Clear Messages**: Error messages are specific and actionable
+- **Responsive Design**: Validation errors work across different screen sizes
+
+**Development Experience**
+- **Test Hooks**: Proper `data-testid` attributes for reliable E2E testing
+- **Maintainable Code**: Clean separation of validation logic and UI display
+- **Accessibility**: Proper ARIA attributes for screen reader compatibility
+
+#### 📋 Technical Details
+
+**Files Modified**
+- `templates/inspection_form.html`: Added validation error container and JavaScript validation
+- `main.py`: Enhanced `InspectionUpdate` model and validation error handling
+- `tests/e2e/inspection.spec.ts`: Updated S6 test with comprehensive validation testing
+
+**Validation Rules**
+- **Inspector Name**: Required, minimum 1 character
+- **Inspector ID**: Required, minimum 1 character  
+- **Inspection Title**: Required, minimum 1 character
+- **VIN**: Optional, but must be exactly 17 characters if provided
+
+**CSS Classes**
+- `.validation-error`: Styling for validation error container
+- `.field-error`: Red border and shadow for invalid fields
+
+**JavaScript Functions**
+- `showValidationError(message)`: Display error message
+- `hideValidationError()`: Hide error message
+- `highlightField(fieldId, isValid)`: Highlight field validity
+- `validateForm()`: Comprehensive form validation
+
+**Test Coverage**
+- Missing required fields validation
+- Invalid VIN length validation
+- Network failure error handling
+- Error message content verification
+
 ## [1.4.0] - 2025-08-12
 
 ### 🔧 CORS Configuration: Environment-Driven Origins & S5 Test Fix
