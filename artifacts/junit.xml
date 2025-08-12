@@ -1,10 +1,90 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="1.7731280000000003">
-<testsuite name="inspection.spec.ts" timestamp="2025-08-12T09:38:34.596Z" hostname="chromium" tests="1" failures="0" skipped="0" time="0.49" errors="0">
-<testcase name="Inspection Module E2E Tests › S5: FE↔BE Data Contract Assertions" classname="inspection.spec.ts" time="0.49">
+<testsuites id="" name="" tests="7" failures="0" skipped="0" errors="0" time="22.065510000000003">
+<testsuite name="inspection.spec.ts" timestamp="2025-08-12T09:45:08.495Z" hostname="chromium" tests="7" failures="0" skipped="0" time="20.977" errors="0">
+<testcase name="Inspection Module E2E Tests › S0: Boot smoke - load &quot;/&quot; and assert FE renders" classname="inspection.spec.ts" time="1.23">
+<system-out>
+<![CDATA[✅ Home page loaded successfully. Title: CheckMate Virtue - Automotive Professional Inspection System
+]]>
+</system-out>
+</testcase>
+<testcase name="Inspection Module E2E Tests › S1: Create Inspection - complete flow with VIN decode" classname="inspection.spec.ts" time="5.961">
+<system-out>
+<![CDATA[✅ VIN decoded successfully
+Found 181 inspection items
+Processed item 1/12
+Processed item 2/12
+Processed item 3/12
+Processed item 4/12
+Processed item 5/12
+Processed item 6/12
+Processed item 7/12
+Processed item 8/12
+Processed item 9/12
+Item 10 is in step: Brakes
+Processed item 10/12
+Processed item 11/12
+Processed item 12/12
+✅ Successfully processed 12 inspection items
+Response data: {
+  "message": "Inspection updated successfully"
+}
+✅ Response received successfully
+✅ Inspection saved successfully with ID: INSP_20250812_916207
+]]>
+</system-out>
+</testcase>
+<testcase name="Inspection Module E2E Tests › S2: Checklist Fill - comprehensive item completion" classname="inspection.spec.ts" time="4.047">
+<system-out>
+<![CDATA[Found 181 inspection items
+Item 13 is in step: Brakes
+Processed additional item 13/20
+Processed additional item 14/20
+Processed additional item 15/20
+Processed additional item 16/20
+Processed additional item 17/20
+Processed additional item 18/20
+Processed additional item 19/20
+Processed additional item 20/20
+✅ Successfully processed 8 additional inspection items
+✅ 181 photo thumbnails displayed
+]]>
+</system-out>
+</testcase>
+<testcase name="Inspection Module E2E Tests › S3: Save Draft + Resume - persistence verification" classname="inspection.spec.ts" time="2.847">
+<system-out>
+<![CDATA[✅ Draft saved successfully
+✅ Form persistence verified - 181 inspection items loaded
+]]>
+</system-out>
+</testcase>
+<testcase name="Inspection Module E2E Tests › S4: Finalize + Report - generate and validate report" classname="inspection.spec.ts" time="1.956">
+<system-out>
+<![CDATA[✅ Finalize button is present and functional
+✅ Report generation buttons are present and functional
+]]>
+</system-out>
+</testcase>
+<testcase name="Inspection Module E2E Tests › S5: FE↔BE Data Contract Assertions" classname="inspection.spec.ts" time="0.317">
 <system-out>
 <![CDATA[✅ Template API contract validated
 ✅ Inspection list API contract validated
 ✅ CORS headers validated
+]]>
+</system-out>
+</testcase>
+<testcase name="Inspection Module E2E Tests › S6: Negative/Edge Cases" classname="inspection.spec.ts" time="4.619">
+<system-out>
+<![CDATA[✅ Validation errors displayed: 1 errors
+✅ Error message: 
+            
+            Inspector name is required; Inspector ID is required; Inspection title is required
+        
+✅ VIN validation errors displayed: 1 errors
+✅ VIN error message: 
+            
+            VIN must be exactly 17 characters
+        
+✅ Large file upload handled gracefully
+✅ Network failure recovery tested
 ]]>
 </system-out>
 </testcase>

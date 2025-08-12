@@ -455,15 +455,59 @@ test.describe.serial('Inspection Module E2E Tests', () => {
       await page.goto('/inspection/form');
       await page.waitForLoadState('networkidle');
       
+      // Clear any existing values to ensure we have empty required fields
+      await page.fill('[data-testid="inspector-name"]', '');
+      await page.fill('[data-testid="inspector-id"]', '');
+      await page.fill('[data-testid="inspection-title"]', '');
+      
       // Try to save without required fields
       await page.click('[data-testid="save-inspection"]');
+      
+      // Wait for validation error to appear
+      await page.waitForSelector('[data-testid="validation-error"]:not(.d-none)', { timeout: 5000 });
       
       // Check for validation errors
       const errorMessages = page.locator('[data-testid="validation-error"]');
       const errorCount = await errorMessages.count();
       expect(errorCount).toBeGreaterThan(0);
       
+      // Verify the error message contains validation text
+      const errorText = await page.locator('[data-testid="validation-error"]').textContent();
+      expect(errorText).toContain('required');
+      
       console.log(`✅ Validation errors displayed: ${errorCount} errors`);
+      console.log(`✅ Error message: ${errorText}`);
+    });
+
+    await test.step('Test invalid VIN validation', async () => {
+      await page.goto('/inspection/form');
+      await page.waitForLoadState('networkidle');
+      
+      // Fill required fields to avoid other validation errors
+      await page.fill('[data-testid="inspector-name"]', 'John Doe');
+      await page.fill('[data-testid="inspector-id"]', 'INS001');
+      await page.fill('[data-testid="inspection-title"]', 'Test Inspection');
+      
+      // Enter invalid VIN (too short)
+      await page.fill('[data-testid="vin-input"]', '12345');
+      
+      // Try to save
+      await page.click('[data-testid="save-inspection"]');
+      
+      // Wait for validation error to appear
+      await page.waitForSelector('[data-testid="validation-error"]:not(.d-none)', { timeout: 5000 });
+      
+      // Check for validation errors
+      const errorMessages = page.locator('[data-testid="validation-error"]');
+      const errorCount = await errorMessages.count();
+      expect(errorCount).toBeGreaterThan(0);
+      
+      // Verify the error message contains VIN validation text
+      const errorText = await page.locator('[data-testid="validation-error"]').textContent();
+      expect(errorText).toContain('17 characters');
+      
+      console.log(`✅ VIN validation errors displayed: ${errorCount} errors`);
+      console.log(`✅ VIN error message: ${errorText}`);
     });
 
     await test.step('Test oversized photo upload', async () => {

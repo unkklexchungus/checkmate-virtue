@@ -125,6 +125,25 @@ class InspectionData(BaseModel):
     status: str = "draft"
     industry_type: str
 
+class InspectionUpdate(BaseModel):
+    """Inspection update model with validation."""
+    title: str = Field(
+        ..., 
+        min_length=MIN_TITLE_LENGTH,
+        max_length=MAX_TITLE_LENGTH,
+        description="Inspection title"
+    )
+    inspector_name: str = Field(
+        ..., 
+        min_length=MIN_INSPECTOR_NAME_LENGTH,
+        max_length=MAX_INSPECTOR_NAME_LENGTH,
+        description="Inspector name"
+    )
+    inspector_id: str = Field(..., description="Inspector ID")
+    vehicle_info: Optional[VehicleInfo] = Field(None, description="Vehicle information")
+    categories: List[InspectionCategory] = Field(default_factory=list, description="Inspection categories")
+    status: str = Field(default="draft", description="Inspection status")
+
 # Utility Functions
 def load_json_file(file_path: Path, default: Any = None) -> Any:
     """Load JSON file with error handling."""
@@ -591,15 +610,29 @@ async def get_inspection_api(inspection_id: str) -> Dict[str, Any]:
     return inspection
 
 @app.put("/api/inspections/{inspection_id}")
-async def update_inspection(inspection_id: str, inspection: Dict[str, Any]) -> Dict[str, str]:
-    """Update inspection data."""
-    if not validate_inspection_data(inspection):
-        raise HTTPException(status_code=400, detail="Invalid inspection data")
+async def update_inspection(inspection_id: str, inspection: InspectionUpdate) -> Dict[str, str]:
+    """Update inspection data with validation."""
+    # Find existing inspection
+    existing_inspection = find_inspection(inspection_id)
+    if not existing_inspection:
+        raise HTTPException(status_code=404, detail="Inspection not found")
     
-    if update_inspection_data(inspection_id, inspection):
+    # Update inspection data with validated fields
+    updated_inspection = {
+        **existing_inspection,
+        "title": inspection.title,
+        "inspector_name": inspection.inspector_name,
+        "inspector_id": inspection.inspector_id,
+        "vehicle_info": inspection.vehicle_info.model_dump() if inspection.vehicle_info else existing_inspection.get("vehicle_info"),
+        "categories": [category.model_dump() for category in inspection.categories],
+        "status": inspection.status,
+        "updated_at": datetime.now().isoformat()
+    }
+    
+    if update_inspection_data(inspection_id, updated_inspection):
         return {"message": "Inspection updated successfully"}
     else:
-        raise HTTPException(status_code=404, detail="Inspection not found")
+        raise HTTPException(status_code=500, detail="Failed to update inspection")
 
 @app.get("/api/inspections/{inspection_id}/report")
 async def generate_report(inspection_id: str) -> Dict[str, Any]:

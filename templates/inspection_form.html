@@ -32,10 +32,24 @@
             padding: 1rem;
             margin-bottom: 1rem;
         }
+        .validation-error {
+            display: none;
+            margin-bottom: 1rem;
+        }
+        .field-error {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+        }
     </style>
 </head>
 <body>
     <div class="container-fluid">
+        <!-- Validation Error Container -->
+        <div id="validation-error-container" data-testid="validation-error" class="alert alert-danger validation-error" role="alert">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="validation-error-message"></span>
+        </div>
+
         <div class="row">
             <!-- Sidebar with Progress -->
             <div class="col-md-3 bg-light p-3">
@@ -367,14 +381,29 @@
             // Inspector fields
             document.getElementById('inspector_name').addEventListener('input', function() {
                 inspectionData.inspector_name = this.value;
+                // Clear validation error when user starts typing
+                if (this.value.trim().length > 0) {
+                    hideValidationError();
+                    highlightField('inspector_name', true);
+                }
             });
 
             document.getElementById('inspector_id').addEventListener('input', function() {
                 inspectionData.inspector_id = this.value;
+                // Clear validation error when user starts typing
+                if (this.value.trim().length > 0) {
+                    hideValidationError();
+                    highlightField('inspector_id', true);
+                }
             });
 
             document.getElementById('inspection_title').addEventListener('input', function() {
                 inspectionData.title = this.value;
+                // Clear validation error when user starts typing
+                if (this.value.trim().length > 0) {
+                    hideValidationError();
+                    highlightField('inspection_title', true);
+                }
             });
 
             // VIN decode button
@@ -385,6 +414,13 @@
             document.getElementById('vin').addEventListener('input', function() {
                 clearTimeout(vinDecodeTimeout);
                 const vin = this.value.trim();
+                inspectionData.vin = vin;
+                
+                // Clear validation error when user starts typing
+                if (vin.length > 0) {
+                    hideValidationError();
+                    highlightField('vin', true);
+                }
                 
                 if (vin.length >= 17) {
                     vinDecodeTimeout = setTimeout(() => {
@@ -429,10 +465,29 @@
                     inspectionData.id = inspectionId;
                     console.log('Inspection created:', inspectionId);
                 } else {
-                    console.error('Failed to create inspection');
+                    const errorData = await response.json();
+                    let errorMessage = 'Failed to create inspection';
+                    
+                    // Handle validation errors from server
+                    if (response.status === 422) {
+                        if (errorData.detail && Array.isArray(errorData.detail)) {
+                            const validationErrors = errorData.detail.map(err => 
+                                `${err.loc ? err.loc.join('.') + ': ' : ''}${err.msg}`
+                            );
+                            errorMessage = validationErrors.join('; ');
+                        } else if (errorData.detail) {
+                            errorMessage = errorData.detail;
+                        }
+                    } else if (errorData.detail) {
+                        errorMessage = errorData.detail;
+                    }
+                    
+                    showValidationError(errorMessage);
+                    console.error('Failed to create inspection:', errorMessage);
                 }
             } catch (error) {
                 console.error('Error creating inspection:', error);
+                showValidationError('Network error: Unable to create inspection. Please check your connection and try again.');
             }
         }
 
@@ -648,21 +703,93 @@
             }
         }
 
+        // Validation helper functions
+        function showValidationError(message) {
+            const container = document.getElementById('validation-error-container');
+            const messageSpan = document.getElementById('validation-error-message');
+            messageSpan.textContent = message;
+            container.style.display = 'block';
+            container.classList.remove('d-none');
+        }
+
+        function hideValidationError() {
+            const container = document.getElementById('validation-error-container');
+            container.style.display = 'none';
+            container.classList.add('d-none');
+        }
+
+        function highlightField(fieldId, isValid) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                if (!isValid) {
+                    field.classList.add('field-error');
+                    field.setAttribute('aria-invalid', 'true');
+                } else {
+                    field.classList.remove('field-error');
+                    field.setAttribute('aria-invalid', 'false');
+                }
+            }
+        }
+
+        function validateForm() {
+            let isValid = true;
+            let errorMessages = [];
+
+            // Validate inspector name
+            const inspectorName = inspectionData.inspector_name.trim();
+            if (!inspectorName) {
+                errorMessages.push('Inspector name is required');
+                highlightField('inspector_name', false);
+                isValid = false;
+            } else {
+                highlightField('inspector_name', true);
+            }
+
+            // Validate inspector ID
+            const inspectorId = inspectionData.inspector_id.trim();
+            if (!inspectorId) {
+                errorMessages.push('Inspector ID is required');
+                highlightField('inspector_id', false);
+                isValid = false;
+            } else {
+                highlightField('inspector_id', true);
+            }
+
+            // Validate inspection title
+            const title = inspectionData.title.trim();
+            if (!title) {
+                errorMessages.push('Inspection title is required');
+                highlightField('inspection_title', false);
+                isValid = false;
+            } else {
+                highlightField('inspection_title', true);
+            }
+
+            // Validate VIN if provided
+            const vin = inspectionData.vin.trim();
+            if (vin && vin.length !== 17) {
+                errorMessages.push('VIN must be exactly 17 characters');
+                highlightField('vin', false);
+                isValid = false;
+            } else if (vin) {
+                highlightField('vin', true);
+            }
+
+            if (!isValid) {
+                showValidationError(errorMessages.join('; '));
+            } else {
+                hideValidationError();
+            }
+
+            return isValid;
+        }
+
         async function saveInspection() {
+            // Clear previous validation errors
+            hideValidationError();
+            
             // Validate required fields
-            if (!inspectionData.inspector_name.trim()) {
-                alert('Please enter inspector name');
-                document.getElementById('inspector_name').focus();
-                return;
-            }
-            if (!inspectionData.inspector_id.trim()) {
-                alert('Please enter inspector ID');
-                document.getElementById('inspector_id').focus();
-                return;
-            }
-            if (!inspectionData.title.trim()) {
-                alert('Please enter inspection title');
-                document.getElementById('inspection_title').focus();
+            if (!validateForm()) {
                 return;
             }
 
@@ -671,12 +798,12 @@
                 try {
                     await createInspection();
                     if (!inspectionId) {
-                        alert('Failed to create inspection. Please try again.');
+                        showValidationError('Failed to create inspection. Please try again.');
                         return;
                     }
                 } catch (error) {
                     console.error('Error creating inspection:', error);
-                    alert('Failed to create inspection. Please try again.');
+                    showValidationError('Failed to create inspection. Please try again.');
                     return;
                 }
             }
@@ -729,15 +856,32 @@
 
                 if (response.ok) {
                     const result = await response.json();
+                    hideValidationError();
                     alert('Inspection saved successfully!');
                     window.location.href = '/inspections';
                 } else {
                     const errorData = await response.json();
-                    alert('Failed to save inspection: ' + (errorData.detail || 'Unknown error'));
+                    let errorMessage = 'Failed to save inspection';
+                    
+                    // Handle validation errors from server
+                    if (response.status === 422) {
+                        if (errorData.detail && Array.isArray(errorData.detail)) {
+                            const validationErrors = errorData.detail.map(err => 
+                                `${err.loc ? err.loc.join('.') + ': ' : ''}${err.msg}`
+                            );
+                            errorMessage = validationErrors.join('; ');
+                        } else if (errorData.detail) {
+                            errorMessage = errorData.detail;
+                        }
+                    } else if (errorData.detail) {
+                        errorMessage = errorData.detail;
+                    }
+                    
+                    showValidationError(errorMessage);
                 }
             } catch (error) {
                 console.error('Error saving inspection:', error);
-                alert('Error saving inspection');
+                showValidationError('Network error: Unable to save inspection. Please check your connection and try again.');
             }
         }
     </script>
