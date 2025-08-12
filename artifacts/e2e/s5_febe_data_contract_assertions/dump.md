@@ -2,17 +2,13 @@
 
 ## Test Information
 - **Title**: S5: FE↔BE Data Contract Assertions
-- **Status**: failed
-- **Duration**: 513ms
+- **Status**: skipped
+- **Duration**: 0ms
 - **Retry Count**: undefined
-- **Timestamp**: 2025-08-12T09:38:18.922Z
+- **Timestamp**: 2025-08-12T09:51:28.837Z
 
 ## Error Details
-```
-Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
-
-Received: [31mundefined[39m
-```
+No error message available
 
 ## Artifacts Captured
 - **har**: `artifacts/e2e/s5_febe_data_contract_assertions/fe-be.har` - HTTP Archive (HAR) file with all requests

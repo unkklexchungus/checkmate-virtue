@@ -1,7 +1,7 @@
 {
   "title": "S5: FE↔BE Data Contract Assertions",
-  "status": "failed",
-  "duration": 513,
+  "status": "skipped",
+  "duration": 0,
   "artifacts": [
     {
       "type": "har",
@@ -19,6 +19,5 @@
       "description": "Sample API response data"
     }
   ],
-  "errorMessage": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m",
-  "timestamp": "2025-08-12T09:38:18.922Z"
+  "timestamp": "2025-08-12T09:51:28.837Z"
 }

@@ -3,29 +3,26 @@
 ## Test Information
 - **Title**: S4: Finalize + Report - generate and validate report
 - **Status**: failed
-- **Duration**: 9539ms
+- **Duration**: 24676ms
 - **Retry Count**: undefined
-- **Timestamp**: 2025-08-12T09:30:35.171Z
+- **Timestamp**: 2025-08-12T09:55:53.900Z
 
 ## Error Details
 ```
-Error: [31mTimed out 5000ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m
+Error: [31mTimed out 10000ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m
 
 Locator: locator('[data-testid="inspection-status"]')
-[32m- Expected string  - 1[39m
-[31m+ Received string  + 3[39m
-
-[32m- finalized[39m
-[31m+[39m
-[31m+                          Status: Draft[39m
-[31m+ [43m                    [49m[39m
+Expected string: [32m"Finalized"[39m
+Received: <element(s) not found>
 Call log:
-[2m  - Expect "toContainText" with timeout 5000ms[22m
+[2m  - Expect "toContainText" with timeout 10000ms[22m
 [2m  - waiting for locator('[data-testid="inspection-status"]')[22m
-[2m    9 × locator resolved to <div id="inspection-status" class="alert alert-info" data-testid="inspection-status">…</div>[22m
+[2m    2 × locator resolved to <div id="inspection-status" class="alert alert-info" data-testid="inspection-status">…</div>[22m
 [2m      - unexpected value "[22m
 [2m                         Status: Draft[22m
 [2m                    "[22m
+[2m    - waiting for" http://127.0.0.1:8000/inspections" navigation to finish...[22m
+[2m    - navigated to "http://127.0.0.1:8000/inspections"[22m
 
 ```
 

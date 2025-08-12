@@ -189,12 +189,83 @@ async def finalize_inspection(inspection_id: str):
     if not inspection:
         raise HTTPException(status_code=404, detail="Inspection not found")
     
+    # Check if inspection is already finalized
+    if inspection.get("status") == "finalized":
+        raise HTTPException(status_code=400, detail="Inspection is already finalized")
+    
+    # Validate that inspection is in DRAFT status
+    if inspection.get("status") != "draft":
+        raise HTTPException(status_code=400, detail="Only draft inspections can be finalized")
+    
+    # Validate required fields are present
+    required_fields = ["inspector_name", "inspector_id", "title"]
+    missing_fields = [field for field in required_fields if not inspection.get(field)]
+    if missing_fields:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Missing required fields: {', '.join(missing_fields)}"
+        )
+    
+    # Validate that all inspection items have been completed
+    categories = inspection.get("categories", [])
+    if not categories:
+        raise HTTPException(status_code=400, detail="No inspection items found")
+    
+    # Count items by status
+    total_items = 0
+    pass_count = 0
+    recommended_count = 0
+    required_count = 0
+    incomplete_items = []
+    
+    for category in categories:
+        for item in category.get("items", []):
+            total_items += 1
+            grade = item.get("grade", "").lower()
+            
+            if grade == "pass":
+                pass_count += 1
+            elif grade == "recommended":
+                recommended_count += 1
+            elif grade == "required":
+                required_count += 1
+            else:
+                incomplete_items.append(f"{category.get('name', 'Unknown')} - {item.get('name', 'Unknown')}")
+    
+    # Check if all items have been evaluated
+    if incomplete_items:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Incomplete items found: {', '.join(incomplete_items[:5])}{'...' if len(incomplete_items) > 5 else ''}"
+        )
+    
     # Update inspection status to finalized
     inspection["status"] = "finalized"
     inspection["finalized_at"] = datetime.now().isoformat()
     
     if update_inspection(inspection_id, inspection):
-        return {"message": "Inspection finalized successfully", "status": "finalized"}
+        # Return comprehensive summary
+        return {
+            "message": "Inspection finalized successfully",
+            "status": "finalized",
+            "summary": {
+                "total_items": total_items,
+                "pass_count": pass_count,
+                "recommended_count": recommended_count,
+                "required_count": required_count,
+                "completion_percentage": round((total_items / total_items) * 100, 1) if total_items > 0 else 0
+            },
+            "metadata": {
+                "inspection_id": inspection.get("id"),
+                "title": inspection.get("title"),
+                "inspector_name": inspection.get("inspector_name"),
+                "inspector_id": inspection.get("inspector_id"),
+                "vin": inspection.get("vin"),
+                "vehicle_info": inspection.get("vehicle_info"),
+                "created_at": inspection.get("created_at"),
+                "finalized_at": inspection["finalized_at"]
+            }
+        }
     else:
         raise HTTPException(status_code=500, detail="Failed to finalize inspection")
 

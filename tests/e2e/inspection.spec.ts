@@ -380,12 +380,68 @@ test.describe.serial('Inspection Module E2E Tests', () => {
     });
 
     await test.step('Test finalize button functionality', async () => {
-      // Verify finalize button is present and clickable
+      // Verify finalize button is present but initially disabled
       const finalizeButton = page.locator('[data-testid="finalize-inspection"]');
       await expect(finalizeButton).toBeVisible();
-      await expect(finalizeButton).toBeEnabled();
+      await expect(finalizeButton).toBeDisabled();
       
-      console.log('✅ Finalize button is present and functional');
+      console.log('✅ Finalize button is present but disabled (as expected)');
+    });
+
+    await test.step('Complete all inspection items to enable finalize', async () => {
+      // Get all step navigation buttons
+      const stepButtons = page.locator('#steps-nav button');
+      const totalSteps = await stepButtons.count();
+      
+      console.log(`Found ${totalSteps} steps to process`);
+      
+      // Navigate through each step and complete all items
+      for (let stepIndex = 0; stepIndex < totalSteps; stepIndex++) {
+        // Click on the step button to navigate to that step
+        await stepButtons.nth(stepIndex).click();
+        await page.waitForTimeout(300); // Wait for step to load
+        
+        // Get only visible items in the current step
+        const visibleItems = page.locator('[data-testid="inspection-item"]:visible');
+        const itemsInStep = await visibleItems.count();
+        
+        console.log(`Processing step ${stepIndex + 1}/${totalSteps} with ${itemsInStep} visible items`);
+        
+        // Fill all items in the current step
+        for (let i = 0; i < itemsInStep; i++) {
+          const item = visibleItems.nth(i);
+          const statuses = ['pass', 'recommended', 'required'];
+          const status = statuses[(stepIndex + i) % 3];
+          
+          const statusSelect = item.locator('[data-testid="status-select"]');
+          await statusSelect.selectOption(status);
+          
+          // Skip notes to speed up the test
+          // const notesInput = item.locator('[data-testid="notes-input"]');
+          // if (await notesInput.isVisible()) {
+          //   await notesInput.fill(`Test notes for step ${stepIndex + 1} item ${i + 1}`);
+          // }
+        }
+      }
+      
+      // Wait for finalize button to become enabled
+      await expect(page.locator('[data-testid="finalize-inspection"]')).toBeEnabled({ timeout: 15000 });
+      console.log('✅ All items completed, finalize button is now enabled');
+    });
+
+    await test.step('Finalize the inspection', async () => {
+      const finalizeButton = page.locator('[data-testid="finalize-inspection"]');
+      await finalizeButton.click();
+      
+      // Wait for finalization to complete
+      await expect(page.locator('[data-testid="inspection-status"]')).toContainText('Finalized', { timeout: 10000 });
+      
+      // Verify the form is now read-only
+      await expect(page.locator('[data-testid="save-inspection"]')).toBeDisabled();
+      await expect(finalizeButton).toBeDisabled();
+      await expect(finalizeButton).toContainText('Finalized');
+      
+      console.log('✅ Inspection finalized successfully and form is read-only');
     });
 
     await test.step('Test report generation buttons', async () => {
