@@ -1,119 +1,142 @@
 CheckMate Virtue Browser Test Error Log
-Generated: 2025-08-11T03:27:24.731760
-Total Errors: 16
+Generated: 2025-08-13T03:52:37.680275
+Total Errors: 17
 ================================================================================
+
+SERVICE: regression
+    TYPE: REGRESSION_FAILED
+        - Basic regression test failed
+          URL: http://127.0.0.1:8000
+          Time: 2025-08-13T03:52:24.739291
+          Screenshot: artifacts/regression_REGRESSION_FAILED_1755075144.png
+          HTML Snapshot: artifacts/html/regression_REGRESSION_FAILED_1755075144.html
+
 
 SERVICE: navigation
     TYPE: NAVIGATION_ERROR
-        - Failed to navigate to http://localhost:8000/: Page.goto: 'str' object is not callable
-          URL: http://localhost:8000/
-          Time: 2025-08-11T03:27:11.935815
-          Screenshot: screenshots/error_navigation_NAVIGATION_ERROR_1754900831.png
+        - Failed to navigate to http://127.0.0.1:8000/: Page.goto: 'str' object is not callable
+          URL: http://127.0.0.1:8000/
+          Time: 2025-08-13T03:52:25.823970
+          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075145.png
+          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075145.html
 
-        - Failed to navigate to http://localhost:8000/inspection/form: Page.goto: 'str' object is not callable
-          URL: http://localhost:8000/inspection/form
-          Time: 2025-08-11T03:27:12.944532
-          Screenshot: screenshots/error_navigation_NAVIGATION_ERROR_1754900832.png
+        - Failed to navigate to http://127.0.0.1:8000/inspection/form: Page.goto: 'str' object is not callable
+          URL: http://127.0.0.1:8000/inspection/form
+          Time: 2025-08-13T03:52:26.887942
+          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075146.png
+          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075146.html
 
-        - Failed to navigate to http://localhost:8000/inspections: Page.goto: 'str' object is not callable
-          URL: http://localhost:8000/inspections
-          Time: 2025-08-11T03:27:14.271279
-          Screenshot: screenshots/error_navigation_NAVIGATION_ERROR_1754900834.png
+        - Failed to navigate to http://127.0.0.1:8000/inspections: Page.goto: 'str' object is not callable
+          URL: http://127.0.0.1:8000/inspections
+          Time: 2025-08-13T03:52:27.970804
+          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075147.png
+          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075147.html
 
-        - Failed to navigate to http://localhost:8000/inspections/new: Page.goto: 'str' object is not callable
-          URL: http://localhost:8000/inspections/new
-          Time: 2025-08-11T03:27:15.279505
-          Screenshot: screenshots/error_navigation_NAVIGATION_ERROR_1754900835.png
+        - Failed to navigate to http://127.0.0.1:8000/inspections/new: Page.goto: 'str' object is not callable
+          URL: http://127.0.0.1:8000/inspections/new
+          Time: 2025-08-13T03:52:29.036707
+          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075148.png
+          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075148.html
 
-        - Failed to navigate to http://localhost:8000/invoices: Page.goto: 'str' object is not callable
-          URL: http://localhost:8000/invoices
-          Time: 2025-08-11T03:27:16.288491
-          Screenshot: screenshots/error_navigation_NAVIGATION_ERROR_1754900836.png
+        - Failed to navigate to http://127.0.0.1:8000/invoices: Page.goto: 'str' object is not callable
+          URL: http://127.0.0.1:8000/invoices
+          Time: 2025-08-13T03:52:30.103186
+          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075150.png
+          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075150.html
 
-        - Failed to navigate to http://localhost:8000/invoices/new: Page.goto: 'str' object is not callable
-          URL: http://localhost:8000/invoices/new
-          Time: 2025-08-11T03:27:17.296499
-          Screenshot: screenshots/error_navigation_NAVIGATION_ERROR_1754900837.png
+        - Failed to navigate to http://127.0.0.1:8000/invoices/new: Page.goto: 'str' object is not callable
+          URL: http://127.0.0.1:8000/invoices/new
+          Time: 2025-08-13T03:52:31.170522
+          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075151.png
+          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075151.html
 
-        - Failed to navigate to http://localhost:8000/invoices/clients: Page.goto: 'str' object is not callable
-          URL: http://localhost:8000/invoices/clients
-          Time: 2025-08-11T03:27:18.305276
-          Screenshot: screenshots/error_navigation_NAVIGATION_ERROR_1754900838.png
+        - Failed to navigate to http://127.0.0.1:8000/invoices/clients: Page.goto: 'str' object is not callable
+          URL: http://127.0.0.1:8000/invoices/clients
+          Time: 2025-08-13T03:52:32.235476
+          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075152.png
+          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075152.html
 
-        - Failed to navigate to http://localhost:8000/invoices/clients/new: Page.goto: 'str' object is not callable
-          URL: http://localhost:8000/invoices/clients/new
-          Time: 2025-08-11T03:27:19.313183
-          Screenshot: screenshots/error_navigation_NAVIGATION_ERROR_1754900839.png
+        - Failed to navigate to http://127.0.0.1:8000/invoices/clients/new: Page.goto: 'str' object is not callable
+          URL: http://127.0.0.1:8000/invoices/clients/new
+          Time: 2025-08-13T03:52:33.302692
+          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075153.png
+          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075153.html
 
-        - Failed to navigate to http://localhost:8000/test-vin: Page.goto: 'str' object is not callable
-          URL: http://localhost:8000/test-vin
-          Time: 2025-08-11T03:27:20.321740
-          Screenshot: screenshots/error_navigation_NAVIGATION_ERROR_1754900840.png
+        - Failed to navigate to http://127.0.0.1:8000/test-vin: Page.goto: 'str' object is not callable
+          URL: http://127.0.0.1:8000/test-vin
+          Time: 2025-08-13T03:52:34.366676
+          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075154.png
+          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075154.html
 
-        - Failed to navigate to http://localhost:8000/test-vin-simple: Page.goto: 'str' object is not callable
-          URL: http://localhost:8000/test-vin-simple
-          Time: 2025-08-11T03:27:21.333110
-          Screenshot: screenshots/error_navigation_NAVIGATION_ERROR_1754900841.png
+        - Failed to navigate to http://127.0.0.1:8000/test-vin-simple: Page.goto: 'str' object is not callable
+          URL: http://127.0.0.1:8000/test-vin-simple
+          Time: 2025-08-13T03:52:35.434494
+          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075155.png
+          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075155.html
 
-        - Failed to navigate to http://localhost:8000/inspections: Page.goto: 'str' object is not callable
-          URL: http://localhost:8000/inspections
-          Time: 2025-08-11T03:27:23.561421
+        - Failed to navigate to http://127.0.0.1:8000/inspections: Page.goto: 'str' object is not callable
+          URL: http://127.0.0.1:8000/inspections
+          Time: 2025-08-13T03:52:36.517579
+          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075156.png
+          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075156.html
 
-        - Failed to navigate to http://localhost:8000/invoices: Page.goto: 'str' object is not callable
-          URL: http://localhost:8000/invoices
-          Time: 2025-08-11T03:27:24.569865
+        - Failed to navigate to http://127.0.0.1:8000/invoices: Page.goto: 'str' object is not callable
+          URL: http://127.0.0.1:8000/invoices
+          Time: 2025-08-13T03:52:37.589099
+          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075157.png
+          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075157.html
 
 
 SERVICE: inspection-service
     TYPE: API_ERROR
-        - Automotive template API exception: APIRequestContext.get: connect ECONNREFUSED ::1:8000
+        - Automotive template API exception: APIRequestContext.get: connect ECONNREFUSED 127.0.0.1:8000
 Call log:
-  - → GET http://localhost:8000/api/inspection-template
+  - → GET http://127.0.0.1:8000/api/inspection-template
     - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36
     - accept: */*
     - accept-encoding: gzip,deflate,br
 
-          URL: http://localhost:8000/api/inspection-template
-          Time: 2025-08-11T03:27:13.263083
+          URL: http://127.0.0.1:8000/api/inspection-template
+          Time: 2025-08-13T03:52:26.899326
 
-        - Inspection creation API exception: APIRequestContext.post: connect ECONNREFUSED ::1:8000
+        - Inspection creation API exception: APIRequestContext.post: connect ECONNREFUSED 127.0.0.1:8000
 Call log:
-  - → POST http://localhost:8000/api/inspections
+  - → POST http://127.0.0.1:8000/api/inspections
     - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36
     - accept: */*
     - accept-encoding: gzip,deflate,br
     - Content-Type: application/json
     - content-length: 246
 
-          URL: http://localhost:8000/api/inspections
-          Time: 2025-08-11T03:27:22.248783
+          URL: http://127.0.0.1:8000/api/inspections
+          Time: 2025-08-13T03:52:35.447575
 
 
 SERVICE: vehicle-service
     TYPE: API_ERROR
-        - VIN decoder API exception: APIRequestContext.get: connect ECONNREFUSED ::1:8000
+        - VIN decoder API exception: APIRequestContext.get: connect ECONNREFUSED 127.0.0.1:8000
 Call log:
-  - → GET http://localhost:8000/vehicle/decode/1HGBH41JXMN109186
+  - → GET http://127.0.0.1:8000/vehicle/decode/1HGBH41JXMN109186
     - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36
     - accept: */*
     - accept-encoding: gzip,deflate,br
 
-          URL: http://localhost:8000/vehicle/decode/1HGBH41JXMN109186
-          Time: 2025-08-11T03:27:21.639360
+          URL: http://127.0.0.1:8000/vehicle/decode/1HGBH41JXMN109186
+          Time: 2025-08-13T03:52:35.439374
 
 
 SERVICE: invoice-service
     TYPE: API_ERROR
-        - Invoice creation API exception: APIRequestContext.post: connect ECONNREFUSED ::1:8000
+        - Invoice creation API exception: APIRequestContext.post: connect ECONNREFUSED 127.0.0.1:8000
 Call log:
-  - → POST http://localhost:8000/invoices/api/invoices
+  - → POST http://127.0.0.1:8000/api/invoices
     - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36
     - accept: */*
     - accept-encoding: gzip,deflate,br
     - Content-Type: application/json
     - content-length: 235
 
-          URL: http://localhost:8000/invoices/api/invoices
-          Time: 2025-08-11T03:27:22.553617
+          URL: http://127.0.0.1:8000/api/invoices
+          Time: 2025-08-13T03:52:35.452081
 
 

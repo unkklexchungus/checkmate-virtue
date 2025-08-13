@@ -317,7 +317,7 @@
                 subcategory.items.forEach((item, itemIndex) => {
                     const itemId = `${stepIndex}-${subIndex}-${itemIndex}`;
                     html += `
-                        <tr class="item-row" data-testid="inspection-item" data-step="${step.name}" data-subcategory="${subcategory.name}" data-item="${item}">
+                        <tr class="item-row" data-testid="item-row" data-step="${step.name}" data-subcategory="${subcategory.name}" data-item="${item}">
                             <td>
                                 <label class="form-label">
                                     ${item}
@@ -327,8 +327,8 @@
                                 <select class="form-select form-select-sm status-select" id="status-${itemId}" data-testid="status-select">
                                     <option value="">Select Status</option>
                                     <option value="pass" class="status-pass" data-testid="status-pass">✅ Pass</option>
-                                    <option value="recommended" class="status-recommended" data-testid="status-recommended">⚠️ Recommended</option>
-                                    <option value="required" class="status-required" data-testid="status-required">❌ Required</option>
+                                    <option value="rec" class="status-recommended" data-testid="status-recommended">⚠️ Recommended</option>
+                                    <option value="req" class="status-required" data-testid="status-required">❌ Required</option>
                                 </select>
                             </td>
                             <td>
@@ -339,7 +339,7 @@
                                 <div id="photo-${itemId}" class="mt-1" data-testid="photo-thumbnail"></div>
                             </td>
                             <td>
-                                <textarea class="form-control form-control-sm notes-input" data-testid="notes-input"
+                                <textarea class="form-control form-control-sm notes-input" data-testid="notes-input item-note"
                                           rows="2" placeholder="Notes..."></textarea>
                             </td>
                         </tr>
@@ -943,7 +943,7 @@
             
             statusSelects.forEach(select => {
                 totalCount++;
-                if (select.value && ['pass', 'recommended', 'required'].includes(select.value)) {
+                if (select.value && ['pass', 'rec', 'req'].includes(select.value)) {
                     completedCount++;
                 }
             });

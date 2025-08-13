@@ -252,10 +252,12 @@
                     case 'excellent':
                         stats.pass++;
                         break;
+                    case 'rec':
                     case 'recommended':
                     case 'warning':
                         stats.recommended++;
                         break;
+                    case 'req':
                     case 'required':
                     case 'fail':
                     case 'poor':
@@ -291,10 +293,12 @@
                         case 'excellent':
                             totalPassed++;
                             break;
+                        case 'rec':
                         case 'recommended':
                         case 'warning':
                             totalRecommended++;
                             break;
+                        case 'req':
                         case 'required':
                         case 'fail':
                         case 'poor':
@@ -478,6 +482,8 @@
         function getStatusIcon(status) {
             const icons = {
                 'pass': '✅',
+                'rec': '⚠️',
+                'req': '❌',
                 'recommended': '⚠️',
                 'required': '❌'
             };
@@ -487,6 +493,8 @@
         function getStatusClass(status) {
             const classes = {
                 'pass': 'bg-success',
+                'rec': 'bg-warning',
+                'req': 'bg-danger',
                 'recommended': 'bg-warning',
                 'required': 'bg-danger'
             };

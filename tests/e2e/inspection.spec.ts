@@ -98,7 +98,7 @@ test.describe.serial('Inspection Module E2E Tests', () => {
 
     await test.step('Fill inspection items with proper select handling', async () => {
       // Wait for inspection items to be loaded
-      const items = page.locator('[data-testid="inspection-item"]');
+      const items = page.locator('[data-testid="item-row"]');
       await expect(items.first()).toBeVisible({ timeout: 30000 });
       const itemCount = await items.count();
       
@@ -137,8 +137,8 @@ test.describe.serial('Inspection Module E2E Tests', () => {
         // Wait for item to be visible after navigation
         await expect(item).toBeVisible({ timeout: 30000 });
         
-        // Set status using selectOption (cycle through pass, recommended, required)
-        const statuses = ['pass', 'recommended', 'required'];
+        // Set status using selectOption (cycle through pass, rec, req)
+        const statuses = ['pass', 'rec', 'req'];
         const status = statuses[i % 3];
         
         // Use selectOption on the status select element
@@ -207,7 +207,7 @@ test.describe.serial('Inspection Module E2E Tests', () => {
 
     await test.step('Complete additional inspection items', async () => {
       // Wait for inspection items to be loaded
-      const items = page.locator('[data-testid="inspection-item"]');
+      const items = page.locator('[data-testid="item-row"]');
       await expect(items.first()).toBeVisible({ timeout: 30000 });
       const itemCount = await items.count();
       
@@ -246,7 +246,7 @@ test.describe.serial('Inspection Module E2E Tests', () => {
         await expect(item).toBeVisible({ timeout: 30000 });
         
         // Set status using selectOption
-        const statuses = ['pass', 'recommended', 'required'];
+        const statuses = ['pass', 'rec', 'req'];
         const status = statuses[i % 3];
         const statusSelect = item.locator('[data-testid="status-select"]');
         await expect(statusSelect).toBeVisible({ timeout: 30000 });
@@ -299,7 +299,7 @@ test.describe.serial('Inspection Module E2E Tests', () => {
       );
       
       // Fill some inspection items
-      const items = page.locator('[data-testid="inspection-item"]');
+      const items = page.locator('[data-testid="item-row"]');
       await expect(items.first()).toBeVisible({ timeout: 30000 });
       const itemCount = await items.count();
       
@@ -380,7 +380,7 @@ test.describe.serial('Inspection Module E2E Tests', () => {
       await expect(page.locator('[data-testid="vehicle-info"]')).toBeVisible();
       
       // Verify inspection items persisted
-      const items = page.locator('[data-testid="inspection-item"]');
+      const items = page.locator('[data-testid="item-row"]');
       const itemCount = await items.count();
       
       // Check first 3 items for persisted data
@@ -424,7 +424,7 @@ test.describe.serial('Inspection Module E2E Tests', () => {
 
     await test.step('Verify no data loss across reload', async () => {
       // Add more data to verify it can be saved
-      const items = page.locator('[data-testid="inspection-item"]');
+      const items = page.locator('[data-testid="item-row"]');
       const itemCount = await items.count();
       
       if (itemCount > 3) {
@@ -448,7 +448,7 @@ test.describe.serial('Inspection Module E2E Tests', () => {
         await expect(item).toBeVisible({ timeout: 30000 });
         
         const statusSelect = item.locator('[data-testid="status-select"]');
-        await statusSelect.selectOption('required');
+        await statusSelect.selectOption('req');
         
         const notesInput = item.locator('[data-testid="notes-input"]');
         if (await notesInput.isVisible()) {
@@ -485,7 +485,7 @@ test.describe.serial('Inspection Module E2E Tests', () => {
       await page.fill('[data-testid="inspection-title"]', TEST_INSPECTION_TITLE);
       
       // Fill a few items to have data to finalize
-      const items = page.locator('[data-testid="inspection-item"]');
+      const items = page.locator('[data-testid="item-row"]');
       await expect(items.first()).toBeVisible({ timeout: 30000 });
       
       // Fill first 5 items
@@ -493,7 +493,7 @@ test.describe.serial('Inspection Module E2E Tests', () => {
         const item = items.nth(i);
         await expect(item).toBeVisible({ timeout: 30000 });
         
-        const statuses = ['pass', 'recommended', 'required'];
+        const statuses = ['pass', 'rec', 'req'];
         const status = statuses[i % 3];
         const statusSelect = item.locator('[data-testid="status-select"]');
         await statusSelect.selectOption(status);
@@ -528,7 +528,7 @@ test.describe.serial('Inspection Module E2E Tests', () => {
         await page.waitForTimeout(300); // Wait for step to load
         
         // Get only visible items in the current step
-        const visibleItems = page.locator('[data-testid="inspection-item"]:visible');
+        const visibleItems = page.locator('[data-testid="item-row"]:visible');
         const itemsInStep = await visibleItems.count();
         
         console.log(`Processing step ${stepIndex + 1}/${totalSteps} with ${itemsInStep} visible items`);
@@ -536,7 +536,7 @@ test.describe.serial('Inspection Module E2E Tests', () => {
         // Fill all items in the current step
         for (let i = 0; i < itemsInStep; i++) {
           const item = visibleItems.nth(i);
-          const statuses = ['pass', 'recommended', 'required'];
+          const statuses = ['pass', 'rec', 'req'];
           const status = statuses[(stepIndex + i) % 3];
           
           const statusSelect = item.locator('[data-testid="status-select"]');
