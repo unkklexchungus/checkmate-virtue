@@ -35,6 +35,16 @@ async def inspection_form(request: Request):
         "template": template
     })
 
+@router.get("/form/{inspection_id}", response_class=HTMLResponse)
+async def edit_inspection_form(request: Request, inspection_id: str):
+    """Render the inspection form page for editing an existing inspection."""
+    template = load_inspection_template()
+    return templates.TemplateResponse("inspection_form.html", {
+        "request": request,
+        "template": template,
+        "inspection_id": inspection_id
+    })
+
 @router.get("/list", response_class=HTMLResponse)
 async def inspection_list(request: Request):
     """Render the inspection list page."""
@@ -81,7 +91,8 @@ async def create_inspection(data: InspectionCreate):
         "vehicle_info": vehicle_info,
         "items": [item.model_dump() for item in data.items],
         "created_at": datetime.now().isoformat(),
-        "updated_at": datetime.now().isoformat()
+        "updated_at": datetime.now().isoformat(),
+        "status": "draft"
     }
     
     # Save to database
@@ -101,6 +112,23 @@ async def get_inspection(inspection_id: str):
     if not inspection:
         raise HTTPException(status_code=404, detail="Inspection not found")
     return inspection
+
+@router.patch("/{inspection_id}")
+async def save_draft_inspection(inspection_id: str, draft_data: Dict[str, Any]):
+    """Save draft state of an inspection."""
+    inspection = find_inspection(inspection_id)
+    if not inspection:
+        raise HTTPException(status_code=404, detail="Inspection not found")
+    
+    # Update inspection with draft data
+    inspection.update(draft_data)
+    inspection["updated_at"] = datetime.now().isoformat()
+    inspection["status"] = "draft"
+    
+    if update_inspection(inspection_id, inspection):
+        return {"message": "Draft saved successfully", "inspection_id": inspection_id}
+    else:
+        raise HTTPException(status_code=500, detail="Failed to save draft")
 
 @router.put("/{inspection_id}")
 async def update_inspection_data(inspection_id: str, data: InspectionCreate):

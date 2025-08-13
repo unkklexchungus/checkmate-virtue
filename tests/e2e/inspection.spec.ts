@@ -273,74 +273,200 @@ test.describe.serial('Inspection Module E2E Tests', () => {
     });
   });
 
-  test('S3: Save Draft + Resume - persistence verification', async () => {
-    await test.step('Navigate to inspection form and create new inspection', async () => {
+  test('S3: Save Draft and Resume - persistence verification', async () => {
+    let savedInspectionId: string;
+    
+    await test.step('Create inspection and fill partial data', async () => {
       await page.goto('/inspection/form');
       await page.waitForLoadState('networkidle');
       
       // Assert form loads
       await expect(page.locator('[data-testid="inspection-form"]')).toBeVisible({ timeout: 30000 });
-    });
-
-    await test.step('Fill inspector information and some items', async () => {
-      await page.fill('[data-testid="inspector-name"]', TEST_INSPECTOR_NAME);
-      await page.fill('[data-testid="inspector-id"]', TEST_INSPECTOR_ID);
-      await page.fill('[data-testid="inspection-title"]', TEST_INSPECTION_TITLE);
       
-      // Fill a few items to have data to save
+      // Fill inspector information
+      await page.fill('[data-testid="inspector-name"]', 'Draft Test Inspector');
+      await page.fill('[data-testid="inspector-id"]', 'DTI001');
+      await page.fill('[data-testid="inspection-title"]', 'Draft Test Inspection');
+      
+      // Fill VIN
+      await page.fill('[data-testid="vin-input"]', TEST_VIN);
+      await page.click('[data-testid="decode-vin"]');
+      
+      // Wait for VIN decode
+      await page.waitForResponse(
+        response => response.url().includes('/vehicle/decode') && response.status() === 200,
+        { timeout: 30000 }
+      );
+      
+      // Fill some inspection items
       const items = page.locator('[data-testid="inspection-item"]');
       await expect(items.first()).toBeVisible({ timeout: 30000 });
+      const itemCount = await items.count();
       
-      // Fill first 5 items
-      for (let i = 0; i < 5; i++) {
+      // Fill first 3 items
+      const maxItems = Math.min(3, itemCount);
+      for (let i = 0; i < maxItems; i++) {
         const item = items.nth(i);
+        
+        if (!(await item.isVisible())) {
+          const stepButtons = page.locator('#steps-nav button');
+          const stepButtonCount = await stepButtons.count();
+          
+          for (let stepIndex = 0; stepIndex < stepButtonCount; stepIndex++) {
+            const stepButton = stepButtons.nth(stepIndex);
+            const buttonText = await stepButton.textContent();
+            if (buttonText && buttonText.includes('Vehicle Inspection')) {
+              await stepButton.click();
+              await page.waitForTimeout(1000);
+              break;
+            }
+          }
+        }
+        
         await expect(item).toBeVisible({ timeout: 30000 });
         
-        const statuses = ['pass', 'recommended', 'required'];
-        const status = statuses[i % 3];
         const statusSelect = item.locator('[data-testid="status-select"]');
-        await statusSelect.selectOption(status);
+        await statusSelect.selectOption('pass');
         
         const notesInput = item.locator('[data-testid="notes-input"]');
         if (await notesInput.isVisible()) {
-          await notesInput.fill(`Test notes for item ${i + 1}`);
+          await notesInput.fill(`Draft test notes for item ${i + 1}`);
         }
       }
     });
 
-    await test.step('Save current draft', async () => {
+    await test.step('Save draft and capture inspection ID', async () => {
+      // Intercept the PATCH request for saving draft
       const responsePromise = page.waitForResponse(response => 
-        response.url().includes('/api/inspections') && response.request().method() === 'PUT'
+        response.url().includes('/api/inspections') && response.request().method() === 'PATCH'
       );
       
-      await page.click('[data-testid="save-inspection"]');
+      await page.click('[data-testid="save-draft"]');
       
       const response = await responsePromise;
       expect(response.status()).toBe(200);
       
       const responseData = await response.json();
-      console.log('✅ Draft saved successfully');
+      savedInspectionId = responseData.inspection_id;
+      
+      console.log(`✅ Draft saved successfully with ID: ${savedInspectionId}`);
+      
+      // Verify draft status
+      await expect(page.locator('#status-text')).toContainText('Draft');
     });
 
-    await test.step('Reload page and verify form loads', async () => {
-      await page.reload();
+    await test.step('Reload app and resume by ID', async () => {
+      // Navigate to edit URL with inspection ID
+      await page.goto(`/inspection/form?id=${savedInspectionId}`);
       await page.waitForLoadState('networkidle');
       
-      // Verify form loads correctly
+      // Assert form loads
       await expect(page.locator('[data-testid="inspection-form"]')).toBeVisible({ timeout: 30000 });
       
-      // Verify inspector fields are present and can be filled
-      await expect(page.locator('[data-testid="inspector-name"]')).toBeVisible();
-      await expect(page.locator('[data-testid="inspector-id"]')).toBeVisible();
-      await expect(page.locator('[data-testid="inspection-title"]')).toBeVisible();
+      // Wait for inspection data to load
+      await page.waitForTimeout(2000);
+    });
+
+    await test.step('Assert fields persisted correctly', async () => {
+      // Verify inspector information persisted
+      await expect(page.locator('[data-testid="inspector-name"]')).toHaveValue('Draft Test Inspector');
+      await expect(page.locator('[data-testid="inspector-id"]')).toHaveValue('DTI001');
+      await expect(page.locator('[data-testid="inspection-title"]')).toHaveValue('Draft Test Inspection');
       
-      // Verify inspection items are present
+      // Verify VIN persisted
+      await expect(page.locator('[data-testid="vin-input"]')).toHaveValue(TEST_VIN);
+      
+      // Verify vehicle info is displayed
+      await expect(page.locator('[data-testid="vehicle-info"]')).toBeVisible();
+      
+      // Verify inspection items persisted
       const items = page.locator('[data-testid="inspection-item"]');
-      await expect(items.first()).toBeVisible({ timeout: 30000 });
       const itemCount = await items.count();
-      expect(itemCount).toBeGreaterThan(0);
       
-      console.log(`✅ Form persistence verified - ${itemCount} inspection items loaded`);
+      // Check first 3 items for persisted data
+      const maxItems = Math.min(3, itemCount);
+      for (let i = 0; i < maxItems; i++) {
+        const item = items.nth(i);
+        
+        if (!(await item.isVisible())) {
+          const stepButtons = page.locator('#steps-nav button');
+          const stepButtonCount = await stepButtons.count();
+          
+          for (let stepIndex = 0; stepIndex < stepButtonCount; stepIndex++) {
+            const stepButton = stepButtons.nth(stepIndex);
+            const buttonText = await stepButton.textContent();
+            if (buttonText && buttonText.includes('Vehicle Inspection')) {
+              await stepButton.click();
+              await page.waitForTimeout(1000);
+              break;
+            }
+          }
+        }
+        
+        await expect(item).toBeVisible({ timeout: 30000 });
+        
+        // Verify status persisted
+        const statusSelect = item.locator('[data-testid="status-select"]');
+        await expect(statusSelect).toHaveValue('pass');
+        
+        // Verify notes persisted
+        const notesInput = item.locator('[data-testid="notes-input"]');
+        if (await notesInput.isVisible()) {
+          await expect(notesInput).toHaveValue(`Draft test notes for item ${i + 1}`);
+        }
+      }
+      
+      // Verify inspection ID is set
+      await expect(page.locator('[data-testid="inspection-id"]')).toHaveValue(savedInspectionId);
+      
+      console.log('✅ All draft data persisted correctly');
+    });
+
+    await test.step('Verify no data loss across reload', async () => {
+      // Add more data to verify it can be saved
+      const items = page.locator('[data-testid="inspection-item"]');
+      const itemCount = await items.count();
+      
+      if (itemCount > 3) {
+        const item = items.nth(3);
+        
+        if (!(await item.isVisible())) {
+          const stepButtons = page.locator('#steps-nav button');
+          const stepButtonCount = await stepButtons.count();
+          
+          for (let stepIndex = 0; stepIndex < stepButtonCount; stepIndex++) {
+            const stepButton = stepButtons.nth(stepIndex);
+            const buttonText = await stepButton.textContent();
+            if (buttonText && buttonText.includes('Vehicle Inspection')) {
+              await stepButton.click();
+              await page.waitForTimeout(1000);
+              break;
+            }
+          }
+        }
+        
+        await expect(item).toBeVisible({ timeout: 30000 });
+        
+        const statusSelect = item.locator('[data-testid="status-select"]');
+        await statusSelect.selectOption('required');
+        
+        const notesInput = item.locator('[data-testid="notes-input"]');
+        if (await notesInput.isVisible()) {
+          await notesInput.fill('Additional test notes after resume');
+        }
+        
+        // Save draft again
+        const responsePromise = page.waitForResponse(response => 
+          response.url().includes('/api/inspections') && response.request().method() === 'PATCH'
+        );
+        
+        await page.click('[data-testid="save-draft"]');
+        
+        const response = await responsePromise;
+        expect(response.status()).toBe(200);
+        
+        console.log('✅ Additional data saved successfully after resume');
+      }
     });
   });
 
@@ -456,6 +582,29 @@ test.describe.serial('Inspection Module E2E Tests', () => {
       await expect(pdfReportButton).toBeEnabled();
       
       console.log('✅ Report generation buttons are present and functional');
+    });
+
+    await test.step('Test PDF report generation', async () => {
+      // Get the inspection ID from the current inspection
+      const inspectionId = await page.locator('[data-testid="inspection-id"]').textContent() || 
+                          await page.locator('[data-testid="inspection-id"]').getAttribute('value') ||
+                          'test-inspection-id';
+      
+      // Request PDF report and assert 200 + pdf content-type
+      const response = await page.request.get(`/api/inspections/${inspectionId}/report/pdf`);
+      expect(response.status()).toBe(200);
+      expect(response.headers()['content-type']).toContain('application/pdf');
+      
+      // Optional: save artifact file in test output
+      const pdfBuffer = await response.body();
+      const fs = require('fs');
+      const path = require('path');
+      const artifactsDir = path.join(__dirname, '../../artifacts/e2e/s4_finalize_report_-_generate_and_validate_report');
+      fs.mkdirSync(artifactsDir, { recursive: true });
+      fs.writeFileSync(path.join(artifactsDir, 'inspection_report.pdf'), pdfBuffer);
+      
+      console.log('✅ PDF report generated successfully with correct content-type');
+      console.log(`✅ PDF artifact saved to: ${path.join(artifactsDir, 'inspection_report.pdf')}`);
     });
   });
 

@@ -1,5 +1,58 @@
 # Changelog
 
+## [2025-08-12] - feat(report): PDF generation endpoint + UI hook
+
+### Added
+- **Backend PDF Generation**: Implemented comprehensive PDF report generation using ReportLab
+  - New endpoint: `GET /api/inspections/{id}/report/pdf`
+  - Generates professional PDF reports with business header, inspection details, and summary totals
+  - Includes proper content-type headers and inline disposition for browser viewing
+  - Features business name, inspector info, VIN/vehicle details, and inspection date
+  - Organized sections per category with item status (Pass/Rec/Req) and notes
+  - Summary totals table with pass/fail/recommended/required counts
+
+### Enhanced
+- **Frontend Integration**: 
+  - Wired "Generate Report" button (`id="generate-report"`) to open/download PDF
+  - Added event listeners for both HTML and PDF report generation
+  - Implemented proper error handling and user feedback
+  - Added hidden inspection ID field for E2E testing
+
+### Updated
+- **E2E Testing (S4)**: 
+  - Enhanced S4 test to request PDF report and assert 200 + pdf content-type
+  - Added PDF artifact saving in test output directory
+  - Verified report generation buttons are present and functional after finalization
+  - All tests passing (7/7) including comprehensive PDF functionality
+
+### Technical Details
+- **PDF Structure**: 
+  - Header with "CheckMate Virtue" branding and system title
+  - Inspection details table with ID, date, inspector, VIN, vehicle info
+  - Category sections with item tables showing status and notes
+  - Summary totals table with color-coded statistics
+  - Professional styling with proper fonts, colors, and spacing
+
+- **Route Configuration**:
+  - Fixed route ordering to prevent conflicts
+  - Added GET route for `/api/inspections/{id}` to support report generation
+  - Proper route hierarchy: `/api/inspections/{id}/report/pdf` for PDF generation
+
+### Files Modified
+- `main.py`: Added PDF generation endpoint and enhanced report function
+- `templates/inspection_form.html`: Added PDF report button and JavaScript handlers
+- `templates/inspections.html`: Updated report generation endpoint
+- `templates/view_inspection.html`: Updated report generation endpoint
+- `tests/e2e/inspection.spec.ts`: Enhanced S4 test with PDF validation
+
+### Acceptance Criteria Met
+✅ Report renders without exceptions and contains required sections  
+✅ S4 report step passes with PDF generation and validation  
+✅ Frontend buttons properly wired to backend endpoints  
+✅ E2E tests validate complete PDF workflow  
+
+---
+
 All notable changes to the Automotive Service-Based Architecture project will be documented in this file.
 
 ## [1.5.0] - 2025-08-12

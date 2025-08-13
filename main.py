@@ -206,6 +206,18 @@ def generate_pdf_report(inspection: Dict[str, Any]) -> str:
     story = []
     styles = getSampleStyleSheet()
     
+    # Header: Business name, Inspector, VIN/vehicle info, date
+    header_style = ParagraphStyle(
+        'Header',
+        parent=styles['Heading1'],
+        fontSize=18,
+        spaceAfter=20,
+        alignment=TA_CENTER
+    )
+    story.append(Paragraph("CheckMate Virtue", header_style))
+    story.append(Paragraph("Automotive Professional Inspection System", styles['Normal']))
+    story.append(Spacer(1, 20))
+    
     # Title
     title_style = ParagraphStyle(
         'CustomTitle',
@@ -214,17 +226,21 @@ def generate_pdf_report(inspection: Dict[str, Any]) -> str:
         spaceAfter=30,
         alignment=TA_CENTER
     )
-    story.append(Paragraph(f"Inspection Report: {inspection['title']}", title_style))
+    story.append(Paragraph(f"Inspection Report: {inspection.get('title', 'Vehicle Inspection')}", title_style))
     story.append(Spacer(1, 12))
     
     # Inspection Details
     details_data = [
-        ['Inspection ID:', inspection['id']],
-        ['Date:', inspection['date']],
-        ['Inspector:', inspection['inspector_name']],
-        ['Industry:', inspection['industry_type'].replace('_', ' ').title()],
-        ['Status:', inspection['status']]
+        ['Inspection ID:', inspection.get('id', 'N/A')],
+        ['Date:', inspection.get('date', inspection.get('created_at', 'N/A'))],
+        ['Inspector:', inspection.get('inspector_name', 'N/A')],
+        ['Inspector ID:', inspection.get('inspector_id', 'N/A')],
+        ['Status:', inspection.get('status', 'N/A')]
     ]
+    
+    # Add VIN and vehicle information
+    if inspection.get('vin'):
+        details_data.append(['VIN:', inspection['vin']])
     
     if inspection.get('vehicle_info'):
         vehicle = inspection['vehicle_info']
@@ -247,8 +263,15 @@ def generate_pdf_report(inspection: Dict[str, Any]) -> str:
     story.append(details_table)
     story.append(Spacer(1, 20))
     
+    # Calculate summary totals
+    total_items = 0
+    pass_items = 0
+    recommended_items = 0
+    required_items = 0
+    na_items = 0
+    
     # Categories and Items
-    for category in inspection['categories']:
+    for category in inspection.get('categories', []):
         # Category header
         category_style = ParagraphStyle(
             'CategoryHeader',
@@ -257,20 +280,32 @@ def generate_pdf_report(inspection: Dict[str, Any]) -> str:
             spaceAfter=12,
             spaceBefore=20
         )
-        story.append(Paragraph(f"Category: {category['name']}", category_style))
+        story.append(Paragraph(f"Category: {category.get('name', 'Unknown')}", category_style))
         
         if category.get('description'):
             story.append(Paragraph(f"Description: {category['description']}", styles['Normal']))
             story.append(Spacer(1, 12))
         
         # Items table
-        if category['items']:
-            items_data = [['Item', 'Grade', 'Notes']]
+        if category.get('items'):
+            items_data = [['Item', 'Status', 'Notes']]
             for item in category['items']:
+                total_items += 1
+                grade = item.get('grade', 'N/A').lower()
+                
+                if grade == 'pass':
+                    pass_items += 1
+                elif grade == 'recommended':
+                    recommended_items += 1
+                elif grade == 'required':
+                    required_items += 1
+                else:
+                    na_items += 1
+                
                 items_data.append([
-                    item['name'],
-                    item['grade'],
-                    item['notes'][:50] + '...' if len(item['notes']) > 50 else item['notes']
+                    item.get('name', 'Unknown'),
+                    item.get('grade', 'N/A'),
+                    item.get('notes', '')[:50] + '...' if len(item.get('notes', '')) > 50 else item.get('notes', '')
                 ])
             
             items_table = Table(items_data, colWidths=[3*inch, 1*inch, 2*inch])
@@ -286,6 +321,35 @@ def generate_pdf_report(inspection: Dict[str, Any]) -> str:
             ]))
             story.append(items_table)
             story.append(Spacer(1, 12))
+    
+    # Summary totals
+    story.append(Spacer(1, 20))
+    summary_style = ParagraphStyle(
+        'Summary',
+        parent=styles['Heading2'],
+        fontSize=14,
+        spaceAfter=12,
+        spaceBefore=20
+    )
+    story.append(Paragraph("Summary Totals", summary_style))
+    
+    summary_data = [
+        ['Total Items', 'Pass', 'Recommended', 'Required', 'N/A'],
+        [str(total_items), str(pass_items), str(recommended_items), str(required_items), str(na_items)]
+    ]
+    
+    summary_table = Table(summary_data, colWidths=[1.2*inch, 1.2*inch, 1.2*inch, 1.2*inch, 1.2*inch])
+    summary_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.darkblue),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 10),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.lightblue),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ]))
+    story.append(summary_table)
     
     # Build PDF
     doc.build(story)
@@ -389,8 +453,16 @@ async def list_inspections(request: Request) -> HTMLResponse:
 
 @app.get("/inspections/new", response_class=HTMLResponse)
 async def new_inspection(request: Request) -> HTMLResponse:
-    """New inspection form - redirect to guided inspection form."""
+    """New inspection page."""
     return templates.TemplateResponse("redirect_to_guided_inspection.html", {"request": request})
+
+@app.get("/inspections/edit/{inspection_id}", response_class=HTMLResponse)
+async def edit_inspection(request: Request, inspection_id: str) -> HTMLResponse:
+    """Edit existing inspection page."""
+    return templates.TemplateResponse("redirect_to_guided_inspection.html", {
+        "request": request,
+        "inspection_id": inspection_id
+    })
 
 @app.post("/api/inspections")
 async def create_inspection(inspection: InspectionRequest) -> Dict[str, str]:
@@ -609,6 +681,31 @@ async def get_inspection_api(inspection_id: str) -> Dict[str, Any]:
         raise HTTPException(status_code=404, detail="Inspection not found")
     return inspection
 
+@app.get("/api/inspections/{inspection_id}")
+async def get_inspection(inspection_id: str) -> Dict[str, Any]:
+    """Get a specific inspection by ID."""
+    inspection = find_inspection(inspection_id)
+    if not inspection:
+        raise HTTPException(status_code=404, detail="Inspection not found")
+    return inspection
+
+@app.patch("/api/inspections/{inspection_id}")
+async def save_draft_inspection(inspection_id: str, draft_data: Dict[str, Any]) -> Dict[str, str]:
+    """Save draft state of an inspection."""
+    inspection = find_inspection(inspection_id)
+    if not inspection:
+        raise HTTPException(status_code=404, detail="Inspection not found")
+    
+    # Update inspection with draft data
+    inspection.update(draft_data)
+    inspection["updated_at"] = datetime.now().isoformat()
+    inspection["status"] = "draft"
+    
+    if update_inspection_data(inspection_id, inspection):
+        return {"message": "Draft saved successfully", "inspection_id": inspection_id}
+    else:
+        raise HTTPException(status_code=500, detail="Failed to save draft")
+
 @app.put("/api/inspections/{inspection_id}")
 async def update_inspection(inspection_id: str, inspection: InspectionUpdate) -> Dict[str, str]:
     """Update inspection data with validation."""
@@ -633,6 +730,25 @@ async def update_inspection(inspection_id: str, inspection: InspectionUpdate) ->
         return {"message": "Inspection updated successfully"}
     else:
         raise HTTPException(status_code=500, detail="Failed to update inspection")
+
+@app.get("/api/inspections/{inspection_id}/report/pdf")
+async def generate_pdf_report_endpoint(inspection_id: str) -> FileResponse:
+    """Generate PDF report for inspection."""
+    inspection = find_inspection(inspection_id)
+    if not inspection:
+        raise HTTPException(status_code=404, detail="Inspection not found")
+    
+    try:
+        pdf_path = generate_pdf_report(inspection)
+        return FileResponse(
+            pdf_path,
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": f"inline; filename=inspection_report_{inspection_id}.pdf"
+            }
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to generate PDF: {str(e)}")
 
 @app.get("/api/inspections/{inspection_id}/report")
 async def generate_report(inspection_id: str) -> Dict[str, Any]:
@@ -687,23 +803,6 @@ async def test_vin_page(request: Request) -> HTMLResponse:
 async def test_vin_simple_page(request: Request) -> HTMLResponse:
     """Simple test page for VIN decoder functionality."""
     return FileResponse("test_vin_simple.html")
-
-@app.get("/api/inspections/{inspection_id}/report/pdf")
-async def generate_pdf_report_endpoint(inspection_id: str) -> FileResponse:
-    """Generate PDF report for inspection."""
-    inspection = find_inspection(inspection_id)
-    if not inspection:
-        raise HTTPException(status_code=404, detail="Inspection not found")
-    
-    try:
-        pdf_path = generate_pdf_report(inspection)
-        return FileResponse(
-            pdf_path,
-            media_type="application/pdf",
-            filename=f"inspection_report_{inspection_id}.pdf"
-        )
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to generate PDF: {str(e)}")
 
 
 

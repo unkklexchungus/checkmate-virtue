@@ -1,12 +1,12 @@
-<testsuites id="" name="" tests="7" failures="0" skipped="0" errors="0" time="33.958268">
-<testsuite name="inspection.spec.ts" timestamp="2025-08-12T09:57:45.118Z" hostname="chromium" tests="7" failures="0" skipped="0" time="32.81" errors="0">
-<testcase name="Inspection Module E2E Tests › S0: Boot smoke - load &quot;/&quot; and assert FE renders" classname="inspection.spec.ts" time="1.259">
+<testsuites id="" name="" tests="7" failures="0" skipped="0" errors="0" time="35.517873">
+<testsuite name="inspection.spec.ts" timestamp="2025-08-12T11:39:48.168Z" hostname="chromium" tests="7" failures="0" skipped="0" time="34.169" errors="0">
+<testcase name="Inspection Module E2E Tests › S0: Boot smoke - load &quot;/&quot; and assert FE renders" classname="inspection.spec.ts" time="1.329">
 <system-out>
 <![CDATA[✅ Home page loaded successfully. Title: CheckMate Virtue - Automotive Professional Inspection System
 ]]>
 </system-out>
 </testcase>
-<testcase name="Inspection Module E2E Tests › S1: Create Inspection - complete flow with VIN decode" classname="inspection.spec.ts" time="5.749">
+<testcase name="Inspection Module E2E Tests › S1: Create Inspection - complete flow with VIN decode" classname="inspection.spec.ts" time="6.986">
 <system-out>
 <![CDATA[✅ VIN decoded successfully
 Found 181 inspection items
@@ -28,11 +28,14 @@ Response data: {
   "message": "Inspection updated successfully"
 }
 ✅ Response received successfully
-✅ Inspection saved successfully with ID: INSP_20250812_672683
+✅ Inspection saved successfully with ID: INSP_20250812_797014
+Console Error: Error decoding VIN: TypeError: Failed to fetch
+    at decodeVIN (http://127.0.0.1:8000/inspection/form:604:40)
+    at http://127.0.0.1:8000/inspection/form:434:25
 ]]>
 </system-out>
 </testcase>
-<testcase name="Inspection Module E2E Tests › S2: Checklist Fill - comprehensive item completion" classname="inspection.spec.ts" time="4.146">
+<testcase name="Inspection Module E2E Tests › S2: Checklist Fill - comprehensive item completion" classname="inspection.spec.ts" time="4.094">
 <system-out>
 <![CDATA[Found 181 inspection items
 Item 13 is in step: Brakes
@@ -49,14 +52,14 @@ Processed additional item 20/20
 ]]>
 </system-out>
 </testcase>
-<testcase name="Inspection Module E2E Tests › S3: Save Draft + Resume - persistence verification" classname="inspection.spec.ts" time="2.958">
+<testcase name="Inspection Module E2E Tests › S3: Save Draft + Resume - persistence verification" classname="inspection.spec.ts" time="3.054">
 <system-out>
 <![CDATA[✅ Draft saved successfully
 ✅ Form persistence verified - 181 inspection items loaded
 ]]>
 </system-out>
 </testcase>
-<testcase name="Inspection Module E2E Tests › S4: Finalize + Report - generate and validate report" classname="inspection.spec.ts" time="13.687">
+<testcase name="Inspection Module E2E Tests › S4: Finalize + Report - generate and validate report" classname="inspection.spec.ts" time="13.643">
 <system-out>
 <![CDATA[✅ Finalize button is present but disabled (as expected)
 Found 8 steps to process
@@ -71,10 +74,12 @@ Processing step 8/8 with 9 visible items
 ✅ All items completed, finalize button is now enabled
 ✅ Inspection finalized successfully and form is read-only
 ✅ Report generation buttons are present and functional
+✅ PDF report generated successfully with correct content-type
+✅ PDF artifact saved to: /home/chungus/Lexicon-Re-clone/artifacts/e2e/s4_finalize_report_-_generate_and_validate_report/inspection_report.pdf
 ]]>
 </system-out>
 </testcase>
-<testcase name="Inspection Module E2E Tests › S5: FE↔BE Data Contract Assertions" classname="inspection.spec.ts" time="0.343">
+<testcase name="Inspection Module E2E Tests › S5: FE↔BE Data Contract Assertions" classname="inspection.spec.ts" time="0.331">
 <system-out>
 <![CDATA[✅ Template API contract validated
 ✅ Inspection list API contract validated
@@ -82,7 +87,7 @@ Processing step 8/8 with 9 visible items
 ]]>
 </system-out>
 </testcase>
-<testcase name="Inspection Module E2E Tests › S6: Negative/Edge Cases" classname="inspection.spec.ts" time="4.668">
+<testcase name="Inspection Module E2E Tests › S6: Negative/Edge Cases" classname="inspection.spec.ts" time="4.732">
 <system-out>
 <![CDATA[✅ Validation errors displayed: 1 errors
 ✅ Error message: 
