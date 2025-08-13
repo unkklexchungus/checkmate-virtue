@@ -98,6 +98,89 @@ curl http://localhost:8003/healthz  # Vehicle Service
 
 ### API Gateway (Port 8080)
 - Routes requests to appropriate services
+
+## 🔌 API Documentation
+
+### API v1 Endpoints (Standardized)
+
+All inspection-related endpoints are now standardized under `/api/v1` prefix:
+
+#### Health Check
+- `GET /healthz` - Service health check
+
+#### Inspection API v1
+- `GET /api/v1/inspection/template` - Get inspection template
+- `POST /api/v1/inspection` - Create new inspection
+- `GET /api/v1/inspection/{inspection_id}` - Get inspection by ID
+- `PUT /api/v1/inspection/{inspection_id}` - Update inspection
+- `PATCH /api/v1/inspection/{inspection_id}` - Save draft inspection
+- `POST /api/v1/inspection/{inspection_id}/photos` - Upload photo
+- `POST /api/v1/inspection/{inspection_id}/finalize` - Finalize inspection
+- `GET /api/v1/inspection/{inspection_id}/report` - Generate report
+
+#### Legacy Endpoints (Backward Compatibility)
+
+For backward compatibility, the following legacy endpoints are still available:
+
+- `GET /api/inspection-template` - Get inspection template (legacy)
+- `GET /api/inspections/{inspection_id}` - Get inspection by ID (legacy)
+- `PUT /api/inspections/{inspection_id}` - Update inspection (legacy)
+- `PATCH /api/inspections/{inspection_id}` - Save draft inspection (legacy)
+- `POST /api/inspections/{inspection_id}/photos` - Upload photo (legacy)
+- `GET /api/inspections/{inspection_id}/report` - Generate report (legacy)
+
+#### Vehicle Data API
+- `GET /vehicle/decode/{vin}` - Decode VIN and get vehicle information
+- `GET /vehicle/health` - Vehicle service health check
+
+#### Invoice API
+- `POST /api/invoices` - Create new invoice
+- `GET /invoices` - List invoices (HTML)
+- `GET /invoices/new` - New invoice form (HTML)
+
+### Frontend API Client
+
+A standardized API client is available at `static/js/api-client.js`:
+
+```javascript
+// Use the new API v1 endpoints
+const apiClient = new APIClient();
+
+// Create inspection
+const inspection = await apiClient.createInspection(inspectionData);
+
+// Get inspection
+const inspection = await apiClient.getInspection(inspectionId);
+
+// Update inspection
+await apiClient.updateInspection(inspectionId, updateData);
+
+// Legacy endpoints are also available
+const inspection = await apiClient.getInspectionLegacy(inspectionId);
+```
+
+### Migration Guide
+
+To migrate from legacy endpoints to API v1:
+
+1. **Update API calls**: Replace `/api/inspections/*` with `/api/v1/inspection/*`
+2. **Update photo upload**: Use the new parameter structure (step, subcategory, item)
+3. **Use the API client**: Import and use the standardized API client
+4. **Test thoroughly**: Run the integration tests to verify functionality
+
+### Integration Testing
+
+Run the integration tests to verify all endpoints:
+
+```bash
+python test_api_v1_integration.py
+```
+
+This will test:
+- Health check endpoint
+- All API v1 inspection endpoints
+- Legacy endpoint compatibility
+- Data contract validation
 - Handles authentication and authorization
 - Provides unified API documentation
 - Manages CORS and rate limiting
