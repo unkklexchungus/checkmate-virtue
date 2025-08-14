@@ -1,6 +1,6 @@
 /**
  * API Client for CheckMate Virtue
- * Standardized under /api/v1 endpoints
+ * Standardized under /api/v1 endpoints with centralized error handling
  */
 
 class APIClient {
@@ -11,21 +11,20 @@ class APIClient {
 
     // Health check
     async healthCheck() {
-        const response = await fetch(`${this.baseURL}/healthz`);
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}/healthz`);
+        if (!response) return null;
         return response.json();
     }
 
     // Inspection API v1 endpoints
     async getInspectionTemplate() {
-        const response = await fetch(`${this.baseURL}${this.apiV1Base}/inspection/template`);
-        if (!response.ok) {
-            throw new Error(`Failed to get inspection template: ${response.status}`);
-        }
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}${this.apiV1Base}/inspection/template`);
+        if (!response) return null;
         return response.json();
     }
 
     async createInspection(inspectionData) {
-        const response = await fetch(`${this.baseURL}${this.apiV1Base}/inspection`, {
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}${this.apiV1Base}/inspection`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -33,24 +32,18 @@ class APIClient {
             body: JSON.stringify(inspectionData)
         });
         
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || `Failed to create inspection: ${response.status}`);
-        }
-        
+        if (!response) return null;
         return response.json();
     }
 
     async getInspection(inspectionId) {
-        const response = await fetch(`${this.baseURL}${this.apiV1Base}/inspection/${inspectionId}`);
-        if (!response.ok) {
-            throw new Error(`Failed to get inspection: ${response.status}`);
-        }
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}${this.apiV1Base}/inspection/${inspectionId}`);
+        if (!response) return null;
         return response.json();
     }
 
     async updateInspection(inspectionId, inspectionData) {
-        const response = await fetch(`${this.baseURL}${this.apiV1Base}/inspection/${inspectionId}`, {
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}${this.apiV1Base}/inspection/${inspectionId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -58,16 +51,12 @@ class APIClient {
             body: JSON.stringify(inspectionData)
         });
         
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || `Failed to update inspection: ${response.status}`);
-        }
-        
+        if (!response) return null;
         return response.json();
     }
 
     async saveDraft(inspectionId, draftData) {
-        const response = await fetch(`${this.baseURL}${this.apiV1Base}/inspection/${inspectionId}`, {
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}${this.apiV1Base}/inspection/${inspectionId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -75,11 +64,7 @@ class APIClient {
             body: JSON.stringify(draftData)
         });
         
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || `Failed to save draft: ${response.status}`);
-        }
-        
+        if (!response) return null;
         return response.json();
     }
 
@@ -90,40 +75,30 @@ class APIClient {
         formData.append('subcategory', subcategory);
         formData.append('item', item);
 
-        const response = await fetch(`${this.baseURL}${this.apiV1Base}/inspection/${inspectionId}/photos`, {
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}${this.apiV1Base}/inspection/${inspectionId}/photos`, {
             method: 'POST',
             body: formData
         });
         
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || `Failed to upload photo: ${response.status}`);
-        }
-        
+        if (!response) return null;
         return response.json();
     }
 
     async finalizeInspection(inspectionId) {
-        const response = await fetch(`${this.baseURL}${this.apiV1Base}/inspection/${inspectionId}/finalize`, {
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}${this.apiV1Base}/inspection/${inspectionId}/finalize`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             }
         });
         
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || `Failed to finalize inspection: ${response.status}`);
-        }
-        
+        if (!response) return null;
         return response.json();
     }
 
     async generateReport(inspectionId, format = 'html') {
-        const response = await fetch(`${this.baseURL}${this.apiV1Base}/inspection/${inspectionId}/report?format=${format}`);
-        if (!response.ok) {
-            throw new Error(`Failed to generate report: ${response.status}`);
-        }
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}${this.apiV1Base}/inspection/${inspectionId}/report?format=${format}`);
+        if (!response) return null;
         
         if (format === 'pdf') {
             return response.blob();
@@ -134,23 +109,19 @@ class APIClient {
 
     // Legacy endpoints for backward compatibility
     async getInspectionTemplateLegacy() {
-        const response = await fetch(`${this.baseURL}/api/inspection-template`);
-        if (!response.ok) {
-            throw new Error(`Failed to get inspection template: ${response.status}`);
-        }
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}/api/inspection-template`);
+        if (!response) return null;
         return response.json();
     }
 
     async getInspectionLegacy(inspectionId) {
-        const response = await fetch(`${this.baseURL}/api/inspections/${inspectionId}`);
-        if (!response.ok) {
-            throw new Error(`Failed to get inspection: ${response.status}`);
-        }
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}/api/inspections/${inspectionId}`);
+        if (!response) return null;
         return response.json();
     }
 
     async updateInspectionLegacy(inspectionId, inspectionData) {
-        const response = await fetch(`${this.baseURL}/api/inspections/${inspectionId}`, {
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}/api/inspections/${inspectionId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -158,16 +129,12 @@ class APIClient {
             body: JSON.stringify(inspectionData)
         });
         
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || `Failed to update inspection: ${response.status}`);
-        }
-        
+        if (!response) return null;
         return response.json();
     }
 
     async saveDraftLegacy(inspectionId, draftData) {
-        const response = await fetch(`${this.baseURL}/api/inspections/${inspectionId}`, {
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}/api/inspections/${inspectionId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -175,11 +142,7 @@ class APIClient {
             body: JSON.stringify(draftData)
         });
         
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || `Failed to save draft: ${response.status}`);
-        }
-        
+        if (!response) return null;
         return response.json();
     }
 
@@ -189,24 +152,18 @@ class APIClient {
         formData.append('category', category);
         formData.append('item', item);
 
-        const response = await fetch(`${this.baseURL}/api/inspections/${inspectionId}/photos`, {
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}/api/inspections/${inspectionId}/photos`, {
             method: 'POST',
             body: formData
         });
         
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || `Failed to upload photo: ${response.status}`);
-        }
-        
+        if (!response) return null;
         return response.json();
     }
 
     async generateReportLegacy(inspectionId, format = 'html') {
-        const response = await fetch(`${this.baseURL}/api/inspections/${inspectionId}/report?format=${format}`);
-        if (!response.ok) {
-            throw new Error(`Failed to generate report: ${response.status}`);
-        }
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}/api/inspections/${inspectionId}/report?format=${format}`);
+        if (!response) return null;
         
         if (format === 'pdf') {
             return response.blob();
@@ -217,21 +174,19 @@ class APIClient {
 
     // Vehicle data endpoints
     async decodeVIN(vin) {
-        const response = await fetch(`${this.baseURL}/vehicle/decode/${vin}`);
-        if (!response.ok) {
-            throw new Error(`Failed to decode VIN: ${response.status}`);
-        }
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}/vehicle/decode/${vin}`);
+        if (!response) return null;
         return response.json();
     }
 
     // Utility methods
     async testEndpoint(endpoint) {
         try {
-            const response = await fetch(`${this.baseURL}${endpoint}`);
+            const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}${endpoint}`);
             return {
-                status: response.status,
-                ok: response.ok,
-                url: response.url
+                status: response?.status || 0,
+                ok: response?.ok || false,
+                url: `${this.baseURL}${endpoint}`
             };
         } catch (error) {
             return {

@@ -150,13 +150,16 @@ async def upload_photo(
     if not inspection:
         raise HTTPException(status_code=404, detail="Inspection not found")
     
-    # Create upload directory
+    # Create upload directory with consistent path
     upload_dir = Path("static/uploads/inspections")
     upload_dir.mkdir(parents=True, exist_ok=True)
     
-    # Save file
+    # Save file with consistent naming
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"{inspection_id}_{step}_{subcategory}_{item}_{timestamp}{file_ext}"
+    safe_step = step.replace(" ", "_").replace("/", "_")
+    safe_subcategory = subcategory.replace(" ", "_").replace("/", "_")
+    safe_item = item.replace(" ", "_").replace("/", "_")
+    filename = f"{inspection_id}_{safe_step}_{safe_subcategory}_{safe_item}_{timestamp}{file_ext}"
     file_path = upload_dir / filename
     
     try:
@@ -168,15 +171,35 @@ async def upload_photo(
     
     # Update inspection data
     photo_url = f"/static/uploads/inspections/{filename}"
+    item_found = False
+    
     for item_data in inspection["items"]:
         if (item_data["step"] == step and 
             item_data["subcategory"] == subcategory and 
             item_data["item"] == item):
             item_data["photo_url"] = photo_url
-            update_inspection(inspection_id, inspection)
-            return {"message": "Photo uploaded successfully", "photo_url": photo_url}
+            if update_inspection(inspection_id, inspection):
+                return {"message": "Photo uploaded successfully", "photo_url": photo_url}
+            else:
+                raise HTTPException(status_code=500, detail="Failed to update inspection with photo")
+            item_found = True
+            break
     
-    raise HTTPException(status_code=404, detail="Inspection item not found")
+    if not item_found:
+        # Create new item if it doesn't exist
+        new_item = {
+            "step": step,
+            "subcategory": subcategory,
+            "item": item,
+            "status": "",
+            "notes": "",
+            "photo_url": photo_url
+        }
+        inspection["items"].append(new_item)
+        if update_inspection(inspection_id, inspection):
+            return {"message": "Photo uploaded successfully", "photo_url": photo_url}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to create new inspection item")
 
 @router.post("/inspection/{inspection_id}/finalize")
 async def finalize_inspection(inspection_id: str):

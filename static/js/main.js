@@ -3,6 +3,9 @@
  * Includes VIN decoder and general application functionality
  */
 
+// Import error handler first
+import './error-handler.js';
+
 // Import VIN decoder functionality
 import './vin_decoder.js';
 

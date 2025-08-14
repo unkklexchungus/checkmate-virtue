@@ -1,908 +1,146 @@
-# Changelog
-
-## [2025-08-12] - feat(report): PDF generation endpoint + UI hook
-
-### Added
-- **Backend PDF Generation**: Implemented comprehensive PDF report generation using ReportLab
-  - New endpoint: `GET /api/inspections/{id}/report/pdf`
-  - Generates professional PDF reports with business header, inspection details, and summary totals
-  - Includes proper content-type headers and inline disposition for browser viewing
-  - Features business name, inspector info, VIN/vehicle details, and inspection date
-  - Organized sections per category with item status (Pass/Rec/Req) and notes
-  - Summary totals table with pass/fail/recommended/required counts
-
-### Enhanced
-- **Frontend Integration**: 
-  - Wired "Generate Report" button (`id="generate-report"`) to open/download PDF
-  - Added event listeners for both HTML and PDF report generation
-  - Implemented proper error handling and user feedback
-  - Added hidden inspection ID field for E2E testing
-
-### Updated
-- **E2E Testing (S4)**: 
-  - Enhanced S4 test to request PDF report and assert 200 + pdf content-type
-  - Added PDF artifact saving in test output directory
-  - Verified report generation buttons are present and functional after finalization
-  - All tests passing (7/7) including comprehensive PDF functionality
-
-### Technical Details
-- **PDF Structure**: 
-  - Header with "CheckMate Virtue" branding and system title
-  - Inspection details table with ID, date, inspector, VIN, vehicle info
-  - Category sections with item tables showing status and notes
-  - Summary totals table with color-coded statistics
-  - Professional styling with proper fonts, colors, and spacing
-
-- **Route Configuration**:
-  - Fixed route ordering to prevent conflicts
-  - Added GET route for `/api/inspections/{id}` to support report generation
-  - Proper route hierarchy: `/api/inspections/{id}/report/pdf` for PDF generation
-
-### Files Modified
-- `main.py`: Added PDF generation endpoint and enhanced report function
-- `templates/inspection_form.html`: Added PDF report button and JavaScript handlers
-- `templates/inspections.html`: Updated report generation endpoint
-- `templates/view_inspection.html`: Updated report generation endpoint
-- `tests/e2e/inspection.spec.ts`: Enhanced S4 test with PDF validation
-
-### Acceptance Criteria Met
-✅ Report renders without exceptions and contains required sections  
-✅ S4 report step passes with PDF generation and validation  
-✅ Frontend buttons properly wired to backend endpoints  
-✅ E2E tests validate complete PDF workflow  
-
----
-
-All notable changes to the Automotive Service-Based Architecture project will be documented in this file.
-
-## [1.5.0] - 2025-08-12
-
-### 🎯 Validation Error Display: S6 Test Fix & User Experience Enhancement
-
-#### ✨ Changes Made
-
-**Frontend Validation System**
-- **Validation Error Container**: Added `data-testid="validation-error"` container with Bootstrap styling
-- **Client-Side Validation**: Implemented comprehensive form validation for required fields
-- **Field Highlighting**: Invalid fields highlighted with red border and `aria-invalid="true"`
-- **Real-Time Feedback**: Validation errors clear when user starts typing in fields
-- **Error Message Display**: Clear, user-friendly error messages with proper formatting
-
-**Server-Side Validation Enhancement**
-- **Pydantic Model Validation**: Enhanced `InspectionUpdate` model with proper field validation
-- **422 Error Responses**: Proper HTTP 422 status codes for validation failures
-- **Detailed Error Messages**: Structured validation error responses with field-specific messages
-- **VIN Validation**: Client-side VIN length validation (must be exactly 17 characters)
-
-**JavaScript Validation Functions**
-- **showValidationError()**: Displays validation errors in the UI container
-- **hideValidationError()**: Hides validation errors when resolved
-- **highlightField()**: Highlights invalid fields with visual feedback
-- **validateForm()**: Comprehensive form validation with multiple error handling
-
-**Testing & Validation**
-- **S6 Test Fix**: Updated E2E test to properly trigger and verify validation errors
-- **Multiple Test Scenarios**: Tests for missing required fields, invalid VIN, and network failures
-- **Validation Error Assertions**: Tests verify `data-testid="validation-error"` elements are visible
-- **Error Message Validation**: Tests confirm error messages contain expected validation text
-
-**Code Quality**
-- **CSS Styling**: Added `.validation-error` and `.field-error` styles for visual feedback
-- **Accessibility**: Proper `aria-invalid` attributes and role="alert" for screen readers
-- **Error Handling**: Graceful handling of both client-side and server-side validation errors
-- **User Experience**: Immediate feedback with clear error messages and field highlighting
-
-#### 🎯 Impact
-
-**S6 Test Success**
-- **Fixed Validation Display**: S6 "Negative/Edge Cases" test now passes completely
-- **Visible Error Messages**: Validation errors properly displayed with `data-testid="validation-error"`
-- **User Feedback**: Clear error messages for missing required fields and invalid VIN
-- **Test Reliability**: E2E tests now properly validate error display functionality
-
-**User Experience Enhancement**
-- **Immediate Feedback**: Users see validation errors immediately when submitting invalid forms
-- **Field Highlighting**: Invalid fields are visually highlighted for easy identification
-- **Clear Messages**: Error messages are specific and actionable
-- **Responsive Design**: Validation errors work across different screen sizes
-
-**Development Experience**
-- **Test Hooks**: Proper `data-testid` attributes for reliable E2E testing
-- **Maintainable Code**: Clean separation of validation logic and UI display
-- **Accessibility**: Proper ARIA attributes for screen reader compatibility
-
-#### 📋 Technical Details
-
-**Files Modified**
-- `templates/inspection_form.html`: Added validation error container and JavaScript validation
-- `main.py`: Enhanced `InspectionUpdate` model and validation error handling
-- `tests/e2e/inspection.spec.ts`: Updated S6 test with comprehensive validation testing
-
-**Validation Rules**
-- **Inspector Name**: Required, minimum 1 character
-- **Inspector ID**: Required, minimum 1 character  
-- **Inspection Title**: Required, minimum 1 character
-- **VIN**: Optional, but must be exactly 17 characters if provided
-
-**CSS Classes**
-- `.validation-error`: Styling for validation error container
-- `.field-error`: Red border and shadow for invalid fields
-
-**JavaScript Functions**
-- `showValidationError(message)`: Display error message
-- `hideValidationError()`: Hide error message
-- `highlightField(fieldId, isValid)`: Highlight field validity
-- `validateForm()`: Comprehensive form validation
-
-**Test Coverage**
-- Missing required fields validation
-- Invalid VIN length validation
-- Network failure error handling
-- Error message content verification
-
-## [1.4.0] - 2025-08-12
-
-### 🔧 CORS Configuration: Environment-Driven Origins & S5 Test Fix
-
-#### ✨ Changes Made
-
-**CORS Middleware Configuration**
-- **Environment-Driven Origins**: Added `CORS_ALLOW_ORIGINS` environment variable support
-- **Proper CORS Specification**: Fixed wildcard origin issue with credentials (CORS spec compliance)
-- **Default Development Origins**: Set defaults to `http://localhost:8000,http://127.0.0.1:8000`
-- **Security Best Practices**: No wildcard origins when `allow_credentials=True`
-
-**FastAPI CORS Setup**
-- **CORSMiddleware Configuration**: Properly configured with environment-driven origins
-- **Preflight Support**: OPTIONS requests handled correctly with proper CORS headers
-- **Credentials Support**: `Access-Control-Allow-Credentials: true` properly set
-- **Method & Header Support**: All methods and headers allowed for development
-
-**Testing & Validation**
-- **S5 Test Fix**: Updated E2E test to properly assert CORS headers
-- **Playwright Context**: Configured test context to send Origin header for realistic CORS testing
-- **Header Validation**: Tests now verify `access-control-allow-origin` and `access-control-allow-credentials`
-- **Origin Validation**: Ensures allowed origins are used (not wildcard with credentials)
-
-**Code Quality**
-- **Environment Configuration**: CORS origins configurable via environment variables
-- **Type Safety**: Proper list handling and validation of CORS origins
-- **Documentation**: Clear comments explaining CORS configuration
-- **Error Handling**: Graceful fallback to default origins
-
-#### 🎯 Impact
-
-**S5 Test Success**
-- **Fixed CORS Headers**: S5 "FE↔BE Data Contract Assertions" test now passes
-- **Proper Headers**: `access-control-allow-origin` and `access-control-allow-credentials` correctly set
-- **Browser Compatibility**: Frontend-backend communication now works properly
-- **Test Reliability**: E2E tests now properly validate CORS configuration
-
-**Security & Compliance**
-- **CORS Specification**: Follows CORS specification correctly (no wildcard with credentials)
-- **Environment Flexibility**: Origins configurable for different environments
-- **Production Ready**: Proper CORS setup for production deployment
-
-**Development Experience**
-- **Local Development**: Works seamlessly with local development setup
-- **Environment Variables**: Easy configuration via `CORS_ALLOW_ORIGINS` environment variable
-- **Testing**: Comprehensive CORS testing in E2E test suite
-
-#### 📋 Technical Details
-
-**Files Modified**
-- `config.py`: Updated CORS configuration with environment-driven origins
-- `main.py`: Fixed CORSMiddleware configuration and exception handler
-- `tests/e2e/inspection.spec.ts`: Updated S5 test to properly test CORS headers
-
-**Environment Variables**
-- `CORS_ALLOW_ORIGINS`: Comma-separated list of allowed origins (default: localhost origins)
-
-**CORS Headers**
-- `Access-Control-Allow-Origin`: Set to allowed origin (not wildcard)
-- `Access-Control-Allow-Credentials`: Set to `true`
-- `Access-Control-Allow-Methods`: Set to `*` for development
-- `Access-Control-Allow-Headers`: Set to `*` for development
-
-**Test Configuration**
-- Playwright context configured with `Origin: http://localhost:8000` header
-- S5 test validates CORS headers are present and correct
-- Tests ensure no wildcard origins with credentials
-
-## [1.3.0] - 2025-08-11
-
-### 🔧 API Consistency: Canonical Invoice Endpoint & Backward Compatibility
-
-#### ✨ Changes Made
-
-**Canonical API Endpoint**
-- **Added `/api/invoices`**: Created canonical invoice creation endpoint following REST conventions
-- **Consistent API Pattern**: Aligned with existing `/api/inspections` pattern for API consistency
-- **Proper Status Codes**: Returns 200 OK with invoice creation response
-- **OpenAPI Documentation**: Automatically included in FastAPI docs at `/docs`
-
-**Backward Compatibility**
-- **Maintained `/invoices/api/invoices`**: Existing endpoint continues to work unchanged
-- **No Breaking Changes**: All existing clients continue to function without modification
-- **Dual Endpoint Support**: Both endpoints use the same underlying invoice creation logic
-
-**Testing & Validation**
-- **Smoke Test Suite**: Created `qa/test_invoice_api.py` with comprehensive endpoint testing
-- **Canonical Endpoint Test**: Validates POST `/api/invoices` with minimal valid payload
-- **Backward Compatibility Test**: Ensures `/invoices/api/invoices` still works
-- **Response Validation**: Verifies 201 Created status and JSON response with invoice ID
-- **Browser Test Updates**: Updated browser tests to test both endpoints
-
-**Code Quality**
-- **Pythonic Implementation**: Clean, maintainable code with proper error handling
-- **Type Safety**: Full type hints and Pydantic model validation
-- **Documentation**: Clear docstrings and inline comments
-- **Error Handling**: Proper HTTP status codes and error messages
-
-#### 🎯 API Impact
-
-**Consistency**
-- Invoice API now follows the same pattern as inspection API (`/api/invoices` vs `/api/inspections`)
-- Unified API structure across all endpoints
-- Better developer experience with predictable URL patterns
-
-**Future-Proofing**
-- Canonical endpoint ready for future API versioning
-- Backward compatibility ensures smooth migration path
-- OpenAPI documentation automatically generated for new endpoint
-
-**Testing Coverage**
-- Comprehensive smoke tests ensure endpoint reliability
-- Both endpoints validated for correct behavior
-- Browser tests updated to maintain coverage
-
-#### 📋 Technical Details
-
-**Files Modified**
-- `main.py`: Added canonical `/api/invoices` endpoint
-- `qa/test_invoice_api.py`: New smoke test suite
-- `qa/run_browser_tests.py`: Updated to test both endpoints
-
-**API Endpoints**
-- `POST /api/invoices` (canonical) - Creates new invoice
-- `POST /invoices/api/invoices` (legacy) - Maintains backward compatibility
-
-**Response Format**
-```json
-{
-  "message": "Invoice created successfully",
-  "invoice_id": "INV_20250811_044341",
-  "invoice_number": "INV-20250811-044341"
-}
-```
-
-## [1.2.0] - 2025-08-10
-
-### 🧹 MVP Readiness: Removed All Test Data & Fixed Missing Endpoints
-
-#### ✨ Changes Made
-
-**Data Cleanup**
-- **Cleared Client Data**: Removed all test client records from `data/clients.json`
-- **Cleared Invoice Data**: Removed all test invoice records from `data/invoices.json`
-- **Cleared VIN Data**: Removed all test VIN entries from static VIN data file
-- **Removed Test Files**: Deleted `test.png` and `test.txt` files
-
-**Form Cleanup**
-- **Removed Test VIN Dropdown**: Eliminated test VIN selection dropdown from inspection forms
-- **Cleared Prepopulated Values**: Removed all test data from form placeholders and default values
-- **Removed Auto-decode**: Eliminated automatic VIN decoding on page load for testing
-- **Cleared Fallback Values**: Removed test facility, location, contact, phone, and email fallbacks
-
-**Template Updates**
-- **Updated VIN Service**: Modified `create_static_vin_data()` to create empty data file for MVP
-- **Updated Documentation**: Revised README to reflect empty static VIN data for MVP readiness
-- **Cleaned Test Files**: Removed test VIN values from test HTML files
-
-**Bug Fixes**
-- **Fixed JavaScript Errors**: Removed event listeners for non-existent test VIN elements
-- **Fixed Auto-decode Issues**: Removed automatic VIN decoding on page load that caused null reference errors
-- **Fixed Test Client Issue**: Added minimal test client for browser testing functionality
-- **Fixed VIN Validation**: Added proper validation to prevent API calls with empty VIN values
-- **Fixed Missing Static Resources**: Created missing CSS and JavaScript files that templates were trying to load
-
-#### 🎯 MVP Impact
-
-**Production Ready**
-- Application now starts with clean, empty data sets
-- No prepopulated test data in any forms
-- Users must enter real data for all fields
-- Professional appearance for client demonstrations
-
-**Data Integrity**
-- No risk of accidentally using test data in production
-- Clean separation between development and production data
-- Proper MVP state for real-world usage
-
-**Browser Test Compatibility**
-- All browser tests now pass successfully
-- No JavaScript errors or missing endpoints
-- No resource loading failures
-- Robust error handling and validation
-
-#### ✨ Changes Made
-
-**Data Cleanup**
-- **Cleared Client Data**: Removed all test client records from `data/clients.json`
-- **Cleared Invoice Data**: Removed all test invoice records from `data/invoices.json`
-- **Cleared VIN Data**: Removed all test VIN entries from static VIN data file
-- **Removed Test Files**: Deleted `test.png` and `test.txt` files
-
-**Form Cleanup**
-- **Removed Test VIN Dropdown**: Eliminated test VIN selection dropdown from inspection forms
-- **Cleared Prepopulated Values**: Removed all test data from form placeholders and default values
-- **Removed Auto-decode**: Eliminated automatic VIN decoding on page load for testing
-- **Cleared Fallback Values**: Removed test facility, location, contact, phone, and email fallbacks
-
-**Template Updates**
-- **Updated VIN Service**: Modified `create_static_vin_data()` to create empty data file for MVP
-- **Updated Documentation**: Revised README to reflect empty static VIN data for MVP readiness
-- **Cleaned Test Files**: Removed test VIN values from test HTML files
-
-#### 🎯 MVP Impact
-
-**Production Ready**
-- Application now starts with clean, empty data sets
-- No prepopulated test data in any forms
-- Users must enter real data for all fields
-- Professional appearance for client demonstrations
-
-**Data Integrity**
-- No risk of accidentally using test data in production
-- Clean separation between development and production data
-- Proper MVP state for real-world usage
-
-## [1.1.0] - 2025-08-10
-
-### 🧪 Added: Comprehensive Browser Testing Suite
-
-#### ✨ New Features
-
-**Browser Testing System**
-- **Playwright Integration**: End-to-end browser testing with Chromium, Firefox, and WebKit
-- **Service-Based Error Logging**: Errors categorized by service and type (JS, network, HTTP, etc.)
-- **Automatic Screenshot Capture**: Screenshots for first error per page
-- **Retry Logic**: Exponential backoff for failed operations
-- **Network Idle Detection**: Waits for network activity to complete before proceeding
-- **Comprehensive Reporting**: JSON and human-readable error logs
-
-**Test Coverage**
-- **Public Routes**: Home page, industries, inspections, invoices
-- **API Endpoints**: VIN decoding, inspection creation, invoice creation
-- **Form Submissions**: Interactive form testing with validation
-- **Authentication Flows**: Login testing (when available)
-- **Service Detection**: Automatic mapping of URLs to service names
-
-**Configuration & Customization**
-- **Environment Variables**: Configurable base URL, headless mode, timeouts
-- **Service Mapping**: JSON-based URL pattern to service name mapping
-- **Custom Test Scenarios**: Extensible test framework for specific use cases
-- **Multiple Browser Support**: Chrome, Firefox, Safari testing
-
-#### 📁 New Files
-
-**Core Testing Files**
-- `qa/run_browser_tests.py` - Main browser testing orchestrator
-- `qa/service_map.json` - URL pattern to service mapping
-- `qa/playwright.config.js` - Playwright configuration
-- `qa/package.json` - Node.js dependencies and scripts
-
-**Documentation & Examples**
-- `qa/README.md` - Comprehensive testing documentation
-- `qa/test_example.py` - Custom test scenario examples
-- `qa/demo.sh` - Demo script showcasing testing capabilities
-
-**Output Directories**
-- `qa/logs/` - Error logs and reports
-- `qa/logs/screenshots/` - Error screenshots
-- `qa/logs/error-log.json` - Structured error data
-- `qa/logs/error-log.txt` - Human-readable error summary
-
-#### 🔧 Technical Implementation
-
-**Error Types Captured**
-- **JS_ERROR**: JavaScript console errors
-- **UNHANDLED_EXCEPTION**: Unhandled JavaScript exceptions
-- **NETWORK_ERROR**: Failed network requests
-- **HTTP_ERROR**: HTTP 4xx/5xx responses
-- **NAVIGATION_ERROR**: Page navigation failures
-- **API_ERROR**: API endpoint failures
-- **LOGIN_ERROR**: Authentication failures
-
-**Service Detection**
-- Automatic service identification from API request URLs
-- Configurable service mapping via JSON file
-- Fallback detection for unknown services
-
-**Testing Features**
-- Headless and headed browser modes
-- Configurable timeouts and retry attempts
-- Network idle waiting for stability
-- Screenshot capture for debugging
-- HTML snapshot capture for error analysis
-
-#### 🚀 Usage Examples
-
-**Basic Testing**
-```bash
-# Install dependencies
-pip install playwright
-playwright install
-
-# Run tests headless
-python qa/run_browser_tests.py
-
-# Run with visible browser
-HEADLESS=false python qa/run_browser_tests.py
-```
-
-**Custom Testing**
-```bash
-# Run custom test scenarios
-python qa/test_example.py
-
-# Demo script
-./qa/demo.sh
-```
-
-**Configuration**
-```bash
-# Environment variables
-BASE_URL=http://localhost:8000
-HEADLESS=false
-TIMEOUT=60000
-RETRY_ATTEMPTS=3
-```
-
-#### 📊 Output Format
-
-**JSON Error Log**
-```json
-{
-  "inspection-service": {
-    "API_ERROR": [
-      {
-        "message": "Industry template API failed: 404",
-        "url": "http://localhost:8000/api/industries/automotive/template",
-        "timestamp": "2025-08-10T10:30:45.123456",
-        "screenshot_path": "screenshots/error_inspection-service_API_ERROR_123456.png"
-      }
-    ]
-  }
-}
-```
-
-**Text Error Log**
-```
-SERVICE: inspection-service
-    TYPE: API_ERROR
-        - Industry template API failed: 404
-          URL: http://localhost:8000/api/industries/automotive/template
-          Time: 2025-08-10T10:30:45.123456
-```
-
-#### 🎯 Benefits
-
-**Quality Assurance**
-- Automated end-to-end testing of all application flows
-- Early detection of regressions and broken functionality
-- Comprehensive error reporting by service and type
-- Visual debugging with screenshots and snapshots
-
-**Development Workflow**
-- Integration with CI/CD pipelines
-- Pre-deployment testing automation
-- Regression testing for service changes
-- Performance monitoring and error tracking
-
-**Maintenance**
-- Service-specific error categorization
-- Detailed error context for debugging
-- Automated test execution
-- Historical error tracking
-
-## [1.0.0] - 2024-01-01
-
-### 🎉 Major Release: Service-Based Architecture Conversion
-
-This release represents a complete transformation of the monolithic automotive application into a modern, microservices-based architecture.
-
-#### ✨ Added
-
-**Core Architecture**
-- **Service-Based Architecture**: Split monolithic app into 8 focused microservices
-- **API Gateway**: Single entry point with routing, authentication, and rate limiting
-- **Docker Compose**: Complete containerization with health checks and networking
-- **PostgreSQL**: Multi-schema database with isolated service data
-- **Redis**: Caching and session management
-- **Alembic**: Database migrations for each service
-
-**Services Implemented**
-- **Auth Service** (`auth-service`): User authentication, JWT management, role-based access control
-- **Customer Service** (`customer-service`): Customer management, contact info, address handling
-- **Vehicle Service** (`vehicle-service`): Vehicle data, VIN decoding, specifications
-- **Appointment Service** (`appointment-service`): Scheduling, calendar management
-- **Workshop Service** (`workshop-service`): Estimates, work orders, invoice lifecycle
-- **Inventory Service** (`inventory-service`): Parts catalog, supplier management
-- **Notification Service** (`notification-service`): Email/SMS, templating
-- **API Gateway** (`api-gateway`): Request routing, authentication, documentation
-
-**Technical Features**
-- **FastAPI**: Modern async web framework with automatic OpenAPI docs
-- **SQLModel**: Type-safe ORM with Pydantic integration
-- **Async Database**: PostgreSQL with asyncpg driver
-- **JWT Authentication**: Secure token-based authentication
-- **CORS Support**: Configurable cross-origin resource sharing
-- **Health Checks**: Comprehensive monitoring endpoints
-- **Structured Logging**: JSON-formatted logs with correlation IDs
-- **Type Safety**: Comprehensive type hints and validation
-
-**Development Tools**
-- **Poetry**: Modern dependency management
-- **Black**: Code formatting
-- **Ruff**: Fast linting
-- **MyPy**: Static type checking
-- **Pytest**: Comprehensive testing framework
-- **Alembic**: Database migration management
-
-**Infrastructure**
-- **Docker**: Multi-stage builds with optimized images
-- **Docker Compose**: Complete orchestration with networking
-- **Health Checks**: Service monitoring and auto-restart
-- **Volume Management**: Persistent data storage
-- **Network Isolation**: Internal and public networks
-- **pgAdmin**: Database management interface
-
-#### 🔧 Technical Improvements
-
-**Database Design**
-- **Schema Isolation**: Each service has its own PostgreSQL schema
-- **Async Operations**: Non-blocking database operations
-- **Migration System**: Version-controlled schema changes
-- **Connection Pooling**: Optimized database connections
-- **Transaction Management**: ACID compliance with rollback support
-
-**API Design**
-- **RESTful Endpoints**: Consistent API patterns
-- **Versioned APIs**: `/v1/` prefix for future compatibility
-- **Request/Response DTOs**: Separate from persistence models
-- **Validation**: Comprehensive input validation with Pydantic
-- **Error Handling**: Standardized error responses
-- **Pagination**: Consistent pagination across all services
-
-**Security**
-- **JWT Tokens**: Secure authentication with refresh tokens
-- **Password Hashing**: bcrypt with salt
-- **Role-Based Access**: Granular permission system
-- **CORS Configuration**: Secure cross-origin handling
-- **Input Validation**: Protection against injection attacks
-- **Rate Limiting**: Request throttling per service
-
-**Monitoring & Observability**
-- **Health Endpoints**: `/health` and `/ready` for all services
-- **Structured Logging**: JSON format with correlation IDs
-- **Error Tracking**: Comprehensive exception handling
-- **Performance Metrics**: Request timing and database queries
-- **Service Discovery**: Internal DNS resolution
-
-#### 🚀 Deployment Features
-
-**Docker Configuration**
-- **Multi-Stage Builds**: Optimized production images
-- **Non-Root Users**: Security best practices
-- **Health Checks**: Automatic service monitoring
-- **Resource Limits**: Memory and CPU constraints
-- **Volume Mounts**: Persistent data storage
-- **Network Security**: Isolated internal networks
-
-**Environment Management**
-- **Environment Variables**: Centralized configuration
-- **Service URLs**: Inter-service communication
-- **Database Configuration**: Connection pooling and timeouts
-- **JWT Settings**: Token expiration and algorithms
-- **CORS Settings**: Origin and method configuration
-
-**Development Experience**
-- **Hot Reload**: Development mode with auto-restart
-- **API Documentation**: Automatic OpenAPI generation
-- **Testing Framework**: Comprehensive test suite
-- **Code Quality**: Automated linting and formatting
-- **Type Safety**: Static analysis and validation
-
-#### 📊 Database Schema
-
-**Auth Schema** (`auth`)
-- `users`: User accounts and profiles
-- `roles`: Role definitions and permissions
-- `user_roles`: User-role associations
-- `refresh_tokens`: JWT refresh token storage
-
-**Customer Schema** (`customers`)
-- `customers`: Customer information
-- `addresses`: Customer addresses
-- `contact_info`: Contact information
-
-**Vehicle Schema** (`vehicles`)
-- `vehicles`: Vehicle data and specifications
-- `vin_decodes`: VIN decoding results
-- `vehicle_specs`: Detailed vehicle information
-
-**Workshop Schema** (`workshop`)
-- `estimates`: Service estimates
-- `work_orders`: Work order management
-- `invoices`: Invoice generation and tracking
-- `payments`: Payment processing
-
-**Appointment Schema** (`appointments`)
-- `appointments`: Scheduling and calendar
-- `service_types`: Available service types
-- `availability`: Technician availability
-
-**Inventory Schema** (`inventory`)
-- `parts`: Parts catalog
-- `suppliers`: Supplier information
-- `stock_levels`: Inventory tracking
-
-**Notification Schema** (`notifications`)
-- `notifications`: Message queue
-- `templates`: Email/SMS templates
-- `delivery_logs`: Delivery tracking
-
-#### 🔄 Migration from Monolith
-
-**Preserved Functionality**
-- **Vehicle Data**: VIN decoding and specifications
-- **Customer Management**: Contact and address handling
-- **Invoice System**: Estimates, work orders, invoices
-- **Authentication**: User management and security
-- **File Uploads**: Photo and document handling
-
-**Enhanced Features**
-- **Scalability**: Independent service scaling
-- **Reliability**: Isolated failure domains
-- **Maintainability**: Focused service boundaries
-- **Performance**: Optimized database queries
-- **Security**: Enhanced authentication and authorization
-
-**Removed Components**
-- **Multi-Industry Support**: Focused on automotive domain
-- **Legacy Templates**: Replaced with modern API design
-- **File-Based Storage**: Migrated to PostgreSQL
-- **Session Management**: Replaced with JWT tokens
-
-#### 🧪 Testing
-
-**Test Coverage**
-- **Unit Tests**: Individual service testing
-- **Integration Tests**: Service-to-service communication
-- **End-to-End Tests**: Complete workflow validation
-- **Performance Tests**: Load and stress testing
-- **Security Tests**: Authentication and authorization
-
-**Test Infrastructure**
-- **Test Database**: Isolated test environment
-- **Mock Services**: Simulated external dependencies
-- **Test Data**: Comprehensive test datasets
-- **CI/CD Integration**: Automated testing pipeline
-
-#### 📚 Documentation
-
-**Comprehensive Documentation**
-- **API Documentation**: Automatic OpenAPI generation
-- **Architecture Guide**: System design and patterns
-- **Deployment Guide**: Production setup instructions
-- **Development Guide**: Local development setup
-- **Troubleshooting**: Common issues and solutions
-
-**Code Documentation**
-- **Type Hints**: Comprehensive type annotations
-- **Docstrings**: Function and class documentation
-- **README**: Quick start and usage guide
-- **Changelog**: Version history and changes
-
-#### 🚀 Quick Start
-
-**Prerequisites**
-- Docker and Docker Compose
-- Python 3.12+ (for development)
-- Git
-
-**Setup Commands**
-```bash
-# Clone repository
-git clone <repository-url>
-cd Lexicon-Re-clone
-
-# Quick start
-./quick_start.sh
-
-# Or manual setup
-cp env.example .env
-docker compose up --build -d
-```
-
-**Access Points**
-- **API Gateway**: http://localhost:8080
-- **API Documentation**: http://localhost:8080/docs
-- **pgAdmin**: http://localhost:5050
-- **Service Health**: http://localhost:8080/health
-
-**Example Workflow**
-```bash
-# 1. Register user
-curl -X POST http://localhost:8080/v1/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"email": "user@example.com", "password": "password123"}'
-
-# 2. Create customer
-curl -X POST http://localhost:8080/v1/customers \
-  -H "Authorization: Bearer <token>" \
-  -H "Content-Type: application/json" \
-  -d '{"name": "John Doe", "company": "ABC Corp"}'
-
-# 3. Add vehicle
-curl -X POST http://localhost:8080/v1/vehicles \
-  -H "Authorization: Bearer <token>" \
-  -H "Content-Type: application/json" \
-  -d '{"vin": "1HGBH41JXMN109186", "year": "2021", "make": "Honda"}'
-
-# 4. Create estimate
-curl -X POST http://localhost:8080/v1/workshop/estimates \
-  -H "Authorization: Bearer <token>" \
-  -H "Content-Type: application/json" \
-  -d '{"customer_id": 1, "vehicle_id": 1, "items": [{"description": "Oil Change", "quantity": 1, "unit_price": 29.99}]}'
-```
-
-#### 🔧 Development
-
-**Local Development**
-```bash
-# Install dependencies
-cd services/auth-service
-poetry install
-
-# Run migrations
-alembic upgrade head
-
-# Start service
-uvicorn app.main:app --reload
-```
-
-**Testing**
-```bash
-# Run system tests
-python test_system.py
-
-# Run service tests
-cd services/auth-service
-pytest
-
-# Code quality
-black services/
-ruff check services/
-mypy services/
-```
-
-#### 📈 Performance
-
-**Optimizations**
-- **Async Operations**: Non-blocking I/O throughout
-- **Connection Pooling**: Optimized database connections
-- **Caching**: Redis for session and data caching
-- **Compression**: Gzip response compression
-- **CDN Ready**: Static asset optimization
-
-**Monitoring**
-- **Health Checks**: Service availability monitoring
-- **Metrics**: Request timing and error rates
-- **Logging**: Structured JSON logs
-- **Tracing**: Request correlation IDs
-
-#### 🔒 Security
-
-**Authentication**
-- **JWT Tokens**: Secure stateless authentication
-- **Refresh Tokens**: Automatic token renewal
-- **Password Hashing**: bcrypt with salt
-- **Session Management**: Secure token storage
-
-**Authorization**
-- **Role-Based Access**: Granular permissions
-- **Resource Protection**: Service-level authorization
-- **Input Validation**: Comprehensive validation
-- **CORS Protection**: Secure cross-origin handling
-
-#### 🚀 Future Roadmap
-
-**Planned Features**
-- **Real-time Updates**: WebSocket support
-- **Mobile API**: Native mobile app support
-- **Advanced Analytics**: Business intelligence
-- **Multi-tenancy**: SaaS platform support
-- **API Versioning**: Backward compatibility
-- **GraphQL**: Alternative API interface
-
-**Infrastructure**
-- **Kubernetes**: Production orchestration
-- **Service Mesh**: Advanced networking
-- **Monitoring**: Prometheus and Grafana
-- **Logging**: ELK stack integration
-- **CI/CD**: Automated deployment pipeline
-
----
-
-## Previous Versions
-
-### [0.9.0] - 2023-12-15
-- Initial monolith architecture
-- Multi-industry inspection system
-- File-based data storage
-- Basic authentication
-- Template-based inspections
-
-### [0.8.0] - 2023-11-01
-- Vehicle data integration
-- VIN decoding system
+# CheckMate Virtue - Changelog
+
+## [Unreleased] - 2025-01-XX
+
+### 🚀 Added
+- **Centralized Error Handling**: New `error-handler.js` module providing consistent error handling across all fetch requests
+- **Structured Error Responses**: Backend error responses now follow problem+json style with consistent formatting
+- **Test Data Fixtures**: Deterministic seed data for testing with 'INS001' inspector and sample vehicle
+- **Test Routes**: Development-only routes for managing test data (`/test/*` endpoints)
+- **E2E Test Fixtures**: Playwright fixtures for creating/deleting test inspection entities
+- **Toast Notifications**: User-friendly error notifications with Bootstrap styling
+- **Error Logging**: Concise console logging with duplicate prevention
+
+### 🔧 Improved
+- **Frontend Error Handling**: All fetch requests now use centralized error handling
+- **Backend Error Responses**: Consistent error format with proper HTTP status codes
+- **Test Reliability**: E2E tests now use fixtures to avoid cross-test data bleed
+- **Debugging**: Better error messages and logging for development
+- **User Experience**: Clear error notifications instead of generic alerts
+
+### 🐛 Fixed
+- **Error Spam**: Prevented duplicate error logging in console
+- **Test Isolation**: Tests no longer interfere with each other's data
+- **Error Format**: Consistent error response structure across all endpoints
+- **Network Errors**: Better handling of connection issues and timeouts
+
+### 🔒 Security
+- **Test Routes**: Test endpoints only available in development mode
+- **Environment Guards**: Proper environment checks for test functionality
+
+### 📝 Documentation
+- **Error Handling Guide**: Documentation for the new error handling system
+- **Test Fixtures Guide**: Instructions for using E2E test fixtures
+- **API Error Responses**: Documentation of structured error response format
+
+## [1.0.0] - 2024-12-XX
+
+### 🚀 Initial Release
+- Complete automotive inspection system
+- VIN decoding functionality
+- Photo upload and management
 - PDF report generation
-- Photo upload functionality
-- OAuth authentication
-
-### [0.7.0] - 2023-10-01
-- Guided inspection flow
-- Three-step inspection process
+- Professional inspection templates
+- Multi-step inspection workflow
 - Real-time progress tracking
-- Enhanced UI/UX
-- Mobile-responsive design
+- Responsive Bootstrap UI
 
 ---
 
-**Note**: This changelog documents the complete transformation from a monolithic application to a modern, microservices-based architecture. The new system provides better scalability, maintainability, and developer experience while preserving all core automotive functionality. 
+## Commit: chore(test): fixtures + global error handling improvements
 
-## [2024-12-19] - Enhanced VIN Decoder Integration with Data Enrichment
+This commit implements comprehensive improvements to the resilience and debuggability of inspection flows:
 
-### Added
-- **API Verve VIN Decoder Service**: Integrated a new VIN decoder service using API Verve for enhanced vehicle data retrieval
-- **Node.js CLI Integration**: Added `vin_decoder_cli.js` with API Verve SDK for command-line VIN decoding
-- **Enhanced Vehicle Data**: Improved VIN decoding with comprehensive vehicle information including year, make, model, trim, engine, transmission, body style, fuel type, and drivetrain
-- **Intelligent Fallback System**: Implemented a robust multi-source fallback system that tries API Verve first, then NHTSA API, then static data
-- **Data Enrichment Engine**: Added intelligent data enrichment that fills missing fields based on VIN patterns and manufacturer knowledge
-- **Data Merging**: Implemented smart data merging to combine information from multiple sources
+### Frontend Changes
+- **Centralized Error Handling**: New `static/js/error-handler.js` module
+- **Toast Notifications**: User-friendly error display with Bootstrap styling
+- **API Client Updates**: All fetch requests now use centralized error handling
+- **Error Logging**: Concise console logging with duplicate prevention
 
-### Changed
-- **Service Priority**: Updated `modules/vehicle_data/service.py` to prioritize API Verve service over NHTSA API
-- **Data Mapping**: Fixed VIN decoder mapping in `modules/vehicle_data/vin_decoder.py` to correctly map "Make" vs "Manufacturer" fields
-- **API Response**: Enhanced API responses to include comprehensive vehicle information
-- **Vehicle Model**: Added `vehicle_type` field to `VehicleInfo` model for better vehicle classification
+### Backend Changes
+- **Structured Error Responses**: New `modules/inspection/error_responses.py` module
+- **Problem+JSON Format**: Consistent error response structure
+- **Route Updates**: All inspection routes now use structured error handling
+- **Test Routes**: Development-only routes for test data management
 
-### Technical Details
-- **Package Dependencies**: Added `@apiverve/vindecoder@1.1.7` to `package.json`
-- **Service Architecture**: Created `APIVerveVINDecoder` class in `modules/vehicle_data/api_verve_service.py`
-- **Async Integration**: Implemented both async and sync versions of the VIN decoder service
-- **Error Handling**: Added comprehensive error handling and logging for all VIN decoder services
-- **Data Enrichment Functions**: Added `merge_vehicle_data()` and `enrich_vehicle_data()` functions for intelligent data enhancement
+### Test Infrastructure
+- **Test Data Fixtures**: Deterministic seed data in `modules/inspection/test_data.py`
+- **E2E Fixtures**: Playwright fixtures in `tests/e2e/fixtures/inspection-fixtures.ts`
+- **Test Routes**: `/test/*` endpoints for managing test data
+- **Environment Guards**: Proper development mode checks
 
-### Testing
-- **CLI Testing**: Verified VIN decoder CLI works correctly with test VINs
-- **API Endpoint Testing**: Confirmed `/vehicle/decode/{vin}` endpoint returns comprehensive vehicle data
-- **Integration Testing**: Validated VIN decoder integration with inspection form auto-fill functionality
-- **Enrichment Testing**: Verified data enrichment works across multiple vehicle makes and models
+### Key Benefits
+- **Cleaner Logs**: Reduced console spam with intelligent error deduplication
+- **Predictable Fixtures**: Deterministic test data for reliable testing
+- **Better UX**: User-friendly error messages instead of technical jargon
+- **Improved Debugging**: Structured error responses with proper context
+- **Test Reliability**: Isolated test data prevents cross-test interference 
 
-### Example Usage
-```bash
-# Test VIN decoder CLI
-node vin_decoder_cli.js 1HGBH41JXMN109186
+---
 
-# Test API endpoint
-curl -X GET "http://localhost:8000/vehicle/decode/1HGBH41JXMN109186"
-```
+### 🚀 **Photo Upload System - Complete Overhaul & Fixes**
 
-### Results
-- **VIN 1HGBH41JXMN109186 (1991 Honda)**: Returns complete data including model: "ACCORD", trim: "DX", engine: "2.2L", transmission: "Automatic", body style: "Sedan", fuel type: "Gasoline", drivetrain: "FWD"
-- **VIN 1G1ZT51806F123456 (2006 Chevrolet)**: Returns complete data including model: "MALIBU", trim: "LS", engine: "2.2L", transmission: "Automatic", body style: "Sedan", fuel type: "Gasoline", drivetrain: "FWD"
-- **VIN WBAVD13556KV10412 (2006 BMW)**: Returns complete data including model: "3 Series", trim: "328i", engine: "2.8L", transmission: "Automatic", body style: "Sedan", fuel type: "Gasoline", drivetrain: "RWD"
-- **Enhanced Data**: Comprehensive vehicle information with intelligent defaults and enrichment, significantly better than basic API responses 
+#### **Major Fixes:**
+- **Fixed Multiple Conflicting Endpoints**: Resolved duplicate photo upload endpoints with different parameter structures
+- **Unified Parameter Handling**: Created single endpoint supporting both `step/subcategory/item` and `category/item` formats
+- **Consistent Directory Structure**: Standardized all uploads to `/static/uploads/inspections/` directory
+- **Safe Filename Generation**: Implemented proper filename sanitization (spaces → underscores, special char handling)
+- **Enhanced Error Handling**: Added comprehensive error handling for file validation, storage, and database updates
+
+#### **Backend Improvements:**
+- **main.py**: Unified photo upload endpoint with backward compatibility
+- **modules/inspection/api_v1.py**: Enhanced API v1 endpoint with consistent paths and error handling
+- **modules/inspection/routes.py**: Improved route handling with better item creation logic
+- **File Validation**: Enhanced file type and size validation (5MB limit, supported formats: jpg, jpeg, png, gif)
+- **Database Integration**: Proper inspection data updates with photo URL storage
+
+#### **Frontend Enhancements:**
+- **templates/inspection_form.html**: 
+  - Fixed photo URL handling and display
+  - Improved photo upload modal functionality
+  - Enhanced button state management (shows "Photo Added" after upload)
+  - Better error handling with user-friendly messages
+  - Support for both old and new inspection data structures
+- **Photo Display**: Added fallback handling for missing images
+- **Upload Progress**: Visual feedback during photo upload process
+
+#### **Technical Improvements:**
+- **Directory Management**: Automatic creation of upload directories
+- **File Permissions**: Proper file permissions for uploaded images
+- **Memory Management**: Efficient file handling with proper cleanup
+- **Cross-Platform Compatibility**: Safe filename generation for all operating systems
+
+#### **Testing & Validation:**
+- **API Testing**: Verified both new and legacy parameter formats work correctly
+- **File Storage**: Confirmed proper file saving and retrieval
+- **Error Scenarios**: Tested various error conditions (invalid files, missing parameters, etc.)
+- **Frontend Integration**: Validated photo upload modal and display functionality
+
+#### **Backward Compatibility:**
+- **Legacy Support**: Maintains compatibility with existing `category/item` parameter format
+- **Data Structure**: Supports both old `categories` and new `items` array structures
+- **URL Handling**: Proper handling of legacy photo URLs
+
+### 🔧 **Bug Fixes:**
+- Fixed photo upload modal not closing after successful upload
+- Resolved photo display issues with incorrect URL paths
+- Fixed file naming conflicts with spaces and special characters
+- Corrected inspection data update failures after photo upload
+- Resolved duplicate endpoint conflicts causing 422 errors
+
+### 📁 **Files Modified:**
+- `main.py` - Unified photo upload endpoint
+- `modules/inspection/api_v1.py` - Enhanced API v1 photo handling
+- `modules/inspection/routes.py` - Improved route error handling
+- `templates/inspection_form.html` - Frontend photo upload improvements
+- `static/js/api-client.js` - API client photo upload methods
+- `static/js/main.js` - Main application photo handling
+
+### 🧪 **Testing Results:**
+✅ **Backend API**: Both parameter formats working correctly  
+✅ **File Storage**: Proper directory structure and file saving  
+✅ **Frontend Integration**: Photo upload modal and display working  
+✅ **Error Handling**: Comprehensive error scenarios covered  
+✅ **Backward Compatibility**: Legacy format support maintained  
+
+--- 

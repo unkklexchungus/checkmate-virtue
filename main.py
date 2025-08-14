@@ -33,6 +33,7 @@ from models import CreateInvoiceRequest
 from modules.vehicle_data.routes import router as vehicle_router
 from modules.inspection.routes import router as inspection_router, legacy_router as inspection_legacy_router
 from modules.inspection.api_v1 import router as inspection_api_v1_router
+from modules.inspection.test_routes import test_router as inspection_test_router
 
 
 
@@ -417,6 +418,10 @@ app.include_router(vehicle_router)
 app.include_router(inspection_legacy_router)
 app.include_router(inspection_api_v1_router)
 
+# Include test routes (only in development/test mode)
+if os.getenv("DEBUG") == "true" or os.getenv("ENABLE_TEST_ROUTES") == "true":
+    app.include_router(inspection_test_router)
+
 
 
 
@@ -498,55 +503,7 @@ async def update_inspection_legacy(inspection_id: str, inspection: InspectionUpd
     else:
         raise HTTPException(status_code=500, detail="Failed to update inspection")
 
-@app.post("/api/inspections/{inspection_id}/photos")
-async def upload_photo_legacy(
-    inspection_id: str,
-    file: UploadFile = File(...),
-    category: str = Form(...),
-    item: str = Form(...)
-) -> Dict[str, str]:
-    """Upload photo for inspection item (legacy endpoint)."""
-    # Validate file
-    if not file.filename:
-        raise HTTPException(status_code=400, detail="No file provided")
-    
-    # Check file extension
-    allowed_extensions = {".jpg", ".jpeg", ".png", ".gif"}
-    file_ext = Path(file.filename).suffix.lower()
-    if file_ext not in allowed_extensions:
-        raise HTTPException(status_code=400, detail="Invalid file type")
-    
-    # Check file size (5MB limit)
-    if file.size and file.size > 5 * 1024 * 1024:
-        raise HTTPException(status_code=400, detail="File too large")
-    
-    # Find inspection
-    inspection = find_inspection(inspection_id)
-    if not inspection:
-        raise HTTPException(status_code=404, detail="Inspection not found")
-    
-    # Create upload directory
-    upload_dir = Path("static/uploads")
-    upload_dir.mkdir(parents=True, exist_ok=True)
-    
-    # Save file
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"{inspection_id}_{category}_{item}_{timestamp}{file_ext}"
-    file_path = upload_dir / filename
-    
-    try:
-        with open(file_path, "wb") as buffer:
-            content = await file.read()
-            buffer.write(content)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
-    
-    # Update inspection data (simplified for legacy compatibility)
-    photo_url = f"/static/uploads/{filename}"
-    
-    # For legacy compatibility, we'll just return success
-    # The actual inspection update would need to be handled differently
-    return {"message": "Photo uploaded successfully", "photo_url": photo_url}
+# Legacy photo upload endpoint removed - using unified endpoint below
 
 @app.get("/api/inspections/{inspection_id}/report/pdf")
 async def generate_pdf_report_endpoint_legacy(inspection_id: str) -> FileResponse:
@@ -724,10 +681,12 @@ async def view_inspection(request: Request, inspection_id: str) -> HTMLResponse:
 async def upload_photo(
     inspection_id: str,
     file: UploadFile = File(...),
-    category: str = Form(...),
-    item: str = Form(...)
+    category: Optional[str] = Form(None),
+    item: Optional[str] = Form(None),
+    step: Optional[str] = Form(None),
+    subcategory: Optional[str] = Form(None)
 ) -> Dict[str, str]:
-    """Upload photo for inspection item."""
+    """Upload photo for inspection item - handles both legacy and new parameter structures."""
     # Validate file
     if not file.filename:
         raise HTTPException(status_code=400, detail="No file provided")
@@ -746,10 +705,28 @@ async def upload_photo(
     if not inspection:
         raise HTTPException(status_code=404, detail="Inspection not found")
     
-    # Save file
+    # Handle parameter compatibility - support both legacy and new formats
+    if step and subcategory and item:
+        # New format: step, subcategory, item
+        category_param = f"{step} - {subcategory}"
+        item_param = item
+    elif category and item:
+        # Legacy format: category, item
+        category_param = category
+        item_param = item
+    else:
+        raise HTTPException(status_code=400, detail="Missing required parameters. Use either (category, item) or (step, subcategory, item)")
+    
+    # Create upload directory with consistent path
+    upload_dir = Path("static/uploads/inspections")
+    upload_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Save file with consistent naming
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"{inspection_id}_{category}_{item}_{timestamp}{file_ext}"
-    file_path = UPLOAD_DIR / filename
+    safe_category = category_param.replace(" ", "_").replace("/", "_")
+    safe_item = item_param.replace(" ", "_").replace("/", "_")
+    filename = f"{inspection_id}_{safe_category}_{safe_item}_{timestamp}{file_ext}"
+    file_path = upload_dir / filename
     
     try:
         with open(file_path, "wb") as buffer:
@@ -759,83 +736,61 @@ async def upload_photo(
         raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
     
     # Update inspection data - handle both old and new data structures
+    photo_url = f"/static/uploads/inspections/{filename}"
+    
     if "categories" in inspection:
         # Old structure with categories
         for category_data in inspection["categories"]:
-            if category_data["name"].lower().replace(" ", "_") == category.lower():
+            if category_data["name"].lower().replace(" ", "_") == category_param.lower().replace(" ", "_"):
                 for item_data in category_data["items"]:
-                    if item_data["name"] == item:
+                    if item_data["name"] == item_param:
                         if "photos" not in item_data:
                             item_data["photos"] = []
                         item_data["photos"].append(filename)
                         update_inspection_data(inspection_id, inspection)
-                        return {"message": "Photo uploaded successfully", "photo_url": f"/static/uploads/{filename}"}
+                        return {"message": "Photo uploaded successfully", "photo_url": photo_url}
     elif "items" in inspection:
         # New structure with items array
         if not inspection["items"]:
             # If items array is empty, create a new item for this photo
             new_item = {
-                "step": category.split(" - ")[0] if " - " in category else category,
-                "subcategory": category.split(" - ")[1] if " - " in category else "",
-                "item": item,
+                "step": step or category_param.split(" - ")[0] if " - " in category_param else category_param,
+                "subcategory": subcategory or category_param.split(" - ")[1] if " - " in category_param else "",
+                "item": item_param,
                 "status": "",
                 "notes": "",
-                "photo_url": f"/static/uploads/{filename}"
+                "photo_url": photo_url
             }
             inspection["items"].append(new_item)
             update_inspection_data(inspection_id, inspection)
-            return {"message": "Photo uploaded successfully", "photo_url": f"/static/uploads/{filename}"}
+            return {"message": "Photo uploaded successfully", "photo_url": photo_url}
         
         # Check existing items
         for item_data in inspection["items"]:
             # Check if this item matches the category and item name
-            # The category parameter contains "step - subcategory" format
             expected_category = f"{item_data.get('step', '')} - {item_data.get('subcategory', '')}"
-            if (expected_category.lower() == category.lower() and
-                item_data.get("item", "").lower() == item.lower()):
+            if (expected_category.lower() == category_param.lower() and
+                item_data.get("item", "").lower() == item_param.lower()):
                 
-                if "photo_url" not in item_data:
-                    item_data["photo_url"] = ""
-                item_data["photo_url"] = f"/static/uploads/{filename}"
+                item_data["photo_url"] = photo_url
                 update_inspection_data(inspection_id, inspection)
-                return {"message": "Photo uploaded successfully", "photo_url": f"/static/uploads/{filename}"}
+                return {"message": "Photo uploaded successfully", "photo_url": photo_url}
         
         # If we get here, the item doesn't exist, so create it
         new_item = {
-            "step": category.split(" - ")[0] if " - " in category else category,
-            "subcategory": category.split(" - ")[1] if " - " in category else "",
-            "item": item,
+            "step": step or category_param.split(" - ")[0] if " - " in category_param else category_param,
+            "subcategory": subcategory or category_param.split(" - ")[1] if " - " in category_param else "",
+            "item": item_param,
             "status": "",
             "notes": "",
-            "photo_url": f"/static/uploads/{filename}"
+            "photo_url": photo_url
         }
         inspection["items"].append(new_item)
         update_inspection_data(inspection_id, inspection)
-        return {"message": "Photo uploaded successfully", "photo_url": f"/static/uploads/{filename}"}
-
-
-    """Update inspection data with validation."""
-    # Find existing inspection
-    existing_inspection = find_inspection(inspection_id)
-    if not existing_inspection:
-        raise HTTPException(status_code=404, detail="Inspection not found")
+        return {"message": "Photo uploaded successfully", "photo_url": photo_url}
     
-    # Update inspection data with validated fields
-    updated_inspection = {
-        **existing_inspection,
-        "title": inspection.title,
-        "inspector_name": inspection.inspector_name,
-        "inspector_id": inspection.inspector_id,
-        "vehicle_info": inspection.vehicle_info.model_dump() if inspection.vehicle_info else existing_inspection.get("vehicle_info"),
-        "categories": [category.model_dump() for category in inspection.categories],
-        "status": inspection.status,
-        "updated_at": datetime.now().isoformat()
-    }
-    
-    if update_inspection_data(inspection_id, updated_inspection):
-        return {"message": "Inspection updated successfully"}
-    else:
-        raise HTTPException(status_code=500, detail="Failed to update inspection")
+    # If we get here, the structure is unknown
+    raise HTTPException(status_code=500, detail="Unknown inspection data structure")
 
 
     

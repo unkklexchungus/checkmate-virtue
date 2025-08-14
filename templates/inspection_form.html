@@ -816,11 +816,30 @@
                     
                     const photoContainer = row.querySelector('.photo-btn').nextElementSibling;
                     if (photoContainer) {
+                        // Ensure the photo URL is correct
+                        let displayUrl = photoUrl;
+                        if (!photoUrl.startsWith('/') && !photoUrl.startsWith('http')) {
+                            displayUrl = `/static/uploads/inspections/${photoUrl}`;
+                        } else if (photoUrl.startsWith('/static/uploads/') && !photoUrl.includes('/inspections/')) {
+                            // Fix legacy URLs to use the correct path
+                            displayUrl = photoUrl.replace('/static/uploads/', '/static/uploads/inspections/');
+                        }
+                        
                         photoContainer.innerHTML = `
-                            <img src="${photoUrl.startsWith('/') ? photoUrl : '/static/uploads/' + photoUrl}" 
+                            <img src="${displayUrl}" 
                                  class="img-thumbnail" style="max-width: 50px; max-height: 50px;" 
-                                 alt="Uploaded photo">
+                                 alt="Uploaded photo"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <div class="text-muted small" style="display: none;">Photo uploaded</div>
                         `;
+                        
+                        // Also update the photo button to show it's been used
+                        const photoBtn = row.querySelector('.photo-btn');
+                        if (photoBtn) {
+                            photoBtn.classList.add('btn-success');
+                            photoBtn.classList.remove('btn-outline-primary');
+                            photoBtn.innerHTML = '<i class="fas fa-camera"></i> Photo Added';
+                        }
                     }
                 }
             });
@@ -828,14 +847,24 @@
 
         function loadExistingPhotos() {
             // Load existing photos from inspection data
-            if (inspectionData && inspectionData.categories) {
-                inspectionData.categories.forEach(category => {
-                    category.items.forEach(item => {
+            if (inspectionData) {
+                if (inspectionData.categories) {
+                    // Old structure with categories
+                    inspectionData.categories.forEach(category => {
+                        category.items.forEach(item => {
+                            if (item.photo_url) {
+                                updatePhotoDisplay(category.name, category.name, item.name, item.photo_url);
+                            }
+                        });
+                    });
+                } else if (inspectionData.items) {
+                    // New structure with items array
+                    inspectionData.items.forEach(item => {
                         if (item.photo_url) {
-                            updatePhotoDisplay(category.name, category.name, item.name, item.photo_url);
+                            updatePhotoDisplay(item.step, item.subcategory, item.item, item.photo_url);
                         }
                     });
-                });
+                }
             }
         }
 
@@ -1435,5 +1464,7 @@
             }
         }
     </script>
+    <script src="/static/js/error-handler.js"></script>
+    <script src="/static/js/api-client.js"></script>
 </body>
 </html> 

@@ -1,7 +1,8 @@
-import { test, expect, Page } from '@playwright/test';
+import { test, expect, Page, request } from '@playwright/test';
 import Ajv from 'ajv';
 import * as fs from 'fs';
 import * as path from 'path';
+import { createInspectionFixtures, InspectionFixtures } from './fixtures/inspection-fixtures';
 
 // Load JSON schemas
 const ajv = new Ajv({ 
@@ -20,15 +21,22 @@ const schemas = {
   report: JSON.parse(fs.readFileSync(path.join(__dirname, 'schemas/inspection.report.meta.schema.json'), 'utf8'))
 };
 
-// Test data
-const TEST_VIN = '1HGBH41JXMN109186'; // Sample Honda VIN
-const TEST_INSPECTOR_NAME = 'John Doe';
-const TEST_INSPECTOR_ID = 'INS001';
-const TEST_INSPECTION_TITLE = 'Comprehensive Vehicle Inspection';
-
 test.describe.serial('Inspection Module E2E Tests', () => {
   let page: Page;
   let inspectionId: string;
+  let fixtures: InspectionFixtures;
+
+  test.beforeAll(async () => {
+    // Create API context for fixtures
+    const context = await request.newContext();
+    fixtures = createInspectionFixtures(context);
+    
+    // Verify test mode is enabled
+    const testModeEnabled = await fixtures.verifyTestMode();
+    if (!testModeEnabled) {
+      console.warn('⚠️ Test mode not enabled - some tests may fail');
+    }
+  });
 
   test.beforeEach(async ({ page: testPage }) => {
     page = testPage;
@@ -46,6 +54,11 @@ test.describe.serial('Inspection Module E2E Tests', () => {
         console.log(`HTTP Error: ${response.status()} ${response.url()}`);
       }
     });
+  });
+
+  test.afterAll(async () => {
+    // Cleanup test environment
+    await fixtures.cleanupTestEnvironment();
   });
 
   test('S0: Boot smoke - load "/" and assert FE renders', async () => {
@@ -66,6 +79,9 @@ test.describe.serial('Inspection Module E2E Tests', () => {
   });
 
   test('S1: Create Inspection - complete flow with VIN decode', async () => {
+    // Create a test inspection for this specific test
+    const testInspectionId = await fixtures.createTestInspectionForTest('S1: Create Inspection');
+    
     await test.step('Navigate to inspection form', async () => {
       await page.goto('/inspection/form');
       await page.waitForLoadState('networkidle');
@@ -75,13 +91,17 @@ test.describe.serial('Inspection Module E2E Tests', () => {
     });
 
     await test.step('Fill inspector information', async () => {
-      await page.fill('[data-testid="inspector-name"]', TEST_INSPECTOR_NAME);
-      await page.fill('[data-testid="inspector-id"]', TEST_INSPECTOR_ID);
-      await page.fill('[data-testid="inspection-title"]', TEST_INSPECTION_TITLE);
+      const testInspector = fixtures.getTestInspector();
+      const testTitle = fixtures.getTestInspectionTitle();
+      
+      await page.fill('[data-testid="inspector-name"]', testInspector.name);
+      await page.fill('[data-testid="inspector-id"]', testInspector.id);
+      await page.fill('[data-testid="inspection-title"]', testTitle);
     });
 
     await test.step('Enter VIN and wait for decode completion', async () => {
-      await page.fill('[data-testid="vin-input"]', TEST_VIN);
+      const testVehicle = fixtures.getTestVehicle();
+      await page.fill('[data-testid="vin-input"]', testVehicle.vin);
       await page.click('[data-testid="decode-vin"]');
       
       // Wait for VIN decode response with network assertion
@@ -188,9 +208,17 @@ test.describe.serial('Inspection Module E2E Tests', () => {
       // Assert response time is reasonable
       expect(response.request().timing().responseEnd - response.request().timing().requestStart).toBeLessThan(800);
     });
+    
+    // Cleanup: Delete the test inspection created for this test
+    if (testInspectionId) {
+      await fixtures.deleteTestInspectionAfterTest(testInspectionId, 'S1: Create Inspection');
+    }
   });
 
   test('S2: Checklist Fill - comprehensive item completion', async () => {
+    // Create a test inspection for this specific test
+    const testInspectionId = await fixtures.createTestInspectionForTest('S2: Checklist Fill');
+    
     await test.step('Navigate to inspection form and create new inspection', async () => {
       await page.goto('/inspection/form');
       await page.waitForLoadState('networkidle');
@@ -200,9 +228,12 @@ test.describe.serial('Inspection Module E2E Tests', () => {
     });
 
     await test.step('Fill inspector information', async () => {
-      await page.fill('[data-testid="inspector-name"]', TEST_INSPECTOR_NAME);
-      await page.fill('[data-testid="inspector-id"]', TEST_INSPECTOR_ID);
-      await page.fill('[data-testid="inspection-title"]', TEST_INSPECTION_TITLE);
+      const testInspector = fixtures.getTestInspector();
+      const testTitle = fixtures.getTestInspectionTitle();
+      
+      await page.fill('[data-testid="inspector-name"]', testInspector.name);
+      await page.fill('[data-testid="inspector-id"]', testInspector.id);
+      await page.fill('[data-testid="inspection-title"]', testTitle);
     });
 
     await test.step('Complete additional inspection items', async () => {
@@ -271,10 +302,18 @@ test.describe.serial('Inspection Module E2E Tests', () => {
       
       console.log(`✅ ${thumbnailCount} photo thumbnails displayed`);
     });
+    
+    // Cleanup: Delete the test inspection created for this test
+    if (testInspectionId) {
+      await fixtures.deleteTestInspectionAfterTest(testInspectionId, 'S2: Checklist Fill');
+    }
   });
 
   test('S3: Save Draft and Resume - persistence verification', async () => {
     let savedInspectionId: string;
+    
+    // Create a test inspection for this specific test
+    const testInspectionId = await fixtures.createTestInspectionForTest('S3: Save Draft and Resume');
     
     await test.step('Create inspection and fill partial data', async () => {
       await page.goto('/inspection/form');
@@ -289,7 +328,8 @@ test.describe.serial('Inspection Module E2E Tests', () => {
       await page.fill('[data-testid="inspection-title"]', 'Draft Test Inspection');
       
       // Fill VIN
-      await page.fill('[data-testid="vin-input"]', TEST_VIN);
+      const testVehicle = fixtures.getTestVehicle();
+      await page.fill('[data-testid="vin-input"]', testVehicle.vin);
       await page.click('[data-testid="decode-vin"]');
       
       // Wait for VIN decode
@@ -468,9 +508,17 @@ test.describe.serial('Inspection Module E2E Tests', () => {
         console.log('✅ Additional data saved successfully after resume');
       }
     });
+    
+    // Cleanup: Delete the test inspection created for this test
+    if (testInspectionId) {
+      await fixtures.deleteTestInspectionAfterTest(testInspectionId, 'S3: Save Draft and Resume');
+    }
   });
 
   test('S4: Finalize + Report - generate and validate report', async () => {
+    // Create a test inspection for this specific test
+    const testInspectionId = await fixtures.createTestInspectionForTest('S4: Finalize + Report');
+    
     await test.step('Navigate to inspection form and create new inspection', async () => {
       await page.goto('/inspection/form');
       await page.waitForLoadState('networkidle');
@@ -480,9 +528,12 @@ test.describe.serial('Inspection Module E2E Tests', () => {
     });
 
     await test.step('Fill inspector information and some items', async () => {
-      await page.fill('[data-testid="inspector-name"]', TEST_INSPECTOR_NAME);
-      await page.fill('[data-testid="inspector-id"]', TEST_INSPECTOR_ID);
-      await page.fill('[data-testid="inspection-title"]', TEST_INSPECTION_TITLE);
+      const testInspector = fixtures.getTestInspector();
+      const testTitle = fixtures.getTestInspectionTitle();
+      
+      await page.fill('[data-testid="inspector-name"]', testInspector.name);
+      await page.fill('[data-testid="inspector-id"]', testInspector.id);
+      await page.fill('[data-testid="inspection-title"]', testTitle);
       
       // Fill a few items to have data to finalize
       const items = page.locator('[data-testid="item-row"]');
@@ -606,6 +657,11 @@ test.describe.serial('Inspection Module E2E Tests', () => {
       console.log('✅ PDF report generated successfully with correct content-type');
       console.log(`✅ PDF artifact saved to: ${path.join(artifactsDir, 'inspection_report.pdf')}`);
     });
+    
+    // Cleanup: Delete the test inspection created for this test
+    if (testInspectionId) {
+      await fixtures.deleteTestInspectionAfterTest(testInspectionId, 'S4: Finalize + Report');
+    }
   });
 
   test('S5: FE↔BE Data Contract Assertions', async () => {
@@ -689,9 +745,12 @@ test.describe.serial('Inspection Module E2E Tests', () => {
       await page.waitForLoadState('networkidle');
       
       // Fill required fields to avoid other validation errors
-      await page.fill('[data-testid="inspector-name"]', 'John Doe');
-      await page.fill('[data-testid="inspector-id"]', 'INS001');
-      await page.fill('[data-testid="inspection-title"]', 'Test Inspection');
+      const testInspector = fixtures.getTestInspector();
+      const testTitle = fixtures.getTestInspectionTitle();
+      
+      await page.fill('[data-testid="inspector-name"]', testInspector.name);
+      await page.fill('[data-testid="inspector-id"]', testInspector.id);
+      await page.fill('[data-testid="inspection-title"]', testTitle);
       
       // Enter invalid VIN (too short)
       await page.fill('[data-testid="vin-input"]', '12345');
