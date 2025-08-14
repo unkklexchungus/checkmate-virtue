@@ -5,6 +5,9 @@ from typing import Dict, Any, Optional
 import os
 from pathlib import Path
 from datetime import datetime
+import time
+import logging
+from functools import wraps
 
 from .models import InspectionCreate
 from .service import (
@@ -31,8 +34,30 @@ legacy_router = APIRouter(prefix="/inspection", tags=["Inspection Legacy"])
 # Templates setup
 templates = Jinja2Templates(directory="templates")
 
+# Performance timing decorator for development
+def log_request_timing(func):
+    """Decorator to log request timing for inspection endpoints in development."""
+    @wraps(func)
+    async def wrapper(*args, **kwargs):
+        start_time = time.time()
+        try:
+            result = await func(*args, **kwargs)
+            end_time = time.time()
+            duration = (end_time - start_time) * 1000  # Convert to milliseconds
+            
+            # Log timing info level in development
+            logging.info(f"PERF: {func.__name__} completed in {duration:.2f}ms")
+            return result
+        except Exception as e:
+            end_time = time.time()
+            duration = (end_time - start_time) * 1000
+            logging.error(f"PERF: {func.__name__} failed after {duration:.2f}ms: {str(e)}")
+            raise
+    return wrapper
+
 # API v1 endpoints
 @router.get("/inspection/template")
+@log_request_timing
 async def get_inspection_template(request: Request):
     """Get the inspection template."""
     try:
@@ -44,6 +69,7 @@ async def get_inspection_template(request: Request):
         return handle_inspection_error(e, str(request.url.path))
 
 @router.post("/inspection")
+@log_request_timing
 async def create_inspection(data: InspectionCreate, request: Request):
     """Create a new inspection."""
     try:
@@ -99,6 +125,7 @@ async def create_inspection(data: InspectionCreate, request: Request):
         return handle_inspection_error(e, str(request.url.path))
 
 @router.get("/inspection/{inspection_id}")
+@log_request_timing
 async def get_inspection(inspection_id: str, request: Request):
     """Get a specific inspection by ID."""
     try:
@@ -110,6 +137,7 @@ async def get_inspection(inspection_id: str, request: Request):
         return handle_inspection_error(e, str(request.url.path))
 
 @router.patch("/inspection/{inspection_id}")
+@log_request_timing
 async def save_draft_inspection(inspection_id: str, draft_data: Dict[str, Any], request: Request):
     """Save draft inspection data."""
     try:
@@ -132,6 +160,7 @@ async def save_draft_inspection(inspection_id: str, draft_data: Dict[str, Any], 
         return handle_inspection_error(e, str(request.url.path))
 
 @router.put("/inspection/{inspection_id}")
+@log_request_timing
 async def update_inspection_data(inspection_id: str, data: InspectionCreate, request: Request):
     """Update an existing inspection."""
     try:
@@ -154,6 +183,7 @@ async def update_inspection_data(inspection_id: str, data: InspectionCreate, req
         return handle_inspection_error(e, str(request.url.path))
 
 @router.post("/inspection/{inspection_id}/photos")
+@log_request_timing
 async def upload_photo(
     inspection_id: str,
     file: UploadFile = File(...),
@@ -243,6 +273,7 @@ async def upload_photo(
         return handle_inspection_error(e, str(request.url.path) if request else None)
 
 @router.post("/inspection/{inspection_id}/finalize")
+@log_request_timing
 async def finalize_inspection(inspection_id: str, request: Request):
     """Finalize an inspection, making it read-only."""
     try:
@@ -283,6 +314,7 @@ async def finalize_inspection(inspection_id: str, request: Request):
         return handle_inspection_error(e, str(request.url.path))
 
 @router.get("/inspection/{inspection_id}/report")
+@log_request_timing
 async def generate_inspection_report(
     inspection_id: str, 
     format: str = "html",

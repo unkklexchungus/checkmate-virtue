@@ -43,8 +43,16 @@ export default defineConfig({
         path: 'artifacts/e2e/har/fe-be.har', 
         content: 'embed' 
       }
-    }
+    },
+
+    /* Organize artifacts by test name */
+    outputDir: 'artifacts/e2e/',
+    
+    /* Ensure artifacts are organized by test name */
+    testDir: './tests/e2e',
   },
+
+
 
   /* Configure projects for major browsers */
   projects: [

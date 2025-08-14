@@ -737,6 +737,9 @@
                 return;
             }
 
+            // Performance timing for VIN decode
+            performance.mark('vin-decode-start');
+
             try {
                 const response = await fetch(`/vehicle/decode/${vin}`);
                 if (response.ok) {
@@ -746,6 +749,13 @@
                     
                     // Create or update inspection with VIN data
                     await createInspectionWithVINData(vehicleData);
+                    
+                    // Performance timing for VIN decode completion
+                    performance.mark('vin-decode-end');
+                    performance.measure('vin-decode-total', 'vin-decode-start', 'vin-decode-end');
+                    
+                    const measure = performance.getEntriesByName('vin-decode-total')[0];
+                    console.log(`VIN decode completed in ${measure.duration.toFixed(2)}ms`);
                 } else {
                     alert('Failed to decode VIN');
                 }
@@ -981,6 +991,9 @@
         }
 
         async function finalizeInspection() {
+            // Performance timing for finalize operation
+            performance.mark('finalize-inspection-start');
+            
             // Clear previous validation errors
             hideValidationError();
             
@@ -1045,6 +1058,13 @@
                         `• Completion: ${summary.completion_percentage}%`;
                     
                     alert(message);
+                    
+                    // Performance timing for finalize completion
+                    performance.mark('finalize-inspection-end');
+                    performance.measure('finalize-inspection-total', 'finalize-inspection-start', 'finalize-inspection-end');
+                    
+                    const measure = performance.getEntriesByName('finalize-inspection-total')[0];
+                    console.log(`Inspection finalize completed in ${measure.duration.toFixed(2)}ms`);
                     
                     // Update finalize button
                     const finalizeButton = document.getElementById('finalize-inspection');
@@ -1209,6 +1229,9 @@
         }
 
         async function saveInspection() {
+            // Performance timing for save operation
+            performance.mark('save-inspection-start');
+            
             // Clear previous validation errors
             hideValidationError();
             
@@ -1281,6 +1304,14 @@
                 if (response.ok) {
                     const result = await response.json();
                     hideValidationError();
+                    
+                    // Performance timing for save completion
+                    performance.mark('save-inspection-end');
+                    performance.measure('save-inspection-total', 'save-inspection-start', 'save-inspection-end');
+                    
+                    const measure = performance.getEntriesByName('save-inspection-total')[0];
+                    console.log(`Inspection save completed in ${measure.duration.toFixed(2)}ms`);
+                    
                     alert('Inspection saved successfully!');
                     window.location.href = '/inspections';
                 } else {
