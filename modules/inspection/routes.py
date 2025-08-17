@@ -64,7 +64,14 @@ async def get_inspection_template(request: Request):
         template = load_inspection_template()
         if not template or not template.get("inspection_points"):
             return template_not_found("automotive", str(request.url.path))
-        return template
+        
+        # Add cache-busting headers
+        from fastapi.responses import JSONResponse
+        response = JSONResponse(content=template)
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        return response
     except Exception as e:
         return handle_inspection_error(e, str(request.url.path))
 
@@ -313,25 +320,7 @@ async def finalize_inspection(inspection_id: str, request: Request):
     except Exception as e:
         return handle_inspection_error(e, str(request.url.path))
 
-@router.get("/inspection/{inspection_id}/report")
-@log_request_timing
-async def generate_inspection_report(
-    inspection_id: str, 
-    format: str = "html",
-    request: Request = None
-):
-    """Generate an inspection report in HTML or PDF format."""
-    try:
-        inspection = find_inspection(inspection_id)
-        if not inspection:
-            return inspection_not_found(inspection_id, str(request.url.path) if request else None)
-        
-        if format.lower() == "pdf":
-            return await generate_pdf_report(inspection)
-        else:
-            return await generate_html_report(inspection)
-    except Exception as e:
-        return handle_inspection_error(e, str(request.url.path) if request else None)
+
 
 # Legacy endpoints for backward compatibility
 @legacy_router.get("/template")
@@ -343,19 +332,29 @@ async def get_inspection_template_legacy():
 async def inspection_form(request: Request):
     """Render the inspection form page."""
     template = load_inspection_template()
+    breadcrumbs = [
+        {"text": "Inspections", "url": "/inspection/list", "icon": "fas fa-clipboard-list"},
+        {"text": "New Inspection", "url": "/inspection/form", "icon": "fas fa-plus"}
+    ]
     return templates.TemplateResponse("inspection_form.html", {
         "request": request,
-        "template": template
+        "template": template,
+        "breadcrumbs": breadcrumbs
     })
 
 @legacy_router.get("/form/{inspection_id}", response_class=HTMLResponse)
 async def edit_inspection_form(request: Request, inspection_id: str):
     """Render the inspection form page for editing an existing inspection."""
     template = load_inspection_template()
+    breadcrumbs = [
+        {"text": "Inspections", "url": "/inspection/list", "icon": "fas fa-clipboard-list"},
+        {"text": f"Edit Inspection {inspection_id}", "url": f"/inspection/form/{inspection_id}", "icon": "fas fa-edit"}
+    ]
     return templates.TemplateResponse("inspection_form.html", {
         "request": request,
         "template": template,
-        "inspection_id": inspection_id
+        "inspection_id": inspection_id,
+        "breadcrumbs": breadcrumbs
     })
 
 @legacy_router.get("/list", response_class=HTMLResponse)
@@ -363,9 +362,13 @@ async def inspection_list(request: Request):
     """Render the inspection list page."""
     from .service import load_inspections
     inspections = load_inspections()
+    breadcrumbs = [
+        {"text": "Inspections", "url": "/inspection/list", "icon": "fas fa-clipboard-list"}
+    ]
     return templates.TemplateResponse("inspection_list.html", {
         "request": request,
-        "inspections": inspections
+        "inspections": inspections,
+        "breadcrumbs": breadcrumbs
     })
 
 @legacy_router.post("/")
@@ -549,44 +552,5 @@ async def finalize_inspection_legacy(inspection_id: str):
     else:
         raise HTTPException(status_code=500, detail="Failed to finalize inspection")
 
-@legacy_router.get("/{inspection_id}/report")
-async def generate_inspection_report_legacy(
-    inspection_id: str, 
-    format: str = "html"
-):
-    """Generate an inspection report in HTML or PDF format (legacy endpoint)."""
-    inspection = find_inspection(inspection_id)
-    if not inspection:
-        raise HTTPException(status_code=404, detail="Inspection not found")
-    
-    if format.lower() == "pdf":
-        return await generate_pdf_report(inspection)
-    else:
-        return await generate_html_report(inspection)
 
-# Helper functions for report generation
-async def generate_html_report(inspection: Dict[str, Any]) -> HTMLResponse:
-    """Generate HTML report for inspection."""
-    return templates.TemplateResponse("view_inspection.html", {
-        "request": Request,
-        "inspection": inspection
-    })
 
-async def generate_pdf_report(inspection: Dict[str, Any]) -> FileResponse:
-    """Generate PDF report for inspection."""
-    # This is a placeholder - implement actual PDF generation
-    # For now, return a simple text file
-    temp_file = Path("temp") / f"inspection_report_{inspection['id']}.txt"
-    temp_file.parent.mkdir(exist_ok=True)
-    
-    with open(temp_file, "w") as f:
-        f.write(f"Inspection Report for {inspection.get('title', 'Untitled')}\n")
-        f.write(f"Inspection ID: {inspection['id']}\n")
-        f.write(f"Status: {inspection.get('status', 'Unknown')}\n")
-        f.write(f"Created: {inspection.get('created_at', 'Unknown')}\n")
-    
-    return FileResponse(
-        temp_file,
-        media_type="text/plain",
-        filename=f"inspection_report_{inspection['id']}.txt"
-    )

@@ -2,15 +2,13 @@
 
 ## Test Information
 - **Title**: S2: Checklist Fill - comprehensive item completion
-- **Status**: timedOut
-- **Duration**: 30522ms
+- **Status**: skipped
+- **Duration**: 0ms
 - **Retry Count**: undefined
-- **Timestamp**: 2025-08-12T09:24:32.505Z
+- **Timestamp**: 2025-08-14T10:17:57.666Z
 
 ## Error Details
-```
-[31mTest timeout of 30000ms exceeded.[39m
-```
+No error message available
 
 ## Artifacts Captured
 - **har**: `artifacts/e2e/s2_checklist_fill_-_comprehensive_item_completion/fe-be.har` - HTTP Archive (HAR) file with all requests

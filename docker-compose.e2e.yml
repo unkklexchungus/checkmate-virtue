@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - CORS_ALLOW_ORIGINS=http://localhost:8000,http://127.0.0.1:8000,http://app:8000,http://localhost:3000
+      - PYTHONUNBUFFERED=1
+      - DEBUG=true
+      - ENABLE_TEST_ROUTES=true
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/healthz"]
+      interval: 5s
+      timeout: 2s
+      retries: 30
+    shm_size: "1gb"
+
+  tests:
+    image: mcr.microsoft.com/playwright:v1.54.2-jammy
+    depends_on:
+      app:
+        condition: service_healthy
+    working_dir: /work
+    environment:
+      - E2E_BASE_URL=http://app:8000
+      - CI=1
+    volumes:
+      - ./:/work:rw
+      - node_cache:/work/node_modules
+      - ./artifacts/e2e:/work/artifacts/e2e
+    shm_size: "1gb"
+    entrypoint: [ "bash", "-lc" ]
+
+volumes:
+  node_cache:

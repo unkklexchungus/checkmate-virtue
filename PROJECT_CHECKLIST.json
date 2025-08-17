@@ -1,0 +1,420 @@
+{
+  "project_name": "inspection-proto",
+  "description": "CheckMate Virtue - Professional Automotive Inspection System",
+  "version": "1.0.0",
+  "last_updated": "2025-08-13",
+  "project_rules": [
+    "NO_NPM_ALLOWED: This project must not use npm, Node.js, or any JavaScript package managers. All dependencies must be Python-based only.",
+    "NO_JAVASCRIPT_FRAMEWORKS: No JavaScript frameworks, build tools, or npm packages should be used. Keep the frontend simple with vanilla HTML/CSS/JS only.",
+    "PYTHON_ONLY_DEPENDENCIES: All project dependencies must be Python packages managed through pip/requirements.txt only."
+  ],
+  "checklist": [
+    {
+      "id": 1,
+      "category": "Core Features",
+      "title": "Customizable Inspection Sheets",
+      "description": "Implement dynamic inspection sheet creation and customization system",
+      "priority": "High",
+      "status": "Not Started",
+      "subtasks": [
+        {
+          "id": "1.1",
+          "title": "Inspection Template Builder",
+          "description": "Create web-based interface for building custom inspection templates",
+          "status": "Not Started",
+          "estimated_hours": 16
+        },
+        {
+          "id": "1.2",
+          "title": "Template Management System",
+          "description": "Implement CRUD operations for inspection templates",
+          "status": "Not Started",
+          "estimated_hours": 12
+        },
+        {
+          "id": "1.3",
+          "title": "Dynamic Form Generation",
+          "description": "Generate inspection forms dynamically from templates",
+          "status": "Not Started",
+          "estimated_hours": 20
+        },
+        {
+          "id": "1.4",
+          "title": "Template Categories",
+          "description": "Support for different inspection types (automotive, industrial, etc.)",
+          "status": "Not Started",
+          "estimated_hours": 8
+        },
+        {
+          "id": "1.5",
+          "title": "Template Versioning",
+          "description": "Version control for inspection templates",
+          "status": "Not Started",
+          "estimated_hours": 10
+        }
+      ],
+      "dependencies": [],
+      "estimated_total_hours": 66,
+      "notes": "This is the core feature that will differentiate the system from competitors"
+    },
+    {
+      "id": 2,
+      "category": "Photo Upload System",
+      "title": "Enhanced Photo Upload Features",
+      "description": "Improve and expand the photo upload functionality",
+      "priority": "Medium",
+      "status": "In Progress",
+      "subtasks": [
+        {
+          "id": "2.1",
+          "title": "Photo Annotation",
+          "description": "Add ability to draw on photos and add text annotations",
+          "status": "Not Started",
+          "estimated_hours": 24
+        },
+        {
+          "id": "2.2",
+          "title": "Photo Organization",
+          "description": "Organize photos by inspection sections and items",
+          "status": "Not Started",
+          "estimated_hours": 12
+        },
+        {
+          "id": "2.3",
+          "title": "Photo Compression",
+          "description": "Implement automatic photo compression for storage optimization",
+          "status": "Not Started",
+          "estimated_hours": 8
+        },
+        {
+          "id": "2.4",
+          "title": "Photo Gallery View",
+          "description": "Create a gallery view for browsing inspection photos",
+          "status": "Not Started",
+          "estimated_hours": 16
+        }
+      ],
+      "dependencies": [1],
+      "estimated_total_hours": 60,
+      "notes": "Photo upload system is currently working but needs enhancement"
+    },
+    {
+      "id": 3,
+      "category": "User Management",
+      "title": "Multi-User System",
+      "description": "Implement user roles, permissions, and team management",
+      "priority": "High",
+      "status": "Not Started",
+      "subtasks": [
+        {
+          "id": "3.1",
+          "title": "User Authentication",
+          "description": "Implement secure user login and registration",
+          "status": "Not Started",
+          "estimated_hours": 20
+        },
+        {
+          "id": "3.2",
+          "title": "Role-Based Access Control",
+          "description": "Create different user roles (admin, inspector, viewer)",
+          "status": "Not Started",
+          "estimated_hours": 16
+        },
+        {
+          "id": "3.3",
+          "title": "Team Management",
+          "description": "Allow users to create and manage teams",
+          "status": "Not Started",
+          "estimated_hours": 12
+        },
+        {
+          "id": "3.4",
+          "title": "User Profiles",
+          "description": "User profile management and preferences",
+          "status": "Not Started",
+          "estimated_hours": 8
+        }
+      ],
+      "dependencies": [],
+      "estimated_total_hours": 56,
+      "notes": "Essential for enterprise deployment"
+    },
+    {
+      "id": 4,
+      "category": "Reporting",
+      "title": "Advanced Reporting System",
+      "description": "Comprehensive reporting and analytics features",
+      "priority": "Medium",
+      "status": "Not Started",
+      "subtasks": [
+        {
+          "id": "4.1",
+          "title": "Custom Report Builder",
+          "description": "Allow users to create custom report templates",
+          "status": "Not Started",
+          "estimated_hours": 32
+        },
+        {
+          "id": "4.2",
+          "title": "Data Analytics Dashboard",
+          "description": "Create dashboard with inspection statistics and trends",
+          "status": "Not Started",
+          "estimated_hours": 24
+        },
+        {
+          "id": "4.3",
+          "title": "Export Options",
+          "description": "Support for PDF, Excel, and CSV exports",
+          "status": "Not Started",
+          "estimated_hours": 16
+        },
+        {
+          "id": "4.4",
+          "title": "Scheduled Reports",
+          "description": "Automated report generation and email delivery",
+          "status": "Not Started",
+          "estimated_hours": 12
+        }
+      ],
+      "dependencies": [1, 3],
+      "estimated_total_hours": 84,
+      "notes": "Important for business intelligence and compliance"
+    },
+    {
+      "id": 5,
+      "category": "Mobile Support",
+      "title": "Mobile Application",
+      "description": "Native mobile app for field inspections",
+      "priority": "Medium",
+      "status": "Not Started",
+      "subtasks": [
+        {
+          "id": "5.1",
+          "title": "React Native App",
+          "description": "Develop cross-platform mobile application",
+          "status": "Not Started",
+          "estimated_hours": 80
+        },
+        {
+          "id": "5.2",
+          "title": "Offline Support",
+          "description": "Allow inspections to be conducted offline",
+          "status": "Not Started",
+          "estimated_hours": 40
+        },
+        {
+          "id": "5.3",
+          "title": "Camera Integration",
+          "description": "Native camera access for photo capture",
+          "status": "Not Started",
+          "estimated_hours": 20
+        },
+        {
+          "id": "5.4",
+          "title": "GPS Integration",
+          "description": "Location tracking for inspection sites",
+          "status": "Not Started",
+          "estimated_hours": 16
+        }
+      ],
+      "dependencies": [1, 2],
+      "estimated_total_hours": 156,
+      "notes": "Critical for field inspectors who work on-site"
+    },
+    {
+      "id": 6,
+      "category": "Integration",
+      "title": "Third-Party Integrations",
+      "description": "Integrate with external systems and services",
+      "priority": "Low",
+      "status": "Not Started",
+      "subtasks": [
+        {
+          "id": "6.1",
+          "title": "VIN Decoder API",
+          "description": "Integrate with vehicle identification number decoders",
+          "status": "Partially Complete",
+          "estimated_hours": 8
+        },
+        {
+          "id": "6.2",
+          "title": "Cloud Storage",
+          "description": "Integrate with AWS S3 or similar for file storage",
+          "status": "Not Started",
+          "estimated_hours": 16
+        },
+        {
+          "id": "6.3",
+          "title": "Email Notifications",
+          "description": "Email integration for notifications and reports",
+          "status": "Not Started",
+          "estimated_hours": 12
+        },
+        {
+          "id": "6.4",
+          "title": "API Development",
+          "description": "Create RESTful API for third-party integrations",
+          "status": "Not Started",
+          "estimated_hours": 24
+        }
+      ],
+      "dependencies": [3],
+      "estimated_total_hours": 60,
+      "notes": "VIN decoder is already partially implemented"
+    },
+    {
+      "id": 7,
+      "category": "Performance",
+      "title": "Performance Optimization",
+      "description": "Optimize system performance and scalability",
+      "priority": "Medium",
+      "status": "Not Started",
+      "subtasks": [
+        {
+          "id": "7.1",
+          "title": "Database Optimization",
+          "description": "Optimize database queries and indexing",
+          "status": "Not Started",
+          "estimated_hours": 16
+        },
+        {
+          "id": "7.2",
+          "title": "Caching System",
+          "description": "Implement Redis or similar caching solution",
+          "status": "Not Started",
+          "estimated_hours": 12
+        },
+        {
+          "id": "7.3",
+          "title": "CDN Integration",
+          "description": "Content delivery network for static assets",
+          "status": "Not Started",
+          "estimated_hours": 8
+        },
+        {
+          "id": "7.4",
+          "title": "Load Testing",
+          "description": "Comprehensive load testing and optimization",
+          "status": "Not Started",
+          "estimated_hours": 20
+        }
+      ],
+      "dependencies": [1, 3],
+      "estimated_total_hours": 56,
+      "notes": "Important for handling large numbers of concurrent users"
+    },
+    {
+      "id": 8,
+      "category": "Security",
+      "title": "Security Enhancements",
+      "description": "Implement comprehensive security measures",
+      "priority": "High",
+      "status": "Not Started",
+      "subtasks": [
+        {
+          "id": "8.1",
+          "title": "Data Encryption",
+          "description": "Encrypt sensitive data at rest and in transit",
+          "status": "Not Started",
+          "estimated_hours": 20
+        },
+        {
+          "id": "8.2",
+          "title": "Audit Logging",
+          "description": "Comprehensive audit trail for all actions",
+          "status": "Not Started",
+          "estimated_hours": 16
+        },
+        {
+          "id": "8.3",
+          "title": "Security Testing",
+          "description": "Penetration testing and vulnerability assessment",
+          "status": "Not Started",
+          "estimated_hours": 24
+        },
+        {
+          "id": "8.4",
+          "title": "Compliance",
+          "description": "Ensure compliance with industry standards",
+          "status": "Not Started",
+          "estimated_hours": 32
+        }
+      ],
+      "dependencies": [3],
+      "estimated_total_hours": 92,
+      "notes": "Critical for enterprise customers and data protection"
+    },
+    {
+      "id": 9,
+      "category": "Core Features",
+      "title": "Ad-Hoc Inspection Sheets",
+      "description": "Create quick, on-the-fly inspections without predefined templates",
+      "priority": "High",
+      "status": "Not Started",
+      "subtasks": [
+        {
+          "id": "9.1",
+          "title": "Quick Inspection Creator",
+          "description": "Interface for creating inspections from scratch in real-time",
+          "status": "Not Started",
+          "estimated_hours": 24
+        },
+        {
+          "id": "9.2",
+          "title": "Dynamic Field Addition",
+          "description": "Add custom fields and sections during inspection",
+          "status": "Not Started",
+          "estimated_hours": 20
+        },
+        {
+          "id": "9.3",
+          "title": "Template Conversion",
+          "description": "Convert ad-hoc inspections to reusable templates",
+          "status": "Not Started",
+          "estimated_hours": 16
+        },
+        {
+          "id": "9.4",
+          "title": "Quick Actions",
+          "description": "Predefined quick actions for common inspection items",
+          "status": "Not Started",
+          "estimated_hours": 12
+        },
+        {
+          "id": "9.5",
+          "title": "Voice-to-Text Input",
+          "description": "Voice input for hands-free inspection creation",
+          "status": "Not Started",
+          "estimated_hours": 28
+        },
+        {
+          "id": "9.6",
+          "title": "Smart Suggestions",
+          "description": "AI-powered suggestions for inspection items based on context",
+          "status": "Not Started",
+          "estimated_hours": 32
+        }
+      ],
+      "dependencies": [1],
+      "estimated_total_hours": 132,
+      "notes": "Essential for field inspectors who need to create inspections quickly without preparation"
+    }
+  ],
+  "summary": {
+    "total_items": 9,
+    "total_estimated_hours": 762,
+    "completed_items": 0,
+    "in_progress_items": 1,
+    "not_started_items": 8,
+    "high_priority_items": 4,
+    "medium_priority_items": 4,
+    "low_priority_items": 1
+  },
+  "next_steps": [
+    "Focus on customizable inspection sheets (Item 1) as the core differentiator",
+    "Implement ad-hoc inspection sheets (Item 9) for quick field inspections",
+    "Complete photo upload enhancements (Item 2) to improve current functionality",
+    "Implement user management system (Item 3) for multi-user support",
+    "Begin security enhancements (Item 8) early in the development cycle"
+  ]
+}

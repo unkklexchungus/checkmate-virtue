@@ -1,8 +1,26 @@
 {
+  "name": "inspection-e2e-tests",
+  "version": "1.0.0",
+  "description": "E2E tests for Inspection module",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "install-browsers": "playwright install",
+    "show-report": "playwright show-report",
+    "show-trace": "playwright show-trace"
+  },
   "devDependencies": {
     "@playwright/test": "^1.54.2",
-    "@types/node": "^24.2.1",
-    "ajv": "^8.17.1",
-    "playwright": "^1.54.2"
+    "@types/node": "^20.0.0",
+    "ajv": "^8.12.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
+
+
+

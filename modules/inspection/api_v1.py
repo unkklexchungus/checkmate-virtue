@@ -228,45 +228,4 @@ async def finalize_inspection(inspection_id: str):
     else:
         raise HTTPException(status_code=500, detail="Failed to finalize inspection")
 
-@router.get("/inspection/{inspection_id}/report")
-async def generate_inspection_report(
-    request: Request,
-    inspection_id: str, 
-    format: str = "html"
-):
-    """Generate an inspection report in HTML or PDF format."""
-    inspection = find_inspection(inspection_id)
-    if not inspection:
-        raise HTTPException(status_code=404, detail="Inspection not found")
-    
-    if format.lower() == "pdf":
-        return await generate_pdf_report(inspection)
-    else:
-        return await generate_html_report(request, inspection)
 
-# Helper functions for report generation
-async def generate_html_report(request: Request, inspection: Dict[str, Any]) -> HTMLResponse:
-    """Generate HTML report for inspection."""
-    return templates.TemplateResponse("view_inspection.html", {
-        "request": request,
-        "inspection": inspection
-    })
-
-async def generate_pdf_report(inspection: Dict[str, Any]) -> FileResponse:
-    """Generate PDF report for inspection."""
-    # This is a placeholder - implement actual PDF generation
-    # For now, return a simple text file
-    temp_file = Path("temp") / f"inspection_report_{inspection['id']}.txt"
-    temp_file.parent.mkdir(exist_ok=True)
-    
-    with open(temp_file, "w") as f:
-        f.write(f"Inspection Report for {inspection.get('title', 'Untitled')}\n")
-        f.write(f"Inspection ID: {inspection['id']}\n")
-        f.write(f"Status: {inspection.get('status', 'Unknown')}\n")
-        f.write(f"Created: {inspection.get('created_at', 'Unknown')}\n")
-    
-    return FileResponse(
-        temp_file,
-        media_type="text/plain",
-        filename=f"inspection_report_{inspection['id']}.txt"
-    )

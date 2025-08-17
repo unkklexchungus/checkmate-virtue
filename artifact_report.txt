@@ -1,0 +1,17 @@
+================================================================================
+ARTIFACT CAPTURE REPORT
+================================================================================
+Generated: 2025-08-16T05:08:51.650627
+Artifacts Directory: /home/chungus/Lexicon-Re-clone/qa/artifacts
+
+Test: browser_test_runner
+  Total Artifacts: 0
+    No artifacts captured
+
+Total Artifacts Across All Tests: 0
+
+To view artifacts in CI:
+1. Download the artifacts directory from CI
+2. Open HTML files in a web browser
+3. View PNG screenshots with any image viewer
+================================================================================

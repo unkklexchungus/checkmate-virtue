@@ -17,10 +17,22 @@ ARTIFACTS_DIR = QA_DIR / "artifacts"
 SCREENSHOTS_DIR = ARTIFACTS_DIR / "screenshots"
 HTML_DIR = ARTIFACTS_DIR / "html"
 
-# Ensure artifact directories exist
-ARTIFACTS_DIR.mkdir(exist_ok=True)
-SCREENSHOTS_DIR.mkdir(exist_ok=True)
-HTML_DIR.mkdir(exist_ok=True)
+# Import enhanced permission handling
+try:
+    from test_artifact_helpers import ensure_writable_directory
+except ImportError:
+    # Fallback function if import fails
+    def ensure_writable_directory(directory: Path) -> Path:
+        try:
+            directory.mkdir(parents=True, exist_ok=True)
+            return directory
+        except Exception:
+            return Path.cwd() / "test_artifacts"
+
+# Ensure artifact directories exist with permission handling
+ARTIFACTS_DIR = ensure_writable_directory(ARTIFACTS_DIR)
+SCREENSHOTS_DIR = ensure_writable_directory(SCREENSHOTS_DIR)
+HTML_DIR = ensure_writable_directory(HTML_DIR)
 
 
 class PlaywrightArtifactCapture:
@@ -36,11 +48,13 @@ class PlaywrightArtifactCapture:
         self.current_test_name = test_name
         self.current_page = page
         
-        # Create test-specific directories
+        # Create test-specific directories with permission handling
         test_dir = ARTIFACTS_DIR / self._sanitize_test_name(test_name)
-        test_dir.mkdir(exist_ok=True)
-        (test_dir / "screenshots").mkdir(exist_ok=True)
-        (test_dir / "html").mkdir(exist_ok=True)
+        test_dir = ensure_writable_directory(test_dir)
+        
+        # Create subdirectories
+        ensure_writable_directory(test_dir / "screenshots")
+        ensure_writable_directory(test_dir / "html")
     
     def capture_artifacts(self, error_type: str = "failure") -> Dict[str, str]:
         """Capture both screenshot and HTML snapshot for the current test."""
@@ -52,22 +66,26 @@ class PlaywrightArtifactCapture:
         
         artifacts = {}
         
-        # Capture screenshot
+        # Capture screenshot with enhanced error handling
         try:
-            screenshot_path = test_dir / "screenshots" / f"{error_type}_{timestamp}.png"
+            screenshots_dir = ensure_writable_directory(test_dir / "screenshots")
+            screenshot_path = screenshots_dir / f"{error_type}_{timestamp}.png"
             self.current_page.screenshot(path=str(screenshot_path))
             artifacts["screenshot"] = str(screenshot_path.relative_to(QA_DIR))
+            print(f"✓ Screenshot captured: {artifacts['screenshot']}")
         except Exception as e:
             print(f"Failed to capture screenshot: {e}")
             artifacts["screenshot"] = None
         
-        # Capture HTML snapshot
+        # Capture HTML snapshot with enhanced error handling
         try:
-            html_path = test_dir / "html" / f"{error_type}_{timestamp}.html"
+            html_dir = ensure_writable_directory(test_dir / "html")
+            html_path = html_dir / f"{error_type}_{timestamp}.html"
             html_content = self.current_page.content()
             with open(html_path, 'w', encoding='utf-8') as f:
                 f.write(html_content)
             artifacts["html_snapshot"] = str(html_path.relative_to(QA_DIR))
+            print(f"✓ HTML snapshot captured: {artifacts['html_snapshot']}")
         except Exception as e:
             print(f"Failed to capture HTML snapshot: {e}")
             artifacts["html_snapshot"] = None
@@ -101,72 +119,79 @@ def page_with_artifacts(page: Page, request):
     
     yield page
     
-    # Capture artifacts on test completion (success or failure)
-    if request.node.rep_call.failed:
-        artifacts = artifact_capture.capture_artifacts("failure")
-        print(f"\nTest failed. Artifacts captured:")
-        for artifact_type, path in artifacts.items():
-            if path:
-                print(f"  {artifact_type}: {path}")
+    # Clean up test context
+    artifact_capture.current_test_name = None
+    artifact_capture.current_page = None
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
-    """Hook to capture artifacts on test failures."""
+    """Capture artifacts on test failures."""
     outcome = yield
-    rep = outcome.get_result()
+    report = outcome.get_result()
     
-    # Only capture on failures
-    if rep.when == "call" and rep.failed:
-        test_name = f"{item.module.__name__}.{item.function.__name__}"
+    # Only capture artifacts on failures
+    if report.when == "call" and report.failed:
+        # Get the page object if available
+        page = None
+        for fixture_name in item.fixturenames:
+            if fixture_name == "page_with_artifacts":
+                page = item.funcargs.get(fixture_name)
+                break
         
-        # Capture artifacts if we have a page context
-        if artifact_capture.current_page and artifact_capture.current_test_name == test_name:
+        if page:
+            # Capture artifacts
             artifacts = artifact_capture.capture_artifacts("failure")
             
-            # Attach artifact paths to the test report
+            # Add artifact paths to the report
             if artifacts.get("screenshot"):
-                rep.sections.append(("Screenshot", artifacts["screenshot"]))
+                report.sections.append(("Screenshot", artifacts["screenshot"]))
             if artifacts.get("html_snapshot"):
-                rep.sections.append(("HTML Snapshot", artifacts["html_snapshot"]))
+                report.sections.append(("HTML Snapshot", artifacts["html_snapshot"]))
             
-            # Add artifact summary to report
-            artifact_summary = []
-            for artifact_type, path in artifacts.items():
-                if path:
-                    artifact_summary.append(f"{artifact_type}: {path}")
-            
-            if artifact_summary:
-                rep.sections.append(("Artifacts", "\n".join(artifact_summary)))
+            # Log artifacts to console
+            test_name = f"{item.module.__name__}.{item.function.__name__}"
+            print(f"\n📋 Test failed: {test_name}")
+            if artifacts.get("screenshot"):
+                print(f"📸 Screenshot: {artifacts['screenshot']}")
+            if artifacts.get("html_snapshot"):
+                print(f"🌐 HTML Snapshot: {artifacts['html_snapshot']}")
 
 
-def pytest_configure(config):
-    """Configure pytest with custom markers and options."""
-    config.addinivalue_line(
-        "markers", "playwright: mark test as requiring Playwright browser"
-    )
-    config.addinivalue_line(
-        "markers", "browser: mark test as browser-based test"
-    )
+@pytest.fixture(scope="session", autouse=True)
+def setup_artifacts_environment():
+    """Set up the artifacts environment at the start of the test session."""
+    print(f"\n🔧 Setting up test artifacts environment...")
+    print(f"📁 Artifacts directory: {ARTIFACTS_DIR}")
+    print(f"📁 Screenshots directory: {SCREENSHOTS_DIR}")
+    print(f"📁 HTML directory: {HTML_DIR}")
+    
+    # Clean up old artifacts (older than 24 hours)
+    try:
+        from test_artifact_helpers import cleanup_old_artifacts
+        cleanup_old_artifacts(max_age_hours=24)
+    except ImportError:
+        print("Warning: Could not import cleanup function")
+    
+    yield
+    
+    print(f"\n✅ Test session completed. Artifacts available in: {ARTIFACTS_DIR}")
 
 
-def pytest_collection_modifyitems(config, items):
-    """Add browser marker to tests that use page_with_artifacts fixture."""
-    for item in items:
-        if "page_with_artifacts" in item.fixturenames:
-            item.add_marker(pytest.mark.browser)
-            item.add_marker(pytest.mark.playwright)
+# Additional fixtures for backward compatibility
+@pytest.fixture
+def artifacts_dir():
+    """Provide access to the artifacts directory."""
+    return ARTIFACTS_DIR
 
 
-def pytest_terminal_summary(terminalreporter, exitstatus, config):
-    """Print artifact summary at the end of test run."""
-    if artifact_capture.test_artifacts:
-        terminalreporter.write_sep("=", "Test Artifacts Summary")
-        for test_name, artifacts in artifact_capture.test_artifacts.items():
-            terminalreporter.write_line(f"\n{test_name}:")
-            for artifact_type, path in artifacts.items():
-                if path:
-                    terminalreporter.write_line(f"  {artifact_type}: {path}")
-        
-        terminalreporter.write_line(f"\nArtifacts directory: {ARTIFACTS_DIR}")
-        terminalreporter.write_line("View artifacts in CI by downloading the artifacts directory.")
+@pytest.fixture
+def screenshots_dir():
+    """Provide access to the screenshots directory."""
+    return SCREENSHOTS_DIR
+
+
+@pytest.fixture
+def html_dir():
+    """Provide access to the HTML directory."""
+    return HTML_DIR

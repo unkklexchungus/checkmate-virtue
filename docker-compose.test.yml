@@ -1,0 +1,162 @@
+services:
+  # Test Database
+  test-postgres:
+    image: postgres:16
+    container_name: test_postgres
+    environment:
+      POSTGRES_DB: testdb
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpass
+    volumes:
+      - test_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"  # Different port to avoid conflicts
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U testuser -d testdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - test_net
+
+  # Test Redis
+  test-redis:
+    image: redis:7-alpine
+    container_name: test_redis
+    ports:
+      - "6380:6379"  # Different port to avoid conflicts
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - test_net
+
+  # Main Application for Testing
+  test-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: test_app
+    environment:
+      - APP_BASE_URL=http://test-app:8000
+      - DATABASE_URL=postgresql://testuser:testpass@test-postgres:5432/testdb
+      - REDIS_URL=redis://test-redis:6379/0
+      - TESTING=true
+      - HEADLESS=true
+      - TIMEOUT=30000
+      - WAIT_FOR_IDLE=2000
+      - RETRY_ATTEMPTS=2
+    depends_on:
+      test-postgres:
+        condition: service_healthy
+      test-redis:
+        condition: service_healthy
+    ports:
+      - "8001:8000"  # Different port to avoid conflicts
+    volumes:
+      - ./static/uploads:/app/static/uploads
+      - ./qa/artifacts:/app/qa/artifacts
+      - ./qa/logs:/app/qa/logs
+      - ./temp:/app/temp
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - test_net
+    command: ["python3", "main.py"]
+
+  # Browser Test Runner
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: test_runner
+    environment:
+      - APP_BASE_URL=http://test-app:8000
+      - FRONTEND_URL=http://test-app:8000
+      - BACKEND_URL=http://test-app:8000
+      - HEADLESS=true
+      - TIMEOUT=30000
+      - WAIT_FOR_IDLE=2000
+      - RETRY_ATTEMPTS=2
+      - TESTING=true
+    depends_on:
+      test-app:
+        condition: service_healthy
+    volumes:
+      - ./qa/artifacts:/app/qa/artifacts
+      - ./qa/logs:/app/qa/logs
+      - ./test-results:/app/test-results
+    networks:
+      - test_net
+    command: ["python3", "qa/run_browser_tests.py"]
+
+  # Playwright Test Runner
+  playwright-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.playwright
+    container_name: playwright_runner
+    environment:
+      - FRONTEND_URL=http://test-app:8000
+      - BACKEND_URL=http://test-app:8000
+      - CI=true
+    depends_on:
+      test-app:
+        condition: service_healthy
+    volumes:
+      - ./qa/artifacts:/app/qa/artifacts
+      - ./qa/logs:/app/qa/logs
+      - ./test-results:/app/test-results
+    networks:
+      - test_net
+    command: ["npx", "playwright", "test", "--config=playwright.config.ts"]
+
+  # API Test Runner
+  api-test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: api_test_runner
+    environment:
+      - APP_BASE_URL=http://test-app:8000
+      - TESTING=true
+    depends_on:
+      test-app:
+        condition: service_healthy
+    volumes:
+      - ./qa/artifacts:/app/qa/artifacts
+      - ./qa/logs:/app/qa/logs
+    networks:
+      - test_net
+    command: ["python3", "-m", "pytest", "qa/test_health_check.py", "-v"]
+
+  # Health Check Monitor
+  health-monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: health_monitor
+    environment:
+      - APP_BASE_URL=http://test-app:8000
+      - MONITOR_INTERVAL=30
+    depends_on:
+      test-app:
+        condition: service_healthy
+    volumes:
+      - ./qa/logs:/app/qa/logs
+    networks:
+      - test_net
+    command: ["python3", "qa/health_check.py"]
+
+volumes:
+  test_postgres_data:
+
+networks:
+  test_net:
+    driver: bridge

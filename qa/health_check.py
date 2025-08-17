@@ -12,8 +12,13 @@ from urllib.parse import urljoin
 
 def get_base_url() -> str:
     """Get the base URL from environment or use default."""
-    from app.config.runtime import BASE_URL
-    return BASE_URL
+    # Try to import from app.config.runtime first, fallback to environment variable
+    try:
+        from app.config.runtime import BASE_URL
+        return BASE_URL
+    except ImportError:
+        # Fallback to environment variable
+        return os.getenv('APP_BASE_URL', 'http://localhost:8000')
 
 def wait_for_health(
     base_url: Optional[str] = None,

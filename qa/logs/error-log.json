@@ -1,154 +1,376 @@
 {
-  "regression": {
-    "REGRESSION_FAILED": [
+  "frontend": {
+    "JS_ERROR": [
       {
-        "message": "Basic regression test failed",
-        "url": "http://127.0.0.1:8000",
-        "timestamp": "2025-08-13T03:52:24.739291",
-        "screenshot_path": "artifacts/regression_REGRESSION_FAILED_1755075144.png",
-        "html_snapshot": "artifacts/html/regression_REGRESSION_FAILED_1755075144.html",
+        "message": "[JavaScript Error] {message: Unexpected end of input, error: SyntaxError: Unexpected end of input}",
+        "url": "http://localhost:8000/",
+        "timestamp": "2025-08-16T05:06:11.918772",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338771.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338771.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:51.009591",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338810.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338810.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:51.192379",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338810.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338810.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:51.375708",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338810.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338810.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:51.579620",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338810.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338810.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:51.778282",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338810.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338810.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:51.998072",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338811.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338811.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:52.195624",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338811.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338811.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:52.415225",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338811.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338811.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:52.665595",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338811.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338811.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:52.881628",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338812.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338812.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:53.099103",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338812.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338812.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:53.332089",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338812.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338812.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:53.584432",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338812.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338812.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:53.846325",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338812.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338812.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:54.062884",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338813.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338813.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:54.263063",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338813.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338813.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:54.478664",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338813.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338813.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:54.677178",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338813.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338813.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:58.557680",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338818.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338818.html",
+        "stack_trace": null
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+        "url": "http://localhost:8000/invoices/INV_20250810_090000",
+        "timestamp": "2025-08-16T05:07:57.425945",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338877.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338877.html",
+        "stack_trace": null
+      },
+      {
+        "message": "VIN decoding error: TypeError: Failed to fetch\n    at decodeVIN (http://localhost:8000/test-vin:138:40)",
+        "url": "http://localhost:8000/test-vin",
+        "timestamp": "2025-08-16T05:08:41.286564",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338921.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338921.html",
+        "stack_trace": null
+      },
+      {
+        "message": "VIN decoding error: TypeError: Failed to fetch\n    at decodeVIN (http://localhost:8000/test-vin:138:40)\n    at HTMLButtonElement.onclick (http://localhost:8000/test-vin:22:55)",
+        "url": "http://localhost:8000/test-vin",
+        "timestamp": "2025-08-16T05:08:41.363996",
+        "screenshot_path": "artifacts/frontend_JS_ERROR_1755338921.png",
+        "html_snapshot": "artifacts/html/frontend_JS_ERROR_1755338921.html",
         "stack_trace": null
       }
-    ]
-  },
-  "navigation": {
-    "NAVIGATION_ERROR": [
+    ],
+    "UNHANDLED_EXCEPTION": [
       {
-        "message": "Failed to navigate to http://127.0.0.1:8000/: Page.goto: 'str' object is not callable",
-        "url": "http://127.0.0.1:8000/",
-        "timestamp": "2025-08-13T03:52:25.823970",
-        "screenshot_path": "artifacts/navigation_NAVIGATION_ERROR_1755075145.png",
-        "html_snapshot": "artifacts/html/navigation_NAVIGATION_ERROR_1755075145.html",
-        "stack_trace": null
-      },
-      {
-        "message": "Failed to navigate to http://127.0.0.1:8000/inspection/form: Page.goto: 'str' object is not callable",
-        "url": "http://127.0.0.1:8000/inspection/form",
-        "timestamp": "2025-08-13T03:52:26.887942",
-        "screenshot_path": "artifacts/navigation_NAVIGATION_ERROR_1755075146.png",
-        "html_snapshot": "artifacts/html/navigation_NAVIGATION_ERROR_1755075146.html",
-        "stack_trace": null
-      },
-      {
-        "message": "Failed to navigate to http://127.0.0.1:8000/inspections: Page.goto: 'str' object is not callable",
-        "url": "http://127.0.0.1:8000/inspections",
-        "timestamp": "2025-08-13T03:52:27.970804",
-        "screenshot_path": "artifacts/navigation_NAVIGATION_ERROR_1755075147.png",
-        "html_snapshot": "artifacts/html/navigation_NAVIGATION_ERROR_1755075147.html",
-        "stack_trace": null
-      },
-      {
-        "message": "Failed to navigate to http://127.0.0.1:8000/inspections/new: Page.goto: 'str' object is not callable",
-        "url": "http://127.0.0.1:8000/inspections/new",
-        "timestamp": "2025-08-13T03:52:29.036707",
-        "screenshot_path": "artifacts/navigation_NAVIGATION_ERROR_1755075148.png",
-        "html_snapshot": "artifacts/html/navigation_NAVIGATION_ERROR_1755075148.html",
-        "stack_trace": null
-      },
-      {
-        "message": "Failed to navigate to http://127.0.0.1:8000/invoices: Page.goto: 'str' object is not callable",
-        "url": "http://127.0.0.1:8000/invoices",
-        "timestamp": "2025-08-13T03:52:30.103186",
-        "screenshot_path": "artifacts/navigation_NAVIGATION_ERROR_1755075150.png",
-        "html_snapshot": "artifacts/html/navigation_NAVIGATION_ERROR_1755075150.html",
-        "stack_trace": null
-      },
-      {
-        "message": "Failed to navigate to http://127.0.0.1:8000/invoices/new: Page.goto: 'str' object is not callable",
-        "url": "http://127.0.0.1:8000/invoices/new",
-        "timestamp": "2025-08-13T03:52:31.170522",
-        "screenshot_path": "artifacts/navigation_NAVIGATION_ERROR_1755075151.png",
-        "html_snapshot": "artifacts/html/navigation_NAVIGATION_ERROR_1755075151.html",
-        "stack_trace": null
-      },
-      {
-        "message": "Failed to navigate to http://127.0.0.1:8000/invoices/clients: Page.goto: 'str' object is not callable",
-        "url": "http://127.0.0.1:8000/invoices/clients",
-        "timestamp": "2025-08-13T03:52:32.235476",
-        "screenshot_path": "artifacts/navigation_NAVIGATION_ERROR_1755075152.png",
-        "html_snapshot": "artifacts/html/navigation_NAVIGATION_ERROR_1755075152.html",
-        "stack_trace": null
-      },
-      {
-        "message": "Failed to navigate to http://127.0.0.1:8000/invoices/clients/new: Page.goto: 'str' object is not callable",
-        "url": "http://127.0.0.1:8000/invoices/clients/new",
-        "timestamp": "2025-08-13T03:52:33.302692",
-        "screenshot_path": "artifacts/navigation_NAVIGATION_ERROR_1755075153.png",
-        "html_snapshot": "artifacts/html/navigation_NAVIGATION_ERROR_1755075153.html",
-        "stack_trace": null
-      },
-      {
-        "message": "Failed to navigate to http://127.0.0.1:8000/test-vin: Page.goto: 'str' object is not callable",
-        "url": "http://127.0.0.1:8000/test-vin",
-        "timestamp": "2025-08-13T03:52:34.366676",
-        "screenshot_path": "artifacts/navigation_NAVIGATION_ERROR_1755075154.png",
-        "html_snapshot": "artifacts/html/navigation_NAVIGATION_ERROR_1755075154.html",
-        "stack_trace": null
-      },
-      {
-        "message": "Failed to navigate to http://127.0.0.1:8000/test-vin-simple: Page.goto: 'str' object is not callable",
-        "url": "http://127.0.0.1:8000/test-vin-simple",
-        "timestamp": "2025-08-13T03:52:35.434494",
-        "screenshot_path": "artifacts/navigation_NAVIGATION_ERROR_1755075155.png",
-        "html_snapshot": "artifacts/html/navigation_NAVIGATION_ERROR_1755075155.html",
-        "stack_trace": null
-      },
-      {
-        "message": "Failed to navigate to http://127.0.0.1:8000/inspections: Page.goto: 'str' object is not callable",
-        "url": "http://127.0.0.1:8000/inspections",
-        "timestamp": "2025-08-13T03:52:36.517579",
-        "screenshot_path": "artifacts/navigation_NAVIGATION_ERROR_1755075156.png",
-        "html_snapshot": "artifacts/html/navigation_NAVIGATION_ERROR_1755075156.html",
-        "stack_trace": null
-      },
-      {
-        "message": "Failed to navigate to http://127.0.0.1:8000/invoices: Page.goto: 'str' object is not callable",
-        "url": "http://127.0.0.1:8000/invoices",
-        "timestamp": "2025-08-13T03:52:37.589099",
-        "screenshot_path": "artifacts/navigation_NAVIGATION_ERROR_1755075157.png",
-        "html_snapshot": "artifacts/html/navigation_NAVIGATION_ERROR_1755075157.html",
-        "stack_trace": null
+        "message": "Unexpected end of input",
+        "url": "http://localhost:8000/",
+        "timestamp": "2025-08-16T05:06:12.004645",
+        "screenshot_path": "artifacts/frontend_UNHANDLED_EXCEPTION_1755338771.png",
+        "html_snapshot": "artifacts/html/frontend_UNHANDLED_EXCEPTION_1755338771.html",
+        "stack_trace": "NoneType: None\n"
       }
     ]
   },
   "inspection-service": {
-    "API_ERROR": [
+    "HTTP_ERROR": [
       {
-        "message": "Automotive template API exception: APIRequestContext.get: connect ECONNREFUSED 127.0.0.1:8000\nCall log:\n  - \u2192 GET http://127.0.0.1:8000/api/inspection-template\n    - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n",
-        "url": "http://127.0.0.1:8000/api/inspection-template",
-        "timestamp": "2025-08-13T03:52:26.899326",
-        "screenshot_path": null,
-        "html_snapshot": null,
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:50.915124",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338810.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338810.html",
         "stack_trace": null
       },
       {
-        "message": "Inspection creation API exception: APIRequestContext.post: connect ECONNREFUSED 127.0.0.1:8000\nCall log:\n  - \u2192 POST http://127.0.0.1:8000/api/inspections\n    - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n    - Content-Type: application/json\n    - content-length: 246\n",
-        "url": "http://127.0.0.1:8000/api/inspections",
-        "timestamp": "2025-08-13T03:52:35.447575",
-        "screenshot_path": null,
-        "html_snapshot": null,
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:51.093604",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338810.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338810.html",
         "stack_trace": null
-      }
-    ]
-  },
-  "vehicle-service": {
-    "API_ERROR": [
+      },
       {
-        "message": "VIN decoder API exception: APIRequestContext.get: connect ECONNREFUSED 127.0.0.1:8000\nCall log:\n  - \u2192 GET http://127.0.0.1:8000/vehicle/decode/1HGBH41JXMN109186\n    - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n",
-        "url": "http://127.0.0.1:8000/vehicle/decode/1HGBH41JXMN109186",
-        "timestamp": "2025-08-13T03:52:35.439374",
-        "screenshot_path": null,
-        "html_snapshot": null,
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:51.279700",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338810.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338810.html",
+        "stack_trace": null
+      },
+      {
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:51.479263",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338810.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338810.html",
+        "stack_trace": null
+      },
+      {
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:51.677937",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338810.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338810.html",
+        "stack_trace": null
+      },
+      {
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:51.892988",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338811.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338811.html",
+        "stack_trace": null
+      },
+      {
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:52.097073",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338811.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338811.html",
+        "stack_trace": null
+      },
+      {
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:52.297885",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338811.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338811.html",
+        "stack_trace": null
+      },
+      {
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:52.529245",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338811.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338811.html",
+        "stack_trace": null
+      },
+      {
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:52.765095",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338812.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338812.html",
+        "stack_trace": null
+      },
+      {
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:52.980809",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338812.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338812.html",
+        "stack_trace": null
+      },
+      {
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:53.199073",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338812.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338812.html",
+        "stack_trace": null
+      },
+      {
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:53.461529",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338812.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338812.html",
+        "stack_trace": null
+      },
+      {
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:53.731433",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338812.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338812.html",
+        "stack_trace": null
+      },
+      {
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:53.958880",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338813.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338813.html",
+        "stack_trace": null
+      },
+      {
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:54.162440",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338813.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338813.html",
+        "stack_trace": null
+      },
+      {
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:54.379958",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338813.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338813.html",
+        "stack_trace": null
+      },
+      {
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:54.576709",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338813.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338813.html",
+        "stack_trace": null
+      },
+      {
+        "message": "422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires",
+        "url": "http://localhost:8000/inspection/form",
+        "timestamp": "2025-08-16T05:06:58.461644",
+        "screenshot_path": "artifacts/inspection-service_HTTP_ERROR_1755338818.png",
+        "html_snapshot": "artifacts/html/inspection-service_HTTP_ERROR_1755338818.html",
         "stack_trace": null
       }
     ]
   },
   "invoice-service": {
-    "API_ERROR": [
+    "HTTP_ERROR": [
       {
-        "message": "Invoice creation API exception: APIRequestContext.post: connect ECONNREFUSED 127.0.0.1:8000\nCall log:\n  - \u2192 POST http://127.0.0.1:8000/api/invoices\n    - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n    - Content-Type: application/json\n    - content-length: 235\n",
-        "url": "http://127.0.0.1:8000/api/invoices",
-        "timestamp": "2025-08-13T03:52:35.452081",
+        "message": "500 Internal Server Error for http://localhost:8000/invoices/INV_20250810_090000",
+        "url": "http://localhost:8000/invoices/",
+        "timestamp": "2025-08-16T05:07:57.383224",
+        "screenshot_path": "artifacts/invoice-service_HTTP_ERROR_1755338877.png",
+        "html_snapshot": "artifacts/html/invoice-service_HTTP_ERROR_1755338877.html",
+        "stack_trace": null
+      }
+    ]
+  },
+  "ui-testing": {
+    "UI_TEST_ERROR": [
+      {
+        "message": "Failed to test UI elements: Locator.count: 'str' object is not callable",
+        "url": "http://localhost:8000/invoices/clients",
+        "timestamp": "2025-08-16T05:08:31.545470",
         "screenshot_path": null,
         "html_snapshot": null,
         "stack_trace": null

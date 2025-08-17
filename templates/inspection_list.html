@@ -16,6 +16,9 @@
     </style>
 </head>
 <body>
+    {% if breadcrumbs %}
+        {% include 'components/breadcrumb.html' %}
+    {% endif %}
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
@@ -24,70 +27,6 @@
                     <a href="/inspection/form" class="btn btn-primary">
                         <i class="fas fa-plus"></i> New Inspection
                     </a>
-                </div>
-
-                <!-- Statistics Cards -->
-                <div class="row mb-4">
-                    <div class="col-md-3">
-                        <div class="card stats-card text-white">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <h6 class="card-title">Total Inspections</h6>
-                                        <h3 id="total-inspections">0</h3>
-                                    </div>
-                                    <div class="align-self-center">
-                                        <i class="fas fa-clipboard-check fa-2x"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card bg-success text-white">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <h6 class="card-title">Passed Items</h6>
-                                        <h3 id="passed-items">0</h3>
-                                    </div>
-                                    <div class="align-self-center">
-                                        <i class="fas fa-check-circle fa-2x"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card bg-warning text-white">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <h6 class="card-title">Recommended</h6>
-                                        <h3 id="recommended-items">0</h3>
-                                    </div>
-                                    <div class="align-self-center">
-                                        <i class="fas fa-exclamation-triangle fa-2x"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card bg-danger text-white">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <h6 class="card-title">Required</h6>
-                                        <h3 id="required-items">0</h3>
-                                    </div>
-                                    <div class="align-self-center">
-                                        <i class="fas fa-times-circle fa-2x"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Inspections List -->
@@ -136,7 +75,6 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             loadInspections();
-            updateStatistics();
         });
 
         function loadInspections() {
@@ -172,7 +110,13 @@
                             <i class="fas fa-clipboard-check"></i>
                             ${inspection.title || inspection.id}
                         </h6>
-                        <span class="badge bg-secondary">${formatDate(inspection.created_at || inspection.date)}</span>
+                        <div class="d-flex gap-2">
+                            ${inspection.status === 'draft' ? 
+                                '<span class="badge bg-warning">Draft</span>' : 
+                                '<span class="badge bg-success">Finalized</span>'
+                            }
+                            <span class="badge bg-secondary">${formatDate(inspection.created_at || inspection.date)}</span>
+                        </div>
                     </div>
                     <div class="card-body">
                         ${inspection.vehicle_info ? `
@@ -219,10 +163,23 @@
                         </small>
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-sm btn-outline-primary w-100" 
-                                onclick="viewInspection('${inspection.id}')">
-                            <i class="fas fa-eye"></i> View Details
-                        </button>
+                        ${inspection.status === 'draft' ? `
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-sm btn-warning" 
+                                        onclick="resumeInspection('${inspection.id}')">
+                                    <i class="fas fa-play"></i> Resume
+                                </button>
+                                <button class="btn btn-sm btn-outline-primary" 
+                                        onclick="viewInspection('${inspection.id}')">
+                                    <i class="fas fa-eye"></i> View Details
+                                </button>
+                            </div>
+                        ` : `
+                            <button class="btn btn-sm btn-outline-primary w-100" 
+                                    onclick="viewInspection('${inspection.id}')">
+                                <i class="fas fa-eye"></i> View Details
+                            </button>
+                        `}
                     </div>
                 </div>
             `;
@@ -274,46 +231,7 @@
             return stats;
         }
 
-        function updateStatistics() {
-            let totalInspections = inspections.length;
-            let totalPassed = 0;
-            let totalRecommended = 0;
-            let totalRequired = 0;
-
-            inspections.forEach(inspection => {
-                // Use new format (categories)
-                const items = inspection.categories ? 
-                    inspection.categories.flatMap(category => category.items || []) : [];
-
-                items.forEach(item => {
-                    const grade = item.grade || 'N/A';
-                    switch(grade.toLowerCase()) {
-                        case 'pass':
-                        case 'good':
-                        case 'excellent':
-                            totalPassed++;
-                            break;
-                        case 'rec':
-                        case 'recommended':
-                        case 'warning':
-                            totalRecommended++;
-                            break;
-                        case 'req':
-                        case 'required':
-                        case 'fail':
-                        case 'poor':
-                        case 'critical':
-                            totalRequired++;
-                            break;
-                    }
-                });
-            });
-
-            document.getElementById('total-inspections').textContent = totalInspections;
-            document.getElementById('passed-items').textContent = totalPassed;
-            document.getElementById('recommended-items').textContent = totalRecommended;
-            document.getElementById('required-items').textContent = totalRequired;
-        }
+        // Removed updateStatistics function as per edit hint
 
         function formatDate(dateString) {
             const date = new Date(dateString);
@@ -322,11 +240,13 @@
 
         async function viewInspection(inspectionId) {
             try {
-                const response = await fetch(`/inspection/${inspectionId}`);
+                const response = await fetch(`/api/inspections/${inspectionId}`);
                 if (response.ok) {
                     currentInspection = await response.json();
+                    console.log('Inspection data loaded:', currentInspection);
                     showInspectionDetails(currentInspection);
                 } else {
+                    console.error('Failed to load inspection:', response.status, response.statusText);
                     alert('Failed to load inspection details');
                 }
             } catch (error) {
@@ -337,6 +257,10 @@
 
         function showInspectionDetails(inspection) {
             const detailsContainer = document.getElementById('inspection-details');
+            
+            console.log('Processing inspection:', inspection);
+            console.log('Categories:', inspection.categories);
+            console.log('Items:', inspection.items);
             
             let html = `
                 <div class="row mb-3">
@@ -375,7 +299,41 @@
 
             // Group items by step
             const steps = {};
-            inspection.items.forEach(item => {
+            
+            // Handle both old format (inspection.items) and new format (inspection.categories)
+            let items = [];
+            if (inspection.items) {
+                // Old format - flat items array
+                items = inspection.items;
+            } else if (inspection.categories) {
+                // New format - categories with items
+                inspection.categories.forEach(category => {
+                    if (category.items) {
+                        category.items.forEach(item => {
+                            // Add category name as step if not present
+                            const step = item.step || category.name;
+                            const subcategory = item.subcategory || category.name;
+                            items.push({
+                                ...item,
+                                step: step,
+                                subcategory: subcategory,
+                                item: item.name || item.item,
+                                status: item.grade || item.status
+                            });
+                        });
+                    }
+                });
+            }
+            
+            console.log('Processed items:', items);
+            
+            if (items.length === 0) {
+                html += '<div class="alert alert-info">No inspection items found.</div>';
+                detailsContainer.innerHTML = html;
+                return;
+            }
+            
+            items.forEach(item => {
                 if (!steps[item.step]) {
                     steps[item.step] = {};
                 }
@@ -425,12 +383,13 @@
                     `;
 
                     items.forEach(item => {
-                        const statusIcon = getStatusIcon(item.status);
-                        const statusClass = getStatusClass(item.status);
+                        const status = item.status || item.grade || 'unknown';
+                        const statusIcon = getStatusIcon(status);
+                        const statusClass = getStatusClass(status);
                         
                         html += `
                             <tr>
-                                <td>${item.item}</td>
+                                <td>${item.item || item.name || 'Unknown Item'}</td>
                                 <td>
                                     <span class="badge ${statusClass}">
                                         ${statusIcon} ${item.status}
@@ -504,9 +463,15 @@
         // Download report functionality
         document.getElementById('download-report').addEventListener('click', function() {
             if (currentInspection) {
-                window.open(`/inspection/${currentInspection.id}/report/pdf`, '_blank');
+                window.open(`/api/inspections/${currentInspection.id}/report/pdf`, '_blank');
             }
         });
+
+        // Resume inspection functionality
+        function resumeInspection(inspectionId) {
+            // Redirect to the inspection form with the inspection ID for editing
+            window.location.href = `/inspection/form/${inspectionId}`;
+        }
     </script>
 </body>
 </html> 

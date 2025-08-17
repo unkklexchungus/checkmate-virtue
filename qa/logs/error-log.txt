@@ -1,142 +1,289 @@
 CheckMate Virtue Browser Test Error Log
-Generated: 2025-08-13T03:52:37.680275
-Total Errors: 17
+Generated: 2025-08-16T05:08:51.559839
+Total Errors: 45
 ================================================================================
 
-SERVICE: regression
-    TYPE: REGRESSION_FAILED
-        - Basic regression test failed
-          URL: http://127.0.0.1:8000
-          Time: 2025-08-13T03:52:24.739291
-          Screenshot: artifacts/regression_REGRESSION_FAILED_1755075144.png
-          HTML Snapshot: artifacts/html/regression_REGRESSION_FAILED_1755075144.html
+SERVICE: frontend
+    TYPE: JS_ERROR
+        - [JavaScript Error] {message: Unexpected end of input, error: SyntaxError: Unexpected end of input}
+          URL: http://localhost:8000/
+          Time: 2025-08-16T05:06:11.918772
+          Screenshot: artifacts/frontend_JS_ERROR_1755338771.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338771.html
 
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:51.009591
+          Screenshot: artifacts/frontend_JS_ERROR_1755338810.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338810.html
 
-SERVICE: navigation
-    TYPE: NAVIGATION_ERROR
-        - Failed to navigate to http://127.0.0.1:8000/: Page.goto: 'str' object is not callable
-          URL: http://127.0.0.1:8000/
-          Time: 2025-08-13T03:52:25.823970
-          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075145.png
-          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075145.html
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:51.192379
+          Screenshot: artifacts/frontend_JS_ERROR_1755338810.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338810.html
 
-        - Failed to navigate to http://127.0.0.1:8000/inspection/form: Page.goto: 'str' object is not callable
-          URL: http://127.0.0.1:8000/inspection/form
-          Time: 2025-08-13T03:52:26.887942
-          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075146.png
-          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075146.html
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:51.375708
+          Screenshot: artifacts/frontend_JS_ERROR_1755338810.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338810.html
 
-        - Failed to navigate to http://127.0.0.1:8000/inspections: Page.goto: 'str' object is not callable
-          URL: http://127.0.0.1:8000/inspections
-          Time: 2025-08-13T03:52:27.970804
-          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075147.png
-          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075147.html
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:51.579620
+          Screenshot: artifacts/frontend_JS_ERROR_1755338810.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338810.html
 
-        - Failed to navigate to http://127.0.0.1:8000/inspections/new: Page.goto: 'str' object is not callable
-          URL: http://127.0.0.1:8000/inspections/new
-          Time: 2025-08-13T03:52:29.036707
-          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075148.png
-          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075148.html
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:51.778282
+          Screenshot: artifacts/frontend_JS_ERROR_1755338810.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338810.html
 
-        - Failed to navigate to http://127.0.0.1:8000/invoices: Page.goto: 'str' object is not callable
-          URL: http://127.0.0.1:8000/invoices
-          Time: 2025-08-13T03:52:30.103186
-          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075150.png
-          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075150.html
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:51.998072
+          Screenshot: artifacts/frontend_JS_ERROR_1755338811.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338811.html
 
-        - Failed to navigate to http://127.0.0.1:8000/invoices/new: Page.goto: 'str' object is not callable
-          URL: http://127.0.0.1:8000/invoices/new
-          Time: 2025-08-13T03:52:31.170522
-          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075151.png
-          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075151.html
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:52.195624
+          Screenshot: artifacts/frontend_JS_ERROR_1755338811.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338811.html
 
-        - Failed to navigate to http://127.0.0.1:8000/invoices/clients: Page.goto: 'str' object is not callable
-          URL: http://127.0.0.1:8000/invoices/clients
-          Time: 2025-08-13T03:52:32.235476
-          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075152.png
-          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075152.html
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:52.415225
+          Screenshot: artifacts/frontend_JS_ERROR_1755338811.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338811.html
 
-        - Failed to navigate to http://127.0.0.1:8000/invoices/clients/new: Page.goto: 'str' object is not callable
-          URL: http://127.0.0.1:8000/invoices/clients/new
-          Time: 2025-08-13T03:52:33.302692
-          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075153.png
-          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075153.html
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:52.665595
+          Screenshot: artifacts/frontend_JS_ERROR_1755338811.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338811.html
 
-        - Failed to navigate to http://127.0.0.1:8000/test-vin: Page.goto: 'str' object is not callable
-          URL: http://127.0.0.1:8000/test-vin
-          Time: 2025-08-13T03:52:34.366676
-          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075154.png
-          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075154.html
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:52.881628
+          Screenshot: artifacts/frontend_JS_ERROR_1755338812.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338812.html
 
-        - Failed to navigate to http://127.0.0.1:8000/test-vin-simple: Page.goto: 'str' object is not callable
-          URL: http://127.0.0.1:8000/test-vin-simple
-          Time: 2025-08-13T03:52:35.434494
-          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075155.png
-          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075155.html
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:53.099103
+          Screenshot: artifacts/frontend_JS_ERROR_1755338812.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338812.html
 
-        - Failed to navigate to http://127.0.0.1:8000/inspections: Page.goto: 'str' object is not callable
-          URL: http://127.0.0.1:8000/inspections
-          Time: 2025-08-13T03:52:36.517579
-          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075156.png
-          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075156.html
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:53.332089
+          Screenshot: artifacts/frontend_JS_ERROR_1755338812.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338812.html
 
-        - Failed to navigate to http://127.0.0.1:8000/invoices: Page.goto: 'str' object is not callable
-          URL: http://127.0.0.1:8000/invoices
-          Time: 2025-08-13T03:52:37.589099
-          Screenshot: artifacts/navigation_NAVIGATION_ERROR_1755075157.png
-          HTML Snapshot: artifacts/html/navigation_NAVIGATION_ERROR_1755075157.html
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:53.584432
+          Screenshot: artifacts/frontend_JS_ERROR_1755338812.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338812.html
+
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:53.846325
+          Screenshot: artifacts/frontend_JS_ERROR_1755338812.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338812.html
+
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:54.062884
+          Screenshot: artifacts/frontend_JS_ERROR_1755338813.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338813.html
+
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:54.263063
+          Screenshot: artifacts/frontend_JS_ERROR_1755338813.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338813.html
+
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:54.478664
+          Screenshot: artifacts/frontend_JS_ERROR_1755338813.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338813.html
+
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:54.677178
+          Screenshot: artifacts/frontend_JS_ERROR_1755338813.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338813.html
+
+        - Failed to load resource: the server responded with a status of 422 (Unprocessable Content)
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:58.557680
+          Screenshot: artifacts/frontend_JS_ERROR_1755338818.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338818.html
+
+        - Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+          URL: http://localhost:8000/invoices/INV_20250810_090000
+          Time: 2025-08-16T05:07:57.425945
+          Screenshot: artifacts/frontend_JS_ERROR_1755338877.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338877.html
+
+        - VIN decoding error: TypeError: Failed to fetch
+    at decodeVIN (http://localhost:8000/test-vin:138:40)
+          URL: http://localhost:8000/test-vin
+          Time: 2025-08-16T05:08:41.286564
+          Screenshot: artifacts/frontend_JS_ERROR_1755338921.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338921.html
+
+        - VIN decoding error: TypeError: Failed to fetch
+    at decodeVIN (http://localhost:8000/test-vin:138:40)
+    at HTMLButtonElement.onclick (http://localhost:8000/test-vin:22:55)
+          URL: http://localhost:8000/test-vin
+          Time: 2025-08-16T05:08:41.363996
+          Screenshot: artifacts/frontend_JS_ERROR_1755338921.png
+          HTML Snapshot: artifacts/html/frontend_JS_ERROR_1755338921.html
+
+    TYPE: UNHANDLED_EXCEPTION
+        - Unexpected end of input
+          URL: http://localhost:8000/
+          Time: 2025-08-16T05:06:12.004645
+          Screenshot: artifacts/frontend_UNHANDLED_EXCEPTION_1755338771.png
+          HTML Snapshot: artifacts/html/frontend_UNHANDLED_EXCEPTION_1755338771.html
 
 
 SERVICE: inspection-service
-    TYPE: API_ERROR
-        - Automotive template API exception: APIRequestContext.get: connect ECONNREFUSED 127.0.0.1:8000
-Call log:
-  - → GET http://127.0.0.1:8000/api/inspection-template
-    - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36
-    - accept: */*
-    - accept-encoding: gzip,deflate,br
+    TYPE: HTTP_ERROR
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:50.915124
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338810.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338810.html
 
-          URL: http://127.0.0.1:8000/api/inspection-template
-          Time: 2025-08-13T03:52:26.899326
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:51.093604
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338810.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338810.html
 
-        - Inspection creation API exception: APIRequestContext.post: connect ECONNREFUSED 127.0.0.1:8000
-Call log:
-  - → POST http://127.0.0.1:8000/api/inspections
-    - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36
-    - accept: */*
-    - accept-encoding: gzip,deflate,br
-    - Content-Type: application/json
-    - content-length: 246
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:51.279700
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338810.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338810.html
 
-          URL: http://127.0.0.1:8000/api/inspections
-          Time: 2025-08-13T03:52:35.447575
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:51.479263
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338810.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338810.html
 
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:51.677937
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338810.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338810.html
 
-SERVICE: vehicle-service
-    TYPE: API_ERROR
-        - VIN decoder API exception: APIRequestContext.get: connect ECONNREFUSED 127.0.0.1:8000
-Call log:
-  - → GET http://127.0.0.1:8000/vehicle/decode/1HGBH41JXMN109186
-    - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36
-    - accept: */*
-    - accept-encoding: gzip,deflate,br
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:51.892988
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338811.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338811.html
 
-          URL: http://127.0.0.1:8000/vehicle/decode/1HGBH41JXMN109186
-          Time: 2025-08-13T03:52:35.439374
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:52.097073
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338811.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338811.html
+
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:52.297885
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338811.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338811.html
+
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:52.529245
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338811.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338811.html
+
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:52.765095
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338812.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338812.html
+
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:52.980809
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338812.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338812.html
+
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:53.199073
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338812.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338812.html
+
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:53.461529
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338812.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338812.html
+
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:53.731433
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338812.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338812.html
+
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:53.958880
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338813.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338813.html
+
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:54.162440
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338813.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338813.html
+
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:54.379958
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338813.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338813.html
+
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:54.576709
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338813.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338813.html
+
+        - 422 Unprocessable Content for http://localhost:8000/api/v1/inspections/insp_20250816_050614/tires
+          URL: http://localhost:8000/inspection/form
+          Time: 2025-08-16T05:06:58.461644
+          Screenshot: artifacts/inspection-service_HTTP_ERROR_1755338818.png
+          HTML Snapshot: artifacts/html/inspection-service_HTTP_ERROR_1755338818.html
 
 
 SERVICE: invoice-service
-    TYPE: API_ERROR
-        - Invoice creation API exception: APIRequestContext.post: connect ECONNREFUSED 127.0.0.1:8000
-Call log:
-  - → POST http://127.0.0.1:8000/api/invoices
-    - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36
-    - accept: */*
-    - accept-encoding: gzip,deflate,br
-    - Content-Type: application/json
-    - content-length: 235
+    TYPE: HTTP_ERROR
+        - 500 Internal Server Error for http://localhost:8000/invoices/INV_20250810_090000
+          URL: http://localhost:8000/invoices/
+          Time: 2025-08-16T05:07:57.383224
+          Screenshot: artifacts/invoice-service_HTTP_ERROR_1755338877.png
+          HTML Snapshot: artifacts/html/invoice-service_HTTP_ERROR_1755338877.html
 
-          URL: http://127.0.0.1:8000/api/invoices
-          Time: 2025-08-13T03:52:35.452081
+
+SERVICE: ui-testing
+    TYPE: UI_TEST_ERROR
+        - Failed to test UI elements: Locator.count: 'str' object is not callable
+          URL: http://localhost:8000/invoices/clients
+          Time: 2025-08-16T05:08:31.545470
 
 

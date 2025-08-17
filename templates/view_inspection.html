@@ -61,9 +61,31 @@
             border-color: #28a745;
             background: #f0fff4;
         }
+        
+        .status-checkboxes {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .status-checkboxes .form-check-inline {
+            margin-right: 0.5rem;
+        }
+        
+        .status-checkboxes .form-check-input {
+            margin-right: 0.25rem;
+        }
+        
+        .status-checkboxes .form-check-label {
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+    {% if breadcrumbs %}
+        {% include 'components/breadcrumb.html' %}
+    {% endif %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="/">
@@ -241,13 +263,36 @@
                             <strong>{{ item['name'] }}</strong>
                         </div>
                         <div class="col-md-2">
-                            <select class="form-select grade-select" data-testid="status-select"
-                                                                           onchange="updateGrade('{{ category['name'] }}', '{{ item['name'] }}', this.value)">
-                                <option value="N/A" {{ 'selected' if item['grade'] == 'N/A' else '' }}>N/A</option>
-                                <option value="pass" {{ 'selected' if item['grade'] == 'pass' else '' }}>PASS</option>
-                                <option value="rec" {{ 'selected' if item['grade'] == 'rec' else '' }}>REC</option>
-                                <option value="req" {{ 'selected' if item['grade'] == 'req' else '' }}>REQ</option>
-                            </select>
+                            <div class="status-checkboxes" data-testid="status-checkboxes">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input status-checkbox" type="radio" 
+                                           name="grade-{{ category['name'] }}-{{ item['name'] }}" 
+                                           value="N/A" {{ 'checked' if item['grade'] == 'N/A' else '' }}
+                                           onchange="updateGrade('{{ category['name'] }}', '{{ item['name'] }}', this.value)">
+                                    <label class="form-check-label">N/A</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input status-checkbox" type="radio" 
+                                           name="grade-{{ category['name'] }}-{{ item['name'] }}" 
+                                           value="pass" {{ 'checked' if item['grade'] == 'pass' else '' }}
+                                           onchange="updateGrade('{{ category['name'] }}', '{{ item['name'] }}', this.value)">
+                                    <label class="form-check-label">PASS</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input status-checkbox" type="radio" 
+                                           name="grade-{{ category['name'] }}-{{ item['name'] }}" 
+                                           value="rec" {{ 'checked' if item['grade'] == 'rec' else '' }}
+                                           onchange="updateGrade('{{ category['name'] }}', '{{ item['name'] }}', this.value)">
+                                    <label class="form-check-label">REC</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input status-checkbox" type="radio" 
+                                           name="grade-{{ category['name'] }}-{{ item['name'] }}" 
+                                           value="req" {{ 'checked' if item['grade'] == 'req' else '' }}
+                                           onchange="updateGrade('{{ category['name'] }}', '{{ item['name'] }}', this.value)">
+                                    <label class="form-check-label">REQ</label>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-4">
                             <textarea class="form-control" rows="2" data-testid="item-note"

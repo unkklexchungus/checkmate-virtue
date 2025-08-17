@@ -1,0 +1,103 @@
+<!-- Breadcrumb Navigation Component -->
+<nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/" class="breadcrumb-link">
+                    <i class="fas fa-home"></i>
+                    <span class="breadcrumb-text">Home</span>
+                </a>
+            </li>
+            {% for item in breadcrumbs %}
+                {% if loop.last %}
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <i class="{{ item.icon }}"></i>
+                        <span class="breadcrumb-text">{{ item.text }}</span>
+                    </li>
+                {% else %}
+                    <li class="breadcrumb-item">
+                        <a href="{{ item.url }}" class="breadcrumb-link">
+                            <i class="{{ item.icon }}"></i>
+                            <span class="breadcrumb-text">{{ item.text }}</span>
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    </div>
+</nav>
+
+<style>
+.breadcrumb-nav {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    padding: 0.75rem 0;
+    margin-bottom: 1rem;
+}
+
+.breadcrumb {
+    background: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    color: #6c757d;
+    margin: 0 0.5rem;
+    font-weight: bold;
+}
+
+.breadcrumb-link {
+    color: #007bff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: color 0.15s ease-in-out;
+}
+
+.breadcrumb-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.breadcrumb-item.active .breadcrumb-link {
+    color: #6c757d;
+    pointer-events: none;
+}
+
+.breadcrumb-text {
+    margin-left: 0.25rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .breadcrumb-nav {
+        padding: 0.5rem 0;
+    }
+    
+    .breadcrumb {
+        font-size: 0.8rem;
+    }
+    
+    .breadcrumb-text {
+        display: none;
+    }
+    
+    .breadcrumb-item + .breadcrumb-item::before {
+        margin: 0 0.25rem;
+    }
+}
+</style>

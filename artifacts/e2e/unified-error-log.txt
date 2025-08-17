@@ -1,0 +1,119 @@
+================================================================================
+E2E TEST UNIFIED ERROR LOG
+================================================================================
+
+📊 TEST SUMMARY
+----------------------------------------
+Total Tests: 7
+Passed: 0
+Failed: 7
+Skipped: 6
+Total Duration: 3923ms
+Timestamp: 2025-08-14T10:17:57.745Z
+
+❌ FAILED TESTS (7)
+================================================================================
+
+TEST 1: a51aaa6f0beac0b13da5-1f57bb2ba5f2ee25898b
+------------------------------------------------------------
+Status: failed
+Duration: 264ms
+Retry Count: undefined
+Location: unknown:0
+Timestamp: 2025-08-14T10:17:57.745Z
+
+ERROR MESSAGE:
+Error: page.goto: net::ERR_SSL_PROTOCOL_ERROR at http://app:8000/
+Call log:
+[2m  - navigating to "http://app:8000/", waiting until "load"[22m
+
+
+STACK TRACE:
+Error: page.goto: net::ERR_SSL_PROTOCOL_ERROR at http://app:8000/
+Call log:
+[2m  - navigating to "http://app:8000/", waiting until "load"[22m
+
+    at /work/tests/e2e/inspection.spec.ts:66:18
+    at /work/tests/e2e/inspection.spec.ts:65:16
+
+ARTIFACTS:
+  - artifacts/e2e/a51aaa6f0beac0b13da5-1f57bb2ba5f2ee25898b/screenshot.png
+  - artifacts/e2e/a51aaa6f0beac0b13da5-1f57bb2ba5f2ee25898b/video.webm
+  - artifacts/e2e/a51aaa6f0beac0b13da5-1f57bb2ba5f2ee25898b/trace.zip
+
+
+================================================================================
+
+TEST 2: a51aaa6f0beac0b13da5-a4fc061e5745efb946d7
+------------------------------------------------------------
+Status: skipped
+Duration: 0ms
+Retry Count: undefined
+Location: unknown:0
+Timestamp: 2025-08-14T10:17:57.745Z
+
+
+================================================================================
+
+TEST 3: a51aaa6f0beac0b13da5-2b99b12e0e7b5f3fbbdc
+------------------------------------------------------------
+Status: skipped
+Duration: 0ms
+Retry Count: undefined
+Location: unknown:0
+Timestamp: 2025-08-14T10:17:57.745Z
+
+
+================================================================================
+
+TEST 4: a51aaa6f0beac0b13da5-ea6fa3e49792ecb52fa4
+------------------------------------------------------------
+Status: skipped
+Duration: 0ms
+Retry Count: undefined
+Location: unknown:0
+Timestamp: 2025-08-14T10:17:57.745Z
+
+
+================================================================================
+
+TEST 5: a51aaa6f0beac0b13da5-793e94c0fbf468ed5241
+------------------------------------------------------------
+Status: skipped
+Duration: 0ms
+Retry Count: undefined
+Location: unknown:0
+Timestamp: 2025-08-14T10:17:57.745Z
+
+
+================================================================================
+
+TEST 6: a51aaa6f0beac0b13da5-08cf9acecbfc4a1a144e
+------------------------------------------------------------
+Status: skipped
+Duration: 0ms
+Retry Count: undefined
+Location: unknown:0
+Timestamp: 2025-08-14T10:17:57.745Z
+
+
+================================================================================
+
+TEST 7: a51aaa6f0beac0b13da5-6117f4f18213c64067d0
+------------------------------------------------------------
+Status: skipped
+Duration: 0ms
+Retry Count: undefined
+Location: unknown:0
+Timestamp: 2025-08-14T10:17:57.745Z
+
+
+================================================================================
+
+💡 RECOMMENDATIONS
+----------------------------------------
+1. Review individual test failures for specific issues
+
+================================================================================
+END OF ERROR LOG
+================================================================================

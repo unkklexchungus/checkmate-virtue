@@ -1,0 +1,289 @@
+{
+  "test_123": {
+    "id": "ebf5efc7-55fb-4763-a0c7-8cf7dd9bafb0",
+    "inspection_id": "test_123",
+    "tire_front": "Michelin Primacy",
+    "tire_rear": "Michelin Primacy",
+    "size_front": "225/45R17",
+    "size_rear": "225/45R17",
+    "speed_load_front": "94V",
+    "speed_load_rear": "94V",
+    "readings": {
+      "LF": {
+        "psi_in": 32.0,
+        "psi_out": 35.0,
+        "tread_32nds": 7.0,
+        "status": "GREEN"
+      },
+      "RF": {
+        "psi_in": 30.0,
+        "psi_out": 35.0,
+        "tread_32nds": 6.0,
+        "status": "YELLOW"
+      }
+    },
+    "rotation": true,
+    "balance": false,
+    "maintenance": false,
+    "tire_wear_concern": true,
+    "alignment_check": "YELLOW",
+    "cond_even_wear": false,
+    "cond_inner_wear": true,
+    "cond_outer_wear": false,
+    "cond_center_wear": false,
+    "cond_cupping_feather": true,
+    "cond_sidewall_damage": false,
+    "cond_cracking_dryrot": false,
+    "cond_puncture_object": false,
+    "cond_bead_damage": false,
+    "cond_cords_visible": false,
+    "cond_noise_vibration": false,
+    "cond_age_over_6y": false,
+    "created_at": "2025-08-15 09:04:33.979158",
+    "updated_at": "2025-08-15 09:09:40.104524+00:00"
+  },
+  "demo_inspection_123": {
+    "id": "ccf965cb-14bc-41e6-a9d9-95666bfc2867",
+    "inspection_id": "demo_inspection_123",
+    "tire_front": "Michelin Primacy",
+    "tire_rear": "Michelin Primacy",
+    "size_front": "225/45R17",
+    "size_rear": "225/45R17",
+    "speed_load_front": "94V",
+    "speed_load_rear": "94V",
+    "readings": {
+      "LF": {
+        "psi_in": 32.0,
+        "psi_out": 35.0,
+        "tread_32nds": 7.0,
+        "status": "GREEN"
+      },
+      "RF": {
+        "psi_in": 30.0,
+        "psi_out": 35.0,
+        "tread_32nds": 6.0,
+        "status": "YELLOW"
+      },
+      "LR": {
+        "psi_in": 28.0,
+        "psi_out": 35.0,
+        "tread_32nds": 5.0,
+        "status": "YELLOW"
+      },
+      "RR": {
+        "psi_in": 34.0,
+        "psi_out": 35.0,
+        "tread_32nds": 7.0,
+        "status": "GREEN"
+      },
+      "SPARE": {
+        "psi_in": 45.0,
+        "psi_out": 45.0,
+        "tread_32nds": null,
+        "status": "NA"
+      }
+    },
+    "rotation": true,
+    "balance": false,
+    "maintenance": false,
+    "tire_wear_concern": true,
+    "alignment_check": "YELLOW",
+    "cond_even_wear": false,
+    "cond_inner_wear": true,
+    "cond_outer_wear": false,
+    "cond_center_wear": false,
+    "cond_cupping_feather": true,
+    "cond_sidewall_damage": false,
+    "cond_cracking_dryrot": false,
+    "cond_puncture_object": false,
+    "cond_bead_damage": false,
+    "cond_cords_visible": false,
+    "cond_noise_vibration": false,
+    "cond_age_over_6y": false,
+    "created_at": "2025-08-15 09:10:23.435207+00:00",
+    "updated_at": "2025-08-15 09:10:23.435214+00:00"
+  },
+  "insp_20250815_044318": {
+    "id": "5c4ae7d2-47fa-4fe3-bd0b-551f1d3f47fc",
+    "inspection_id": "insp_20250815_044318",
+    "tire_front": "",
+    "tire_rear": "",
+    "size_front": "",
+    "size_rear": "",
+    "speed_load_front": "",
+    "speed_load_rear": "",
+    "readings": {
+      "LF": {
+        "psi_in": 0.0,
+        "psi_out": null,
+        "tread_32nds": null,
+        "status": "NA"
+      },
+      "RF": {
+        "psi_in": null,
+        "psi_out": null,
+        "tread_32nds": null,
+        "status": "NA"
+      },
+      "LR": {
+        "psi_in": null,
+        "psi_out": null,
+        "tread_32nds": null,
+        "status": "NA"
+      },
+      "RR": {
+        "psi_in": null,
+        "psi_out": null,
+        "tread_32nds": null,
+        "status": "NA"
+      },
+      "SPARE": {
+        "psi_in": null,
+        "psi_out": null,
+        "tread_32nds": null,
+        "status": "NA"
+      }
+    },
+    "rotation": false,
+    "balance": false,
+    "maintenance": false,
+    "tire_wear_concern": false,
+    "alignment_check": "NA",
+    "cond_even_wear": false,
+    "cond_inner_wear": false,
+    "cond_outer_wear": false,
+    "cond_center_wear": false,
+    "cond_cupping_feather": false,
+    "cond_sidewall_damage": false,
+    "cond_cracking_dryrot": false,
+    "cond_puncture_object": false,
+    "cond_bead_damage": false,
+    "cond_cords_visible": false,
+    "cond_noise_vibration": false,
+    "cond_age_over_6y": false,
+    "created_at": "2025-08-15 09:43:29.928894+00:00",
+    "updated_at": "2025-08-15 09:43:32.784161+00:00"
+  },
+  "insp_20250815_045500": {
+    "id": "47622302-7f13-4755-9f7f-02164547b3a2",
+    "inspection_id": "insp_20250815_045500",
+    "tire_front": "",
+    "tire_rear": "",
+    "size_front": "",
+    "size_rear": "",
+    "speed_load_front": "",
+    "speed_load_rear": "",
+    "readings": {
+      "LF": {
+        "psi_in": null,
+        "psi_out": null,
+        "tread_32nds": null,
+        "status": "NA"
+      },
+      "RF": {
+        "psi_in": null,
+        "psi_out": null,
+        "tread_32nds": null,
+        "status": "NA"
+      },
+      "LR": {
+        "psi_in": null,
+        "psi_out": null,
+        "tread_32nds": null,
+        "status": "NA"
+      },
+      "RR": {
+        "psi_in": null,
+        "psi_out": null,
+        "tread_32nds": null,
+        "status": "NA"
+      },
+      "SPARE": {
+        "psi_in": null,
+        "psi_out": null,
+        "tread_32nds": null,
+        "status": "NA"
+      }
+    },
+    "rotation": false,
+    "balance": false,
+    "maintenance": false,
+    "tire_wear_concern": false,
+    "alignment_check": "NA",
+    "cond_even_wear": false,
+    "cond_inner_wear": false,
+    "cond_outer_wear": false,
+    "cond_center_wear": false,
+    "cond_cupping_feather": false,
+    "cond_sidewall_damage": false,
+    "cond_cracking_dryrot": false,
+    "cond_puncture_object": false,
+    "cond_bead_damage": false,
+    "cond_cords_visible": false,
+    "cond_noise_vibration": false,
+    "cond_age_over_6y": false,
+    "created_at": "2025-08-15 09:55:10.829607+00:00",
+    "updated_at": "2025-08-15 09:55:18.584370+00:00"
+  },
+  "insp_20250817_050931": {
+    "id": "c4f351cc-b3e5-4de0-9efa-f5709e1aff9f",
+    "inspection_id": "insp_20250817_050931",
+    "tire_front": "225/45R18",
+    "tire_rear": "225/45R18",
+    "size_front": "",
+    "size_rear": "",
+    "speed_load_front": "102H",
+    "speed_load_rear": "102H",
+    "readings": {
+      "LF": {
+        "psi_in": 32.0,
+        "psi_out": 32.0,
+        "tread_32nds": 8.0,
+        "status": "NA"
+      },
+      "RF": {
+        "psi_in": null,
+        "psi_out": null,
+        "tread_32nds": null,
+        "status": "NA"
+      },
+      "LR": {
+        "psi_in": null,
+        "psi_out": null,
+        "tread_32nds": null,
+        "status": "NA"
+      },
+      "RR": {
+        "psi_in": null,
+        "psi_out": null,
+        "tread_32nds": null,
+        "status": "NA"
+      },
+      "SPARE": {
+        "psi_in": null,
+        "psi_out": null,
+        "tread_32nds": null,
+        "status": "NA"
+      }
+    },
+    "rotation": false,
+    "balance": false,
+    "maintenance": false,
+    "tire_wear_concern": false,
+    "alignment_check": "NA",
+    "cond_even_wear": false,
+    "cond_inner_wear": false,
+    "cond_outer_wear": false,
+    "cond_center_wear": false,
+    "cond_cupping_feather": false,
+    "cond_sidewall_damage": false,
+    "cond_cracking_dryrot": false,
+    "cond_puncture_object": false,
+    "cond_bead_damage": false,
+    "cond_cords_visible": false,
+    "cond_noise_vibration": false,
+    "cond_age_over_6y": false,
+    "created_at": "2025-08-17 10:12:18.369994+00:00",
+    "updated_at": "2025-08-17 10:12:46.614428+00:00"
+  }
+}

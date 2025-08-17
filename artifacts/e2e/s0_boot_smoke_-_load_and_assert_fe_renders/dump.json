@@ -1,0 +1,29 @@
+{
+  "title": "S0: Boot smoke - load \"/\" and assert FE renders",
+  "status": "failed",
+  "duration": 264,
+  "artifacts": [
+    {
+      "type": "har",
+      "path": "artifacts/e2e/s0_boot_smoke_-_load_and_assert_fe_renders/fe-be.har",
+      "description": "HTTP Archive (HAR) file with all requests"
+    },
+    {
+      "type": "dom",
+      "path": "artifacts/e2e/s0_boot_smoke_-_load_and_assert_fe_renders/dom.html",
+      "description": "Page DOM content at time of failure"
+    },
+    {
+      "type": "log",
+      "path": "artifacts/e2e/s0_boot_smoke_-_load_and_assert_fe_renders/console-and-network.log",
+      "description": "Console and network activity log"
+    },
+    {
+      "type": "response",
+      "path": "artifacts/e2e/s0_boot_smoke_-_load_and_assert_fe_renders/sample-response.json",
+      "description": "Sample API response data"
+    }
+  ],
+  "errorMessage": "Error: page.goto: net::ERR_SSL_PROTOCOL_ERROR at http://app:8000/\nCall log:\n\u001b[2m  - navigating to \"http://app:8000/\", waiting until \"load\"\u001b[22m\n",
+  "timestamp": "2025-08-14T10:17:57.658Z"
+}

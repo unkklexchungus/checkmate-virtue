@@ -18,12 +18,13 @@ export default defineConfig({
     ['list'],
     ['html', { open: 'never' }],
     ['junit', { outputFile: 'artifacts/junit.xml' }],
-    ['./playwright-reporters/custom-dump-reporter.ts']
+    ['./playwright-reporters/custom-dump-reporter.ts'],
+    ['./playwright-reporters/unified-error-log-reporter.ts']
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.FRONTEND_URL || 'http://127.0.0.1:8000',
+    baseURL: process.env.E2E_BASE_URL || process.env.FRONTEND_URL || 'http://127.0.0.1:8000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'retain-on-failure',
@@ -44,15 +45,7 @@ export default defineConfig({
         content: 'embed' 
       }
     },
-
-    /* Organize artifacts by test name */
-    outputDir: 'artifacts/e2e/',
-    
-    /* Ensure artifacts are organized by test name */
-    testDir: './tests/e2e',
   },
-
-
 
   /* Configure projects for major browsers */
   projects: [
@@ -60,15 +53,5 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-  ],
-
-  /* Run your local dev server before starting the tests */
-  webServer: [
-    {
-      command: 'uvicorn main:app --host 127.0.0.1 --port 8000',
-      url: (process.env.BACKEND_URL || 'http://127.0.0.1:8000') + '/healthz',
-      reuseExistingServer: true,
-      timeout: 120000,
-    }
   ],
 });

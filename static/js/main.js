@@ -3,11 +3,8 @@
  * Includes VIN decoder and general application functionality
  */
 
-// Import error handler first
-import './error-handler.js';
-
-// Import VIN decoder functionality
-import './vin_decoder.js';
+// Error handler and VIN decoder are loaded via script tags in HTML
+// No ES6 imports needed - using traditional script loading
 
 // Main application class
 class CheckMateVirtue {

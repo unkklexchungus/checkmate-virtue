@@ -67,6 +67,9 @@
     </style>
 </head>
 <body>
+    {% if breadcrumbs %}
+        {% include 'components/breadcrumb.html' %}
+    {% endif %}
     <div class="login-container">
         <div class="login-card">
             <div class="logo">

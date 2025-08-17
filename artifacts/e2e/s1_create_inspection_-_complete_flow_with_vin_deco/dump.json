@@ -1,7 +1,7 @@
 {
   "title": "S1: Create Inspection - complete flow with VIN decode",
-  "status": "timedOut",
-  "duration": 31306,
+  "status": "skipped",
+  "duration": 0,
   "artifacts": [
     {
       "type": "har",
@@ -19,6 +19,5 @@
       "description": "Sample API response data"
     }
   ],
-  "errorMessage": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
-  "timestamp": "2025-08-12T09:21:36.383Z"
+  "timestamp": "2025-08-14T10:17:57.662Z"
 }

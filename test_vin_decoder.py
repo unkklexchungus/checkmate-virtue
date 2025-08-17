@@ -46,9 +46,9 @@ async def test_python_service():
         print(f"❌ Python VIN decoder service test error: {e}")
 
 def test_npm_scripts():
-    """Test the npm scripts - REMOVED (API Verve service removed)."""
+    """Test the npm scripts - REMOVED (No npm allowed in this project)."""
     print("\n📦 Testing npm scripts...")
-    print("⏭️  npm scripts removed - API Verve service no longer available")
+    print("⏭️  npm scripts removed - No npm allowed in this project")
     return True
 
 def main():
@@ -73,7 +73,7 @@ def main():
     print("✅ All tests completed!")
     print("\n📋 Usage Summary:")
     print("  • Node.js CLI: node vin_decoder_cli.js [VIN]")
-    print("  • npm script: npm run decode [VIN]")
+    print("  • npm script: REMOVED (No npm allowed)")
     print("  • Python service: await decode_vin(VIN)")
     print("  • Python API Verve: decode_vin_with_api_verve_sync(VIN)")
 

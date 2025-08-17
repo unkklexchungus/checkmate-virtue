@@ -1,0 +1,7 @@
+{
+  "test": "S0: Boot smoke - load \"/\" and assert FE renders",
+  "status": "failed",
+  "error": "Error: page.goto: net::ERR_SSL_PROTOCOL_ERROR at http://app:8000/\nCall log:\n\u001b[2m  - navigating to \"http://app:8000/\", waiting until \"load\"\u001b[22m\n",
+  "timestamp": "2025-08-14T10:17:57.658Z",
+  "note": "This is a placeholder. Actual API responses would be captured during test execution."
+}

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Inspection with Tires</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            .print-hide { display: none !important; }
+            .print-show { display: block !important; }
+            .print-border { border: 1px solid #000 !important; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6 print:shadow-none print:border print:border-gray-300">
+            <h1 class="text-2xl font-bold text-gray-800 mb-4 print:text-black">Vehicle Inspection Report</h1>
+            
+            <!-- Vehicle Information -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">VIN</label>
+                    <input type="text" id="vin" name="vin" placeholder="1HGBH41JXMN109186" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Year</label>
+                    <input type="text" id="year" name="year" placeholder="2020" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Make</label>
+                    <input type="text" id="make" name="make" placeholder="Honda" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Model</label>
+                    <input type="text" id="model" name="model" placeholder="Civic" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">License Plate</label>
+                    <input type="text" id="license" name="license" placeholder="ABC123" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Mileage</label>
+                    <input type="number" id="mileage" name="mileage" placeholder="50000" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+            
+            <!-- Inspector Information -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Inspector Name</label>
+                    <input type="text" id="inspector" name="inspector" placeholder="John Doe" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Inspection Date</label>
+                    <input type="date" id="date" name="date" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tire Inspection Section -->
+        {% from 'tire_inspection_section.html' import tire_inspection_section %}
+        {{ tire_inspection_section('sample_inspection_123') }}
+        
+        <!-- Other Inspection Sections (placeholder) -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6 print:shadow-none print:border print:border-gray-300">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 print:text-black">ENGINE & PERFORMANCE</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Engine Oil Level</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Select status</option>
+                        <option value="good">Good</option>
+                        <option value="low">Low</option>
+                        <option value="needs_change">Needs Change</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Coolant Level</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Select status</option>
+                        <option value="good">Good</option>
+                        <option value="low">Low</option>
+                        <option value="needs_refill">Needs Refill</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6 print:shadow-none print:border print:border-gray-300">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 print:text-black">BRAKES & SAFETY</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Brake Fluid Level</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Select status</option>
+                        <option value="good">Good</option>
+                        <option value="low">Low</option>
+                        <option value="needs_service">Needs Service</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Brake Pad Condition</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Select status</option>
+                        <option value="good">Good</option>
+                        <option value="worn">Worn</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Overall Inspection Status -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6 print:shadow-none print:border print:border-gray-300">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 print:text-black">OVERALL INSPECTION STATUS</h3>
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm font-medium text-gray-700">Tires:</span>
+                    <div id="tire-status-indicator" class="w-6 h-6 bg-green-500 rounded-full border-2 border-gray-300"></div>
+                    <span id="tire-status-text" class="text-sm text-gray-700">Green</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm font-medium text-gray-700">Engine:</span>
+                    <div class="w-6 h-6 bg-green-500 rounded-full border-2 border-gray-300"></div>
+                    <span class="text-sm text-gray-700">Green</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm font-medium text-gray-700">Brakes:</span>
+                    <div class="w-6 h-6 bg-green-500 rounded-full border-2 border-gray-300"></div>
+                    <span class="text-sm text-gray-700">Green</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex justify-between items-center print-hide">
+            <div class="flex space-x-4">
+                <button onclick="window.print()" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                    Print Report
+                </button>
+                <button onclick="saveInspection()" class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition-colors">
+                    Save Inspection
+                </button>
+            </div>
+            <div class="text-sm text-gray-600">
+                Last saved: <span id="last-saved">Never</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Set current date
+        document.getElementById('date').value = new Date().toISOString().split('T')[0];
+        
+        // Listen for tire status changes from the tire section
+        document.addEventListener('tireStatusChanged', function(event) {
+            const tireStatus = event.detail.status;
+            const indicator = document.getElementById('tire-status-indicator');
+            const text = document.getElementById('tire-status-text');
+            
+            // Remove all status classes
+            indicator.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500');
+            
+            // Add appropriate class
+            switch(tireStatus) {
+                case 'GREEN':
+                    indicator.classList.add('bg-green-500');
+                    text.textContent = 'Green';
+                    break;
+                case 'YELLOW':
+                    indicator.classList.add('bg-yellow-500');
+                    text.textContent = 'Yellow';
+                    break;
+                case 'RED':
+                    indicator.classList.add('bg-red-500');
+                    text.textContent = 'Red';
+                    break;
+            }
+        });
+        
+        function saveInspection() {
+            // This would integrate with your existing inspection save logic
+            document.getElementById('last-saved').textContent = new Date().toLocaleTimeString();
+            alert('Inspection saved successfully!');
+        }
+        
+        // Auto-save functionality for other fields
+        let saveTimeout;
+        document.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('change', function() {
+                clearTimeout(saveTimeout);
+                saveTimeout = setTimeout(() => {
+                    // Auto-save logic here
+                    console.log('Auto-saving inspection data...');
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>

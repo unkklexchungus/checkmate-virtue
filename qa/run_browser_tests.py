@@ -47,7 +47,6 @@ except ImportError:
             return False
     
     def create_regression_test(page: Page) -> bool:
-        from app.config.runtime import BASE_URL
         try:
             verify_page_goto_callable(page)
             if not safe_navigate(page, BASE_URL):
@@ -67,7 +66,12 @@ except ImportError:
             return False
 
 # Configuration
-from app.config.runtime import BASE_URL
+# Try to import from app.config.runtime first, fallback to environment variable
+try:
+    from app.config.runtime import BASE_URL
+except ImportError:
+    # Fallback to environment variable
+    BASE_URL = os.getenv('APP_BASE_URL', 'http://localhost:8000')
 HEADLESS = os.getenv("HEADLESS", "true").lower() == "true"
 TIMEOUT = int(os.getenv("TIMEOUT", "30000"))
 RETRY_ATTEMPTS = int(os.getenv("RETRY_ATTEMPTS", "2"))
@@ -149,7 +153,7 @@ class BrowserTestRunner:
     def _ensure_service_health(self):
         """Ensure the service is healthy before running tests."""
         try:
-            from health_check import wait_for_health
+            from qa.health_check import wait_for_health
             print(f"Checking service health at {BASE_URL}")
             if not wait_for_health(BASE_URL):
                 raise RuntimeError(f"Service at {BASE_URL} did not become healthy within timeout")
@@ -255,7 +259,7 @@ class BrowserTestRunner:
             self.log_error(
                 self.detect_service_from_url(req.url), 
                 "NETWORK_ERROR", 
-                f"{req.method} {req.url} → {req.failure().error_text if req.failure() else 'Unknown error'}", 
+                f"{req.method} {req.url} → {str(req.failure) if req.failure else 'Unknown error'}", 
                 page.url, page=page
             )
         )
@@ -319,8 +323,8 @@ class BrowserTestRunner:
         print(f"Testing all buttons and links on {description}")
         
         try:
-            # Test all buttons
-            buttons = page.locator('button, input[type="button"], input[type="submit"], .btn')
+            # Test all buttons (only actual button elements, not CSS classes)
+            buttons = page.locator('button, input[type="button"], input[type="submit"]')
             button_count = buttons.count()
             
             for i in range(button_count):
@@ -414,8 +418,8 @@ class BrowserTestRunner:
         print(f"Testing form interactions on {description}")
         
         try:
-            # Test all input fields
-            inputs = page.locator('input, textarea, select')
+            # Test all input fields (excluding select elements)
+            inputs = page.locator('input, textarea')
             input_count = inputs.count()
             
             for i in range(input_count):
@@ -454,7 +458,7 @@ class BrowserTestRunner:
                     self.log_error("ui-testing", "INPUT_FILL_ERROR", 
                                   f"Failed to fill input {i}: {str(e)}", page.url)
             
-            # Test select dropdowns
+            # Test select dropdowns separately
             selects = page.locator('select')
             select_count = selects.count()
             

@@ -1,0 +1,23 @@
+{
+  "title": "S3: Save Draft and Resume - persistence verification",
+  "status": "skipped",
+  "duration": 0,
+  "artifacts": [
+    {
+      "type": "har",
+      "path": "artifacts/e2e/s3_save_draft_and_resume_-_persistence_verificatio/fe-be.har",
+      "description": "HTTP Archive (HAR) file with all requests"
+    },
+    {
+      "type": "log",
+      "path": "artifacts/e2e/s3_save_draft_and_resume_-_persistence_verificatio/console-and-network.log",
+      "description": "Console and network activity log"
+    },
+    {
+      "type": "response",
+      "path": "artifacts/e2e/s3_save_draft_and_resume_-_persistence_verificatio/sample-response.json",
+      "description": "Sample API response data"
+    }
+  ],
+  "timestamp": "2025-08-14T10:17:57.671Z"
+}

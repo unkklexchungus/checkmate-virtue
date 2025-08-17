@@ -113,19 +113,28 @@ async def list_invoices(request: Request) -> HTMLResponse:
         client = find_client(invoice.get("client_id", ""))
         invoice["client"] = client
     
+    breadcrumbs = [
+        {"text": "Invoices", "url": "/invoices", "icon": "fas fa-file-invoice"}
+    ]
     return templates.TemplateResponse("invoices/list.html", {
         "request": request,
         "invoices": invoices,
-        "clients": clients
+        "clients": clients,
+        "breadcrumbs": breadcrumbs
     })
 
 @router.get("/new", response_class=HTMLResponse)
 async def new_invoice_form(request: Request) -> HTMLResponse:
     """New invoice form."""
     clients = load_json_file(CLIENTS_FILE, [])
+    breadcrumbs = [
+        {"text": "Invoices", "url": "/invoices", "icon": "fas fa-file-invoice"},
+        {"text": "New Invoice", "url": "/invoices/new", "icon": "fas fa-plus"}
+    ]
     return templates.TemplateResponse("invoices/new.html", {
         "request": request,
-        "clients": clients
+        "clients": clients,
+        "breadcrumbs": breadcrumbs
     })
 
 # Client routes
@@ -133,15 +142,28 @@ async def new_invoice_form(request: Request) -> HTMLResponse:
 async def list_clients(request: Request) -> HTMLResponse:
     """List all clients."""
     clients = load_json_file(CLIENTS_FILE, [])
+    breadcrumbs = [
+        {"text": "Invoices", "url": "/invoices", "icon": "fas fa-file-invoice"},
+        {"text": "Clients", "url": "/invoices/clients", "icon": "fas fa-users"}
+    ]
     return templates.TemplateResponse("invoices/clients.html", {
         "request": request,
-        "clients": clients
+        "clients": clients,
+        "breadcrumbs": breadcrumbs
     })
 
 @router.get("/clients/new", response_class=HTMLResponse)
 async def new_client_form(request: Request) -> HTMLResponse:
     """New client form."""
-    return templates.TemplateResponse("invoices/new_client.html", {"request": request})
+    breadcrumbs = [
+        {"text": "Invoices", "url": "/invoices", "icon": "fas fa-file-invoice"},
+        {"text": "Clients", "url": "/invoices/clients", "icon": "fas fa-users"},
+        {"text": "New Client", "url": "/invoices/clients/new", "icon": "fas fa-plus"}
+    ]
+    return templates.TemplateResponse("invoices/new_client.html", {
+        "request": request,
+        "breadcrumbs": breadcrumbs
+    })
 
 @router.get("/{invoice_id}", response_class=HTMLResponse)
 async def view_invoice(request: Request, invoice_id: str) -> HTMLResponse:
@@ -203,10 +225,15 @@ async def view_invoice(request: Request, invoice_id: str) -> HTMLResponse:
     client = find_client(invoice.get("client_id", ""))
     company = load_company_info()
     
+    breadcrumbs = [
+        {"text": "Invoices", "url": "/invoices", "icon": "fas fa-file-invoice"},
+        {"text": f"Invoice {invoice_id}", "url": f"/invoices/{invoice_id}", "icon": "fas fa-eye"}
+    ]
     return templates.TemplateResponse("invoices/view.html", {
         "request": request,
         "invoice": invoice,
         "client": client,
+        "breadcrumbs": breadcrumbs,
         "company": company
     })
 
@@ -219,10 +246,15 @@ async def edit_invoice_form(request: Request, invoice_id: str) -> HTMLResponse:
     
     clients = load_json_file(CLIENTS_FILE, [])
     
+    breadcrumbs = [
+        {"text": "Invoices", "url": "/invoices", "icon": "fas fa-file-invoice"},
+        {"text": f"Edit Invoice {invoice_id}", "url": f"/invoices/{invoice_id}/edit", "icon": "fas fa-edit"}
+    ]
     return templates.TemplateResponse("invoices/edit.html", {
         "request": request,
         "invoice": invoice,
-        "clients": clients
+        "clients": clients,
+        "breadcrumbs": breadcrumbs
     })
 
 @router.post("/api/invoices")

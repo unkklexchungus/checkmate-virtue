@@ -114,6 +114,40 @@ class APIClient {
         return response.json();
     }
 
+    async createInspectionLegacy(inspectionData) {
+        console.log('=== CREATE INSPECTION LEGACY ===');
+        console.log('Request URL:', `${this.baseURL}/api/inspections`);
+        console.log('Request data:', inspectionData);
+        console.log('Request JSON:', JSON.stringify(inspectionData, null, 2));
+        
+        const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}/api/inspections`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(inspectionData)
+        });
+        
+        if (!response) {
+            console.error('No response from createInspectionLegacy');
+            return null;
+        }
+        
+        console.log('Response status:', response.status);
+        console.log('Response ok:', response.ok);
+        
+        if (!response.ok) {
+            console.error('Create inspection failed:', response.status, response.statusText);
+            const errorText = await response.text();
+            console.error('Error response body:', errorText);
+            throw new Error(`Failed to create inspection: ${response.status} ${response.statusText} - ${errorText}`);
+        }
+        
+        const result = await response.json();
+        console.log('Inspection created successfully:', result);
+        return result;
+    }
+
     async getInspectionLegacy(inspectionId) {
         const response = await window.errorHandler.fetchWithErrorHandling(`${this.baseURL}/api/inspections/${inspectionId}`);
         if (!response) return null;
@@ -146,7 +180,27 @@ class APIClient {
         return response.json();
     }
 
-    async uploadPhotoLegacy(inspectionId, file, category, item) {
+    async uploadPhotoLegacy(inspectionId, file, step, item) {
+        console.log('=== UPLOAD PHOTO LEGACY ===');
+        console.log('Inspection ID:', inspectionId);
+        console.log('Step:', step);
+        console.log('Item:', item);
+        
+        // Map step names to category names
+        const stepToCategoryMap = {
+            'Under the Hood': 'Engine Bay',
+            'Wheels Off': 'Wheels & Tire Maintenance',
+            'Underbody': 'Underbody',
+            'Interior': 'Interior',
+            'Exterior': 'Exterior',
+            'Test Drive': 'Test Drive',
+            'Fluid Leaks': 'Fluid Leaks',
+            'Exhaust': 'Exhaust'
+        };
+        
+        const category = stepToCategoryMap[step] || step;
+        console.log('Mapped category:', category);
+        
         const formData = new FormData();
         formData.append('file', file);
         formData.append('category', category);
@@ -157,8 +211,24 @@ class APIClient {
             body: formData
         });
         
-        if (!response) return null;
-        return response.json();
+        if (!response) {
+            console.error('No response from uploadPhotoLegacy');
+            return null;
+        }
+        
+        console.log('Response status:', response.status);
+        console.log('Response ok:', response.ok);
+        
+        if (!response.ok) {
+            console.error('Upload photo failed:', response.status, response.statusText);
+            const errorText = await response.text();
+            console.error('Error response body:', errorText);
+            throw new Error(`Failed to upload photo: ${response.status} ${response.statusText} - ${errorText}`);
+        }
+        
+        const result = await response.json();
+        console.log('Photo uploaded successfully:', result);
+        return result;
     }
 
     async generateReportLegacy(inspectionId, format = 'html') {

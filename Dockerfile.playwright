@@ -1,0 +1,36 @@
+# Playwright Test Environment Dockerfile
+FROM mcr.microsoft.com/playwright/python:v1.40.0-focal
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# No npm packages - Python only
+
+# No npm dependencies - Python only
+
+# Copy application code
+COPY . .
+
+# Create necessary directories
+RUN mkdir -p static/uploads/inspections \
+    && mkdir -p qa/artifacts \
+    && mkdir -p qa/logs \
+    && mkdir -p temp
+
+# Set permissions
+RUN chmod +x qa/run_browser_tests.py \
+    && chmod +x qa/ci_test.sh
+
+# Expose port
+EXPOSE 8000
+
+# Default command for Playwright tests
+CMD ["npx", "playwright", "test", "--config=playwright.config.ts"]

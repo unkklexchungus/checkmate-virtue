@@ -2,15 +2,13 @@
 
 ## Test Information
 - **Title**: S1: Create Inspection - complete flow with VIN decode
-- **Status**: timedOut
-- **Duration**: 31306ms
+- **Status**: skipped
+- **Duration**: 0ms
 - **Retry Count**: undefined
-- **Timestamp**: 2025-08-12T09:21:36.383Z
+- **Timestamp**: 2025-08-14T10:17:57.662Z
 
 ## Error Details
-```
-[31mTest timeout of 30000ms exceeded.[39m
-```
+No error message available
 
 ## Artifacts Captured
 - **har**: `artifacts/e2e/s1_create_inspection_-_complete_flow_with_vin_deco/fe-be.har` - HTTP Archive (HAR) file with all requests

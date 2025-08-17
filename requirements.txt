@@ -10,3 +10,5 @@ httpx==0.25.2
 playwright==1.40.0
 pytest==7.4.3
 pytest-playwright==0.4.2
+itsdangerous==2.1.2
+python-jose[cryptography]==3.3.0

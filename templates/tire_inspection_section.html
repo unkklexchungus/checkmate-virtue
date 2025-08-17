@@ -1,0 +1,474 @@
+{% macro tire_inspection_section(inspection_id) %}
+<div id="tire-inspection-section" class="bg-white rounded-lg shadow-md p-6 mb-6 print:shadow-none print:border print:border-gray-300">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4 print:text-black">TIRES & TIRE MAINTENANCE</h3>
+    
+    <!-- Header Row -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <!-- Tire Brand/Pattern -->
+        <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Tire F / R</label>
+            <div class="flex space-x-2">
+                <input type="text" id="tire-front" name="tire_front" placeholder="Front tire" 
+                       class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="text" id="tire-rear" name="tire_rear" placeholder="Rear tire" 
+                       class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+        
+        <!-- Size -->
+        <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Size F / R</label>
+            <div class="flex space-x-2">
+                <input type="text" id="size-front" name="size_front" placeholder="225/45R17" 
+                       class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="text" id="size-rear" name="size_rear" placeholder="225/45R17" 
+                       class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+        
+        <!-- Speed/Load -->
+        <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Speed/Load F / R</label>
+            <div class="flex space-x-2">
+                <input type="text" id="speed-load-front" name="speed_load_front" placeholder="94V" 
+                       class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="text" id="speed-load-rear" name="speed_load_rear" placeholder="94V" 
+                       class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Tire Readings Table -->
+        <div class="lg:col-span-2">
+            <div class="overflow-x-auto">
+                <table class="w-full border border-gray-300 print:border-gray-500">
+                    <thead class="bg-gray-50 print:bg-gray-100">
+                        <tr>
+                            <th class="px-3 py-2 text-left text-sm font-medium text-gray-700 border-r border-gray-300 print:border-gray-500">Position</th>
+                            <th class="px-3 py-2 text-center text-sm font-medium text-gray-700 border-r border-gray-300 print:border-gray-500">PSI In</th>
+                            <th class="px-3 py-2 text-center text-sm font-medium text-gray-700 border-r border-gray-300 print:border-gray-500">PSI Out</th>
+                            <th class="px-3 py-2 text-center text-sm font-medium text-gray-700 border-r border-gray-300 print:border-gray-500">Tread (32nds)</th>
+                            <th class="px-3 py-2 text-center text-sm font-medium text-gray-700">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pos, label in [('LF', 'Left Front'), ('RF', 'Right Front'), ('LR', 'Left Rear'), ('RR', 'Right Rear'), ('SPARE', 'Spare')] %}
+                        <tr class="border-t border-gray-300 print:border-gray-500">
+                            <td class="px-3 py-2 text-sm font-medium text-gray-700 border-r border-gray-300 print:border-gray-500">{{ label }}</td>
+                            <td class="px-3 py-2 border-r border-gray-300 print:border-gray-500">
+                                <input type="number" id="psi-in-{{ pos }}" name="psi_in_{{ pos }}" min="0" max="80" step="0.5"
+                                       class="w-full text-center px-2 py-1 border-0 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                       data-tire-pos="{{ pos }}" data-field="psi_in">
+                            </td>
+                            <td class="px-3 py-2 border-r border-gray-300 print:border-gray-500">
+                                <input type="number" id="psi-out-{{ pos }}" name="psi_out_{{ pos }}" min="0" max="80" step="0.5"
+                                       class="w-full text-center px-2 py-1 border-0 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                       data-tire-pos="{{ pos }}" data-field="psi_out">
+                            </td>
+                            <td class="px-3 py-2 border-r border-gray-300 print:border-gray-500">
+                                <input type="number" id="tread-{{ pos }}" name="tread_{{ pos }}" min="0" max="20" step="0.5"
+                                       class="w-full text-center px-2 py-1 border-0 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                       data-tire-pos="{{ pos }}" data-field="tread_32nds">
+                            </td>
+                            <td class="px-3 py-2">
+                                <div class="flex justify-center space-x-1" role="radiogroup" aria-label="{{ label }} tire status">
+                                    {% for status, color, label_text in [('GREEN', 'bg-green-500', 'G'), ('YELLOW', 'bg-yellow-500', 'Y'), ('RED', 'bg-red-500', 'R'), ('NA', 'bg-gray-400', 'N')] %}
+                                    <label class="relative">
+                                        <input type="radio" name="status_{{ pos }}" value="{{ status }}" 
+                                               class="sr-only tire-status-radio" data-tire-pos="{{ pos }}" data-status="{{ status }}">
+                                        <div class="w-6 h-6 {{ color }} rounded border-2 border-gray-300 cursor-pointer flex items-center justify-center text-white text-xs font-bold hover:opacity-80 transition-opacity"
+                                             data-status="{{ status }}">
+                                            {{ label_text }}
+                                        </div>
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Work Checkboxes -->
+            <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <label class="flex items-center space-x-2">
+                    <input type="checkbox" id="rotation" name="rotation" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <span class="text-sm text-gray-700">Rotation</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                    <input type="checkbox" id="balance" name="balance" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <span class="text-sm text-gray-700">Balance</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                    <input type="checkbox" id="maintenance" name="maintenance" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <span class="text-sm text-gray-700">Maintenance</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                    <input type="checkbox" id="tire-wear-concern" name="tire_wear_concern" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <span class="text-sm text-gray-700">Tire Wear</span>
+                </label>
+            </div>
+            
+            <!-- Alignment Check -->
+            <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Alignment Check</label>
+                <div class="flex space-x-4" role="radiogroup" aria-label="Alignment check status">
+                    {% for status, color, label_text in [('GREEN', 'bg-green-500', 'Green'), ('YELLOW', 'bg-yellow-500', 'Yellow'), ('RED', 'bg-red-500', 'Red'), ('NA', 'bg-gray-400', 'N/A')] %}
+                    <label class="flex items-center space-x-2">
+                        <input type="radio" name="alignment_check" value="{{ status }}" 
+                               class="sr-only alignment-status-radio" data-status="{{ status }}">
+                        <div class="w-6 h-6 {{ color }} rounded border-2 border-gray-300 cursor-pointer flex items-center justify-center text-white text-xs font-bold hover:opacity-80 transition-opacity"
+                             data-status="{{ status }}">
+                            {{ label_text[0] if status != 'NA' else 'N' }}
+                        </div>
+                        <span class="text-sm text-gray-700">{{ label_text }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right-hand Checklist -->
+        <div class="lg:col-span-1">
+            <div class="bg-gray-50 print:bg-gray-100 p-4 rounded-lg border border-gray-300 print:border-gray-500">
+                <h4 class="text-sm font-semibold text-gray-800 mb-3 print:text-black">Condition / Observations</h4>
+                <div class="space-y-2">
+                    {% for condition, label in [
+                        ('cond_even_wear', 'Even wear'),
+                        ('cond_inner_wear', 'Inner shoulder wear'),
+                        ('cond_outer_wear', 'Outer shoulder wear'),
+                        ('cond_center_wear', 'Center wear'),
+                        ('cond_cupping_feather', 'Cupping / feathering'),
+                        ('cond_sidewall_damage', 'Sidewall damage'),
+                        ('cond_cracking_dryrot', 'Cracking / dry rot'),
+                        ('cond_puncture_object', 'Puncture / object present'),
+                        ('cond_bead_damage', 'Bead damage'),
+                        ('cond_cords_visible', 'Cords visible'),
+                        ('cond_noise_vibration', 'Noise / vibration'),
+                        ('cond_age_over_6y', 'Age > 6 years')
+                    ] %}
+                    <label class="flex items-start space-x-2">
+                        <input type="checkbox" id="{{ condition }}" name="{{ condition }}" 
+                               class="mt-0.5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 condition-checkbox">
+                        <span class="text-xs text-gray-700 leading-tight">{{ label }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Section Status Indicator -->
+    <div class="mt-4 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+            <span class="text-sm font-medium text-gray-700">Section Status:</span>
+            <div id="section-status-indicator" class="w-6 h-6 bg-green-500 rounded-full border-2 border-gray-300"></div>
+            <span id="section-status-text" class="text-sm text-gray-700">Green</span>
+        </div>
+        <div id="save-indicator" class="text-sm text-green-600 opacity-0 transition-opacity duration-300">
+            ✓ Saved
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for tire inspection functionality -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const inspectionId = '{{ inspection_id }}';
+    let saveTimeout;
+    let tireData = {
+        tire_front: '',
+        tire_rear: '',
+        size_front: '',
+        size_rear: '',
+        speed_load_front: '',
+        speed_load_rear: '',
+        readings: {},
+        rotation: false,
+        balance: false,
+        maintenance: false,
+        tire_wear_concern: false,
+        alignment_check: 'GREEN',
+        cond_even_wear: false,
+        cond_inner_wear: false,
+        cond_outer_wear: false,
+        cond_center_wear: false,
+        cond_cupping_feather: false,
+        cond_sidewall_damage: false,
+        cond_cracking_dryrot: false,
+        cond_puncture_object: false,
+        cond_bead_damage: false,
+        cond_cords_visible: false,
+        cond_noise_vibration: false,
+        cond_age_over_6y: false
+    };
+
+    // Initialize tire positions
+    ['LF', 'RF', 'LR', 'RR', 'SPARE'].forEach(pos => {
+        tireData.readings[pos] = {
+            psi_in: null,
+            psi_out: null,
+            tread_32nds: null,
+            status: 'GREEN'
+        };
+    });
+
+    // Load existing data
+    loadTireData();
+
+    // Auto-save functionality
+    function debouncedSave() {
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
+            saveTireData();
+        }, 500);
+    }
+
+    // Input event listeners
+    document.querySelectorAll('input[type="text"], input[type="number"]').forEach(input => {
+        input.addEventListener('blur', debouncedSave);
+        input.addEventListener('input', function() {
+            updateTireDataFromInput(this);
+        });
+    });
+
+    // Checkbox event listeners
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            updateTireDataFromCheckbox(this);
+            debouncedSave();
+        });
+    });
+
+    // Radio button event listeners
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            updateTireDataFromRadio(this);
+            debouncedSave();
+        });
+    });
+
+    // Traffic light radio styling
+    document.querySelectorAll('.tire-status-radio, .alignment-status-radio').forEach(radio => {
+        radio.addEventListener('change', function() {
+            updateTrafficLightStyling(this);
+        });
+    });
+
+    function updateTireDataFromInput(input) {
+        const name = input.name;
+        const value = input.type === 'number' ? parseFloat(input.value) || null : input.value;
+        
+        if (name.startsWith('psi_in_') || name.startsWith('psi_out_') || name.startsWith('tread_')) {
+            const parts = name.split('_');
+            const field = parts[0] + '_' + parts[1];
+            const pos = parts[2];
+            tireData.readings[pos][field] = value;
+        } else {
+            tireData[name] = value;
+        }
+    }
+
+    function updateTireDataFromCheckbox(checkbox) {
+        tireData[checkbox.name] = checkbox.checked;
+    }
+
+    function updateTireDataFromRadio(radio) {
+        if (radio.name.startsWith('status_')) {
+            const pos = radio.name.split('_')[1];
+            tireData.readings[pos].status = radio.value;
+        } else {
+            tireData[radio.name] = radio.value;
+        }
+    }
+
+    function updateTrafficLightStyling(radio) {
+        const container = radio.closest('div');
+        const status = radio.value;
+        
+        // Remove all status classes
+        container.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'bg-gray-400');
+        
+        // Add appropriate class
+        switch(status) {
+            case 'GREEN':
+                container.classList.add('bg-green-500');
+                break;
+            case 'YELLOW':
+                container.classList.add('bg-yellow-500');
+                break;
+            case 'RED':
+                container.classList.add('bg-red-500');
+                break;
+            case 'NA':
+                container.classList.add('bg-gray-400');
+                break;
+        }
+    }
+
+    async function loadTireData() {
+        try {
+            const response = await fetch(`/api/v1/inspections/${inspectionId}/tires`);
+            const result = await response.json();
+            
+            if (result.success && result.data) {
+                tireData = result.data;
+                populateForm();
+                updateSectionStatus(result.section_status);
+            }
+        } catch (error) {
+            console.error('Error loading tire data:', error);
+        }
+    }
+
+    async function saveTireData() {
+        try {
+            const response = await fetch(`/api/v1/inspections/${inspectionId}/tires`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(tireData)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                showSaveIndicator();
+                updateSectionStatus(result.section_status);
+                
+                // Handle auto-suggestions
+                if (result.suggestions && result.suggestions.length > 0) {
+                    handleAutoSuggestions(result.suggestions);
+                }
+            }
+        } catch (error) {
+            console.error('Error saving tire data:', error);
+        }
+    }
+
+    function populateForm() {
+        // Populate header fields
+        document.getElementById('tire-front').value = tireData.tire_front || '';
+        document.getElementById('tire-rear').value = tireData.tire_rear || '';
+        document.getElementById('size-front').value = tireData.size_front || '';
+        document.getElementById('size-rear').value = tireData.size_rear || '';
+        document.getElementById('speed-load-front').value = tireData.speed_load_front || '';
+        document.getElementById('speed-load-rear').value = tireData.speed_load_rear || '';
+        
+        // Populate tire readings
+        Object.entries(tireData.readings).forEach(([pos, reading]) => {
+            document.getElementById(`psi-in-${pos}`).value = reading.psi_in || '';
+            document.getElementById(`psi-out-${pos}`).value = reading.psi_out || '';
+            document.getElementById(`tread-${pos}`).value = reading.tread_32nds || '';
+            
+            // Set radio button
+            const radio = document.querySelector(`input[name="status_${pos}"][value="${reading.status}"]`);
+            if (radio) {
+                radio.checked = true;
+                updateTrafficLightStyling(radio);
+            }
+        });
+        
+        // Populate checkboxes
+        document.getElementById('rotation').checked = tireData.rotation;
+        document.getElementById('balance').checked = tireData.balance;
+        document.getElementById('maintenance').checked = tireData.maintenance;
+        document.getElementById('tire-wear-concern').checked = tireData.tire_wear_concern;
+        
+        // Populate alignment radio
+        const alignmentRadio = document.querySelector(`input[name="alignment_check"][value="${tireData.alignment_check}"]`);
+        if (alignmentRadio) {
+            alignmentRadio.checked = true;
+            updateTrafficLightStyling(alignmentRadio);
+        }
+        
+        // Populate condition checkboxes
+        document.getElementById('cond_even_wear').checked = tireData.cond_even_wear;
+        document.getElementById('cond_inner_wear').checked = tireData.cond_inner_wear;
+        document.getElementById('cond_outer_wear').checked = tireData.cond_outer_wear;
+        document.getElementById('cond_center_wear').checked = tireData.cond_center_wear;
+        document.getElementById('cond_cupping_feather').checked = tireData.cond_cupping_feather;
+        document.getElementById('cond_sidewall_damage').checked = tireData.cond_sidewall_damage;
+        document.getElementById('cond_cracking_dryrot').checked = tireData.cond_cracking_dryrot;
+        document.getElementById('cond_puncture_object').checked = tireData.cond_puncture_object;
+        document.getElementById('cond_bead_damage').checked = tireData.cond_bead_damage;
+        document.getElementById('cond_cords_visible').checked = tireData.cond_cords_visible;
+        document.getElementById('cond_noise_vibration').checked = tireData.cond_noise_vibration;
+        document.getElementById('cond_age_over_6y').checked = tireData.cond_age_over_6y;
+    }
+
+    function updateSectionStatus(status) {
+        const indicator = document.getElementById('section-status-indicator');
+        const text = document.getElementById('section-status-text');
+        
+        indicator.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500');
+        
+        switch(status) {
+            case 'GREEN':
+                indicator.classList.add('bg-green-500');
+                text.textContent = 'Green';
+                break;
+            case 'YELLOW':
+                indicator.classList.add('bg-yellow-500');
+                text.textContent = 'Yellow';
+                break;
+            case 'RED':
+                indicator.classList.add('bg-red-500');
+                text.textContent = 'Red';
+                break;
+        }
+    }
+
+    function showSaveIndicator() {
+        const indicator = document.getElementById('save-indicator');
+        indicator.style.opacity = '1';
+        setTimeout(() => {
+            indicator.style.opacity = '0';
+        }, 2000);
+    }
+
+    function handleAutoSuggestions(suggestions) {
+        suggestions.forEach(suggestion => {
+            const checkbox = document.getElementById(suggestion);
+            if (checkbox && !checkbox.checked) {
+                checkbox.checked = true;
+                tireData[suggestion] = true;
+            }
+        });
+    }
+
+    // Auto-suggest work items based on condition changes
+    document.querySelectorAll('.condition-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                const name = this.name;
+                if (name.includes('wear') || name.includes('cupping')) {
+                    if (!document.getElementById('rotation').checked) {
+                        document.getElementById('rotation').checked = true;
+                        tireData.rotation = true;
+                    }
+                    if (!document.getElementById('tire-wear-concern').checked) {
+                        document.getElementById('tire-wear-concern').checked = true;
+                        tireData.tire_wear_concern = true;
+                    }
+                }
+            }
+        });
+    });
+
+    // Auto-suggest balance when alignment is RED
+    document.querySelectorAll('input[name="alignment_check"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'RED' && !document.getElementById('balance').checked) {
+                document.getElementById('balance').checked = true;
+                tireData.balance = true;
+            }
+        });
+    });
+});
+</script>
+{% endmacro %}

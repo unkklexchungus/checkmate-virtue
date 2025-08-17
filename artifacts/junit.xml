@@ -1,108 +1,596 @@
-<testsuites id="" name="" tests="7" failures="0" skipped="0" errors="0" time="35.517873">
-<testsuite name="inspection.spec.ts" timestamp="2025-08-12T11:39:48.168Z" hostname="chromium" tests="7" failures="0" skipped="0" time="34.169" errors="0">
-<testcase name="Inspection Module E2E Tests › S0: Boot smoke - load &quot;/&quot; and assert FE renders" classname="inspection.spec.ts" time="1.329">
+<testsuites id="" name="" tests="7" failures="1" skipped="6" errors="0" time="3.87961">
+<testsuite name="inspection.spec.ts" timestamp="2025-08-14T10:17:53.990Z" hostname="chromium" tests="7" failures="1" skipped="6" time="0.763" errors="0">
+<testcase name="Inspection Module E2E Tests › S0: Boot smoke - load &quot;/&quot; and assert FE renders" classname="inspection.spec.ts" time="0.763">
+<failure message="inspection.spec.ts:64:7 S0: Boot smoke - load &quot;/&quot; and assert FE renders" type="FAILURE">
+<![CDATA[  [chromium] › inspection.spec.ts:64:7 › Inspection Module E2E Tests › S0: Boot smoke - load "/" and assert FE renders › Navigate to home page 
+
+    Error: page.goto: net::ERR_SSL_PROTOCOL_ERROR at http://app:8000/
+    Call log:
+      - navigating to "http://app:8000/", waiting until "load"
+
+
+      64 |   test('S0: Boot smoke - load "/" and assert FE renders', async () => {
+      65 |     await test.step('Navigate to home page', async () => {
+    > 66 |       await page.goto('/');
+         |                  ^
+      67 |       await page.waitForLoadState('networkidle');
+      68 |       
+      69 |       // Assert page loads successfully
+        at /work/tests/e2e/inspection.spec.ts:66:18
+        at /work/tests/e2e/inspection.spec.ts:65:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: page.goto: net::ERR_SSL_PROTOCOL_ERROR at http://app:8000/
+    Call log:
+      - navigating to "http://app:8000/", waiting until "load"
+
+
+      64 |   test('S0: Boot smoke - load "/" and assert FE renders', async () => {
+      65 |     await test.step('Navigate to home page', async () => {
+    > 66 |       await page.goto('/');
+         |                  ^
+      67 |       await page.waitForLoadState('networkidle');
+      68 |       
+      69 |       // Assert page loads successfully
+        at /work/tests/e2e/inspection.spec.ts:66:18
+        at /work/tests/e2e/inspection.spec.ts:65:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: page.goto: net::ERR_SSL_PROTOCOL_ERROR at http://app:8000/
+    Call log:
+      - navigating to "http://app:8000/", waiting until "load"
+
+
+      64 |   test('S0: Boot smoke - load "/" and assert FE renders', async () => {
+      65 |     await test.step('Navigate to home page', async () => {
+    > 66 |       await page.goto('/');
+         |                  ^
+      67 |       await page.waitForLoadState('networkidle');
+      68 |       
+      69 |       // Assert page loads successfully
+        at /work/tests/e2e/inspection.spec.ts:66:18
+        at /work/tests/e2e/inspection.spec.ts:65:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium-retry2/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium-retry2/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium-retry2/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium-retry2/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
 <system-out>
-<![CDATA[✅ Home page loaded successfully. Title: CheckMate Virtue - Automotive Professional Inspection System
+<![CDATA[HTTP Error: 307 http://app:8000/
+🧹 Cleaning up test environment...
+✅ Test environment cleanup complete
+
+[[ATTACHMENT|../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium/trace.zip]]
+HTTP Error: 307 http://app:8000/
+🧹 Cleaning up test environment...
+✅ Test environment cleanup complete
+
+[[ATTACHMENT|../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium-retry1/trace.zip]]
+HTTP Error: 307 http://app:8000/
+🧹 Cleaning up test environment...
+✅ Test environment cleanup complete
+
+[[ATTACHMENT|../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium-retry2/test-failed-1.png]]
+
+[[ATTACHMENT|../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium-retry2/video.webm]]
+
+[[ATTACHMENT|../test-results/inspection-Inspection-Modu-baf82--load-and-assert-FE-renders-chromium-retry2/trace.zip]]
 ]]>
 </system-out>
-</testcase>
-<testcase name="Inspection Module E2E Tests › S1: Create Inspection - complete flow with VIN decode" classname="inspection.spec.ts" time="6.986">
-<system-out>
-<![CDATA[✅ VIN decoded successfully
-Found 181 inspection items
-Processed item 1/12
-Processed item 2/12
-Processed item 3/12
-Processed item 4/12
-Processed item 5/12
-Processed item 6/12
-Processed item 7/12
-Processed item 8/12
-Processed item 9/12
-Item 10 is in step: Brakes
-Processed item 10/12
-Processed item 11/12
-Processed item 12/12
-✅ Successfully processed 12 inspection items
-Response data: {
-  "message": "Inspection updated successfully"
+<system-err>
+<![CDATA[⚠️ Get test mode status failed: apiRequestContext.get: connect ECONNREFUSED 127.0.0.1:8000
+Call log:
+[2m  - → GET http://127.0.0.1:8000/test/status[22m
+[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36[22m
+[2m    - accept: */*[22m
+[2m    - accept-encoding: gzip,deflate,br[22m
+
+    at TestAPIClient.getTestModeStatus [90m(/work/[39mtests/e2e/fixtures/inspection-fixtures.ts:157:43[90m)[39m
+    at InspectionFixtures.verifyTestMode [90m(/work/[39mtests/e2e/fixtures/inspection-fixtures.ts:248:41[90m)[39m
+    at [90m/work/[39mtests/e2e/inspection.spec.ts:35:44 {
+  name: [32m'Error'[39m,
+  [[32mSymbol(step)[39m]: {
+    stepId: [32m'pw:api@4'[39m,
+    location: {
+      file: [32m'/work/tests/e2e/fixtures/inspection-fixtures.ts'[39m,
+      line: [33m157[39m,
+      column: [33m43[39m,
+      function: [32m'TestAPIClient.getTestModeStatus'[39m
+    },
+    category: [32m'pw:api'[39m,
+    title: [32m'GET "/test/status"'[39m,
+    apiName: [32m'apiRequestContext.get'[39m,
+    params: {
+      url: [32m'http://127.0.0.1:8000/test/status'[39m,
+      params: [90mundefined[39m,
+      encodedParams: [90mundefined[39m,
+      method: [32m'GET'[39m,
+      headers: [90mundefined[39m,
+      postData: [90mundefined[39m,
+      jsonData: [90mundefined[39m,
+      formData: [90mundefined[39m,
+      multipartData: [90mundefined[39m,
+      timeout: [33m0[39m,
+      failOnStatusCode: [90mundefined[39m,
+      ignoreHTTPSErrors: [90mundefined[39m,
+      maxRedirects: [90mundefined[39m,
+      maxRetries: [90mundefined[39m,
+      __testHookLookup: [90mundefined[39m
+    },
+    boxedStack: [90mundefined[39m,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [36m[TestInfoImpl][39m,
+      _stepId: [32m'pw:api@4'[39m,
+      skip: [36m[Function (anonymous)][39m
+    },
+    complete: [36m[Function: complete][39m,
+    endWallTime: [33m1755166674723[39m,
+    error: {
+      message: [32m'Error: apiRequestContext.get: connect ECONNREFUSED 127.0.0.1:8000\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → GET http://127.0.0.1:8000/test/status\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: */*\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m,
+      stack: [32m'Error: apiRequestContext.get: connect ECONNREFUSED 127.0.0.1:8000\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → GET http://127.0.0.1:8000/test/status\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: */*\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\n'[39m +
+        [32m'    at TestAPIClient.getTestModeStatus (/work/tests/e2e/fixtures/inspection-fixtures.ts:157:43)\n'[39m +
+        [32m'    at InspectionFixtures.verifyTestMode (/work/tests/e2e/fixtures/inspection-fixtures.ts:248:41)\n'[39m +
+        [32m'    at /work/tests/e2e/inspection.spec.ts:35:44'[39m,
+      cause: [90mundefined[39m
+    }
+  }
 }
-✅ Response received successfully
-✅ Inspection saved successfully with ID: INSP_20250812_797014
-Console Error: Error decoding VIN: TypeError: Failed to fetch
-    at decodeVIN (http://127.0.0.1:8000/inspection/form:604:40)
-    at http://127.0.0.1:8000/inspection/form:434:25
+⚠️ Test mode is not enabled: [1mnull[22m
+⚠️ Test mode not enabled - some tests may fail
+⚠️ Clear test inspections failed: apiRequestContext.delete: connect ECONNREFUSED 127.0.0.1:8000
+Call log:
+[2m  - → DELETE http://127.0.0.1:8000/test/inspections[22m
+[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36[22m
+[2m    - accept: */*[22m
+[2m    - accept-encoding: gzip,deflate,br[22m
+
+    at TestAPIClient.clearAllTestInspections [90m(/work/[39mtests/e2e/fixtures/inspection-fixtures.ts:122:49[90m)[39m
+    at InspectionFixtures.cleanupTestEnvironment [90m(/work/[39mtests/e2e/fixtures/inspection-fixtures.ts:207:26[90m)[39m
+    at [90m/work/[39mtests/e2e/inspection.spec.ts:61:20 {
+  name: [32m'Error'[39m,
+  [[32mSymbol(step)[39m]: {
+    stepId: [32m'pw:api@19'[39m,
+    location: {
+      file: [32m'/work/tests/e2e/fixtures/inspection-fixtures.ts'[39m,
+      line: [33m122[39m,
+      column: [33m49[39m,
+      function: [32m'TestAPIClient.clearAllTestInspections'[39m
+    },
+    category: [32m'pw:api'[39m,
+    title: [32m'DELETE "/test/inspections"'[39m,
+    apiName: [32m'apiRequestContext.delete'[39m,
+    params: {
+      url: [32m'http://127.0.0.1:8000/test/inspections'[39m,
+      params: [90mundefined[39m,
+      encodedParams: [90mundefined[39m,
+      method: [32m'DELETE'[39m,
+      headers: [90mundefined[39m,
+      postData: [90mundefined[39m,
+      jsonData: [90mundefined[39m,
+      formData: [90mundefined[39m,
+      multipartData: [90mundefined[39m,
+      timeout: [33m0[39m,
+      failOnStatusCode: [90mundefined[39m,
+      ignoreHTTPSErrors: [90mundefined[39m,
+      maxRedirects: [90mundefined[39m,
+      maxRetries: [90mundefined[39m,
+      __testHookLookup: [90mundefined[39m
+    },
+    boxedStack: [90mundefined[39m,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [36m[TestInfoImpl][39m,
+      _stepId: [32m'pw:api@19'[39m,
+      skip: [36m[Function (anonymous)][39m
+    },
+    complete: [36m[Function: complete][39m,
+    endWallTime: [33m1755166675229[39m,
+    error: {
+      message: [32m'Error: apiRequestContext.delete: connect ECONNREFUSED 127.0.0.1:8000\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → DELETE http://127.0.0.1:8000/test/inspections\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: */*\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m,
+      stack: [32m'Error: apiRequestContext.delete: connect ECONNREFUSED 127.0.0.1:8000\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → DELETE http://127.0.0.1:8000/test/inspections\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: */*\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\n'[39m +
+        [32m'    at TestAPIClient.clearAllTestInspections (/work/tests/e2e/fixtures/inspection-fixtures.ts:122:49)\n'[39m +
+        [32m'    at InspectionFixtures.cleanupTestEnvironment (/work/tests/e2e/fixtures/inspection-fixtures.ts:207:26)\n'[39m +
+        [32m'    at /work/tests/e2e/inspection.spec.ts:61:20'[39m,
+      cause: [90mundefined[39m
+    }
+  }
+}
+⚠️ Get test mode status failed: apiRequestContext.get: connect ECONNREFUSED 127.0.0.1:8000
+Call log:
+[2m  - → GET http://127.0.0.1:8000/test/status[22m
+[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36[22m
+[2m    - accept: */*[22m
+[2m    - accept-encoding: gzip,deflate,br[22m
+
+    at TestAPIClient.getTestModeStatus [90m(/work/[39mtests/e2e/fixtures/inspection-fixtures.ts:157:43[90m)[39m
+    at InspectionFixtures.verifyTestMode [90m(/work/[39mtests/e2e/fixtures/inspection-fixtures.ts:248:41[90m)[39m
+    at [90m/work/[39mtests/e2e/inspection.spec.ts:35:44 {
+  name: [32m'Error'[39m,
+  [[32mSymbol(step)[39m]: {
+    stepId: [32m'pw:api@4'[39m,
+    location: {
+      file: [32m'/work/tests/e2e/fixtures/inspection-fixtures.ts'[39m,
+      line: [33m157[39m,
+      column: [33m43[39m,
+      function: [32m'TestAPIClient.getTestModeStatus'[39m
+    },
+    category: [32m'pw:api'[39m,
+    title: [32m'GET "/test/status"'[39m,
+    apiName: [32m'apiRequestContext.get'[39m,
+    params: {
+      url: [32m'http://127.0.0.1:8000/test/status'[39m,
+      params: [90mundefined[39m,
+      encodedParams: [90mundefined[39m,
+      method: [32m'GET'[39m,
+      headers: [90mundefined[39m,
+      postData: [90mundefined[39m,
+      jsonData: [90mundefined[39m,
+      formData: [90mundefined[39m,
+      multipartData: [90mundefined[39m,
+      timeout: [33m0[39m,
+      failOnStatusCode: [90mundefined[39m,
+      ignoreHTTPSErrors: [90mundefined[39m,
+      maxRedirects: [90mundefined[39m,
+      maxRetries: [90mundefined[39m,
+      __testHookLookup: [90mundefined[39m
+    },
+    boxedStack: [90mundefined[39m,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [36m[TestInfoImpl][39m,
+      _stepId: [32m'pw:api@4'[39m,
+      skip: [36m[Function (anonymous)][39m
+    },
+    complete: [36m[Function: complete][39m,
+    endWallTime: [33m1755166676050[39m,
+    error: {
+      message: [32m'Error: apiRequestContext.get: connect ECONNREFUSED 127.0.0.1:8000\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → GET http://127.0.0.1:8000/test/status\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: */*\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m,
+      stack: [32m'Error: apiRequestContext.get: connect ECONNREFUSED 127.0.0.1:8000\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → GET http://127.0.0.1:8000/test/status\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: */*\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\n'[39m +
+        [32m'    at TestAPIClient.getTestModeStatus (/work/tests/e2e/fixtures/inspection-fixtures.ts:157:43)\n'[39m +
+        [32m'    at InspectionFixtures.verifyTestMode (/work/tests/e2e/fixtures/inspection-fixtures.ts:248:41)\n'[39m +
+        [32m'    at /work/tests/e2e/inspection.spec.ts:35:44'[39m,
+      cause: [90mundefined[39m
+    }
+  }
+}
+⚠️ Test mode is not enabled: [1mnull[22m
+⚠️ Test mode not enabled - some tests may fail
+⚠️ Clear test inspections failed: apiRequestContext.delete: connect ECONNREFUSED 127.0.0.1:8000
+Call log:
+[2m  - → DELETE http://127.0.0.1:8000/test/inspections[22m
+[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36[22m
+[2m    - accept: */*[22m
+[2m    - accept-encoding: gzip,deflate,br[22m
+
+    at TestAPIClient.clearAllTestInspections [90m(/work/[39mtests/e2e/fixtures/inspection-fixtures.ts:122:49[90m)[39m
+    at InspectionFixtures.cleanupTestEnvironment [90m(/work/[39mtests/e2e/fixtures/inspection-fixtures.ts:207:26[90m)[39m
+    at [90m/work/[39mtests/e2e/inspection.spec.ts:61:20 {
+  name: [32m'Error'[39m,
+  [[32mSymbol(step)[39m]: {
+    stepId: [32m'pw:api@19'[39m,
+    location: {
+      file: [32m'/work/tests/e2e/fixtures/inspection-fixtures.ts'[39m,
+      line: [33m122[39m,
+      column: [33m49[39m,
+      function: [32m'TestAPIClient.clearAllTestInspections'[39m
+    },
+    category: [32m'pw:api'[39m,
+    title: [32m'DELETE "/test/inspections"'[39m,
+    apiName: [32m'apiRequestContext.delete'[39m,
+    params: {
+      url: [32m'http://127.0.0.1:8000/test/inspections'[39m,
+      params: [90mundefined[39m,
+      encodedParams: [90mundefined[39m,
+      method: [32m'DELETE'[39m,
+      headers: [90mundefined[39m,
+      postData: [90mundefined[39m,
+      jsonData: [90mundefined[39m,
+      formData: [90mundefined[39m,
+      multipartData: [90mundefined[39m,
+      timeout: [33m0[39m,
+      failOnStatusCode: [90mundefined[39m,
+      ignoreHTTPSErrors: [90mundefined[39m,
+      maxRedirects: [90mundefined[39m,
+      maxRetries: [90mundefined[39m,
+      __testHookLookup: [90mundefined[39m
+    },
+    boxedStack: [90mundefined[39m,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [36m[TestInfoImpl][39m,
+      _stepId: [32m'pw:api@19'[39m,
+      skip: [36m[Function (anonymous)][39m
+    },
+    complete: [36m[Function: complete][39m,
+    endWallTime: [33m1755166676406[39m,
+    error: {
+      message: [32m'Error: apiRequestContext.delete: connect ECONNREFUSED 127.0.0.1:8000\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → DELETE http://127.0.0.1:8000/test/inspections\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: */*\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m,
+      stack: [32m'Error: apiRequestContext.delete: connect ECONNREFUSED 127.0.0.1:8000\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → DELETE http://127.0.0.1:8000/test/inspections\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: */*\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\n'[39m +
+        [32m'    at TestAPIClient.clearAllTestInspections (/work/tests/e2e/fixtures/inspection-fixtures.ts:122:49)\n'[39m +
+        [32m'    at InspectionFixtures.cleanupTestEnvironment (/work/tests/e2e/fixtures/inspection-fixtures.ts:207:26)\n'[39m +
+        [32m'    at /work/tests/e2e/inspection.spec.ts:61:20'[39m,
+      cause: [90mundefined[39m
+    }
+  }
+}
+⚠️ Get test mode status failed: apiRequestContext.get: connect ECONNREFUSED 127.0.0.1:8000
+Call log:
+[2m  - → GET http://127.0.0.1:8000/test/status[22m
+[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36[22m
+[2m    - accept: */*[22m
+[2m    - accept-encoding: gzip,deflate,br[22m
+
+    at TestAPIClient.getTestModeStatus [90m(/work/[39mtests/e2e/fixtures/inspection-fixtures.ts:157:43[90m)[39m
+    at InspectionFixtures.verifyTestMode [90m(/work/[39mtests/e2e/fixtures/inspection-fixtures.ts:248:41[90m)[39m
+    at [90m/work/[39mtests/e2e/inspection.spec.ts:35:44 {
+  name: [32m'Error'[39m,
+  [[32mSymbol(step)[39m]: {
+    stepId: [32m'pw:api@4'[39m,
+    location: {
+      file: [32m'/work/tests/e2e/fixtures/inspection-fixtures.ts'[39m,
+      line: [33m157[39m,
+      column: [33m43[39m,
+      function: [32m'TestAPIClient.getTestModeStatus'[39m
+    },
+    category: [32m'pw:api'[39m,
+    title: [32m'GET "/test/status"'[39m,
+    apiName: [32m'apiRequestContext.get'[39m,
+    params: {
+      url: [32m'http://127.0.0.1:8000/test/status'[39m,
+      params: [90mundefined[39m,
+      encodedParams: [90mundefined[39m,
+      method: [32m'GET'[39m,
+      headers: [90mundefined[39m,
+      postData: [90mundefined[39m,
+      jsonData: [90mundefined[39m,
+      formData: [90mundefined[39m,
+      multipartData: [90mundefined[39m,
+      timeout: [33m0[39m,
+      failOnStatusCode: [90mundefined[39m,
+      ignoreHTTPSErrors: [90mundefined[39m,
+      maxRedirects: [90mundefined[39m,
+      maxRetries: [90mundefined[39m,
+      __testHookLookup: [90mundefined[39m
+    },
+    boxedStack: [90mundefined[39m,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [36m[TestInfoImpl][39m,
+      _stepId: [32m'pw:api@4'[39m,
+      skip: [36m[Function (anonymous)][39m
+    },
+    complete: [36m[Function: complete][39m,
+    endWallTime: [33m1755166677221[39m,
+    error: {
+      message: [32m'Error: apiRequestContext.get: connect ECONNREFUSED 127.0.0.1:8000\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → GET http://127.0.0.1:8000/test/status\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: */*\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m,
+      stack: [32m'Error: apiRequestContext.get: connect ECONNREFUSED 127.0.0.1:8000\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → GET http://127.0.0.1:8000/test/status\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: */*\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\n'[39m +
+        [32m'    at TestAPIClient.getTestModeStatus (/work/tests/e2e/fixtures/inspection-fixtures.ts:157:43)\n'[39m +
+        [32m'    at InspectionFixtures.verifyTestMode (/work/tests/e2e/fixtures/inspection-fixtures.ts:248:41)\n'[39m +
+        [32m'    at /work/tests/e2e/inspection.spec.ts:35:44'[39m,
+      cause: [90mundefined[39m
+    }
+  }
+}
+⚠️ Test mode is not enabled: [1mnull[22m
+⚠️ Test mode not enabled - some tests may fail
+⚠️ Clear test inspections failed: apiRequestContext.delete: connect ECONNREFUSED 127.0.0.1:8000
+Call log:
+[2m  - → DELETE http://127.0.0.1:8000/test/inspections[22m
+[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36[22m
+[2m    - accept: */*[22m
+[2m    - accept-encoding: gzip,deflate,br[22m
+
+    at TestAPIClient.clearAllTestInspections [90m(/work/[39mtests/e2e/fixtures/inspection-fixtures.ts:122:49[90m)[39m
+    at InspectionFixtures.cleanupTestEnvironment [90m(/work/[39mtests/e2e/fixtures/inspection-fixtures.ts:207:26[90m)[39m
+    at [90m/work/[39mtests/e2e/inspection.spec.ts:61:20 {
+  name: [32m'Error'[39m,
+  [[32mSymbol(step)[39m]: {
+    stepId: [32m'pw:api@19'[39m,
+    location: {
+      file: [32m'/work/tests/e2e/fixtures/inspection-fixtures.ts'[39m,
+      line: [33m122[39m,
+      column: [33m49[39m,
+      function: [32m'TestAPIClient.clearAllTestInspections'[39m
+    },
+    category: [32m'pw:api'[39m,
+    title: [32m'DELETE "/test/inspections"'[39m,
+    apiName: [32m'apiRequestContext.delete'[39m,
+    params: {
+      url: [32m'http://127.0.0.1:8000/test/inspections'[39m,
+      params: [90mundefined[39m,
+      encodedParams: [90mundefined[39m,
+      method: [32m'DELETE'[39m,
+      headers: [90mundefined[39m,
+      postData: [90mundefined[39m,
+      jsonData: [90mundefined[39m,
+      formData: [90mundefined[39m,
+      multipartData: [90mundefined[39m,
+      timeout: [33m0[39m,
+      failOnStatusCode: [90mundefined[39m,
+      ignoreHTTPSErrors: [90mundefined[39m,
+      maxRedirects: [90mundefined[39m,
+      maxRetries: [90mundefined[39m,
+      __testHookLookup: [90mundefined[39m
+    },
+    boxedStack: [90mundefined[39m,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [36m[TestInfoImpl][39m,
+      _stepId: [32m'pw:api@19'[39m,
+      skip: [36m[Function (anonymous)][39m
+    },
+    complete: [36m[Function: complete][39m,
+    endWallTime: [33m1755166677592[39m,
+    error: {
+      message: [32m'Error: apiRequestContext.delete: connect ECONNREFUSED 127.0.0.1:8000\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → DELETE http://127.0.0.1:8000/test/inspections\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: */*\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m,
+      stack: [32m'Error: apiRequestContext.delete: connect ECONNREFUSED 127.0.0.1:8000\n'[39m +
+        [32m'Call log:\n'[39m +
+        [32m'\x1B[2m  - → DELETE http://127.0.0.1:8000/test/inspections\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.7258.5 Safari/537.36\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept: */*\x1B[22m\n'[39m +
+        [32m'\x1B[2m    - accept-encoding: gzip,deflate,br\x1B[22m\n'[39m +
+        [32m'\n'[39m +
+        [32m'    at TestAPIClient.clearAllTestInspections (/work/tests/e2e/fixtures/inspection-fixtures.ts:122:49)\n'[39m +
+        [32m'    at InspectionFixtures.cleanupTestEnvironment (/work/tests/e2e/fixtures/inspection-fixtures.ts:207:26)\n'[39m +
+        [32m'    at /work/tests/e2e/inspection.spec.ts:61:20'[39m,
+      cause: [90mundefined[39m
+    }
+  }
+}
 ]]>
-</system-out>
+</system-err>
 </testcase>
-<testcase name="Inspection Module E2E Tests › S2: Checklist Fill - comprehensive item completion" classname="inspection.spec.ts" time="4.094">
-<system-out>
-<![CDATA[Found 181 inspection items
-Item 13 is in step: Brakes
-Processed additional item 13/20
-Processed additional item 14/20
-Processed additional item 15/20
-Processed additional item 16/20
-Processed additional item 17/20
-Processed additional item 18/20
-Processed additional item 19/20
-Processed additional item 20/20
-✅ Successfully processed 8 additional inspection items
-✅ 181 photo thumbnails displayed
-]]>
-</system-out>
+<testcase name="Inspection Module E2E Tests › S1: Create Inspection - complete flow with VIN decode" classname="inspection.spec.ts" time="0">
+<skipped>
+</skipped>
 </testcase>
-<testcase name="Inspection Module E2E Tests › S3: Save Draft + Resume - persistence verification" classname="inspection.spec.ts" time="3.054">
-<system-out>
-<![CDATA[✅ Draft saved successfully
-✅ Form persistence verified - 181 inspection items loaded
-]]>
-</system-out>
+<testcase name="Inspection Module E2E Tests › S2: Checklist Fill - comprehensive item completion" classname="inspection.spec.ts" time="0">
+<skipped>
+</skipped>
 </testcase>
-<testcase name="Inspection Module E2E Tests › S4: Finalize + Report - generate and validate report" classname="inspection.spec.ts" time="13.643">
-<system-out>
-<![CDATA[✅ Finalize button is present but disabled (as expected)
-Found 8 steps to process
-Processing step 1/8 with 9 visible items
-Processing step 2/8 with 33 visible items
-Processing step 3/8 with 5 visible items
-Processing step 4/8 with 20 visible items
-Processing step 5/8 with 3 visible items
-Processing step 6/8 with 34 visible items
-Processing step 7/8 with 68 visible items
-Processing step 8/8 with 9 visible items
-✅ All items completed, finalize button is now enabled
-✅ Inspection finalized successfully and form is read-only
-✅ Report generation buttons are present and functional
-✅ PDF report generated successfully with correct content-type
-✅ PDF artifact saved to: /home/chungus/Lexicon-Re-clone/artifacts/e2e/s4_finalize_report_-_generate_and_validate_report/inspection_report.pdf
-]]>
-</system-out>
+<testcase name="Inspection Module E2E Tests › S3: Save Draft and Resume - persistence verification" classname="inspection.spec.ts" time="0">
+<skipped>
+</skipped>
 </testcase>
-<testcase name="Inspection Module E2E Tests › S5: FE↔BE Data Contract Assertions" classname="inspection.spec.ts" time="0.331">
-<system-out>
-<![CDATA[✅ Template API contract validated
-✅ Inspection list API contract validated
-✅ CORS headers validated
-]]>
-</system-out>
+<testcase name="Inspection Module E2E Tests › S4: Finalize + Report - generate and validate report" classname="inspection.spec.ts" time="0">
+<skipped>
+</skipped>
 </testcase>
-<testcase name="Inspection Module E2E Tests › S6: Negative/Edge Cases" classname="inspection.spec.ts" time="4.732">
-<system-out>
-<![CDATA[✅ Validation errors displayed: 1 errors
-✅ Error message: 
-            
-            Inspector name is required; Inspector ID is required; Inspection title is required
-        
-✅ VIN validation errors displayed: 1 errors
-✅ VIN error message: 
-            
-            VIN must be exactly 17 characters
-        
-✅ Large file upload handled gracefully
-✅ Network failure recovery tested
-]]>
-</system-out>
+<testcase name="Inspection Module E2E Tests › S5: FE↔BE Data Contract Assertions" classname="inspection.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Inspection Module E2E Tests › S6: Negative/Edge Cases" classname="inspection.spec.ts" time="0">
+<skipped>
+</skipped>
 </testcase>
 </testsuite>
 </testsuites>

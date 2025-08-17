@@ -16,7 +16,7 @@ A command-line interface for decoding Vehicle Identification Numbers (VINs) usin
 The VIN decoder CLI is already set up in this project. Make sure you have Node.js installed and the dependencies are installed:
 
 ```bash
-npm install
+# No npm allowed - Python only
 ```
 
 ## Configuration
@@ -40,8 +40,8 @@ Decode a single VIN by passing it as an argument:
 # Using node directly
 node vin_decoder_cli.js 1HGBH41JXMN109186
 
-# Using npm script
-npm run decode 1HGBH41JXMN109186
+# Using Python directly
+python3 -c "from modules.vehicle_data.vin_decoder import decode_vin; print(decode_vin('1HGBH41JXMN109186'))"
 
 # Using the test script
 npm test
@@ -55,8 +55,8 @@ Run the script without arguments to enter interactive mode:
 # Using node directly
 node vin_decoder_cli.js
 
-# Using npm script
-npm start
+# Using Python directly
+python3 -c "from modules.vehicle_data.vin_decoder import decode_vin; print('Enter VIN:'); vin = input(); print(decode_vin(vin))"
 ```
 
 In interactive mode, you can:
@@ -111,9 +111,9 @@ The CLI handles various error scenarios:
 
 - `node vin_decoder_cli.js [VIN]` - Decode a specific VIN
 - `node vin_decoder_cli.js` - Enter interactive mode
-- `npm start` - Start interactive mode
-- `npm run decode [VIN]` - Decode a specific VIN
-- `npm test` - Test with a sample VIN
+- `python3 -c "from modules.vehicle_data.vin_decoder import decode_vin; print('Enter VIN:'); vin = input(); print(decode_vin(vin))"` - Start interactive mode
+- `python3 -c "from modules.vehicle_data.vin_decoder import decode_vin; print(decode_vin('1HGBH41JXMN109186'))"` - Decode a specific VIN
+- `python3 test_vin_decoder.py` - Test with a sample VIN
 
 ## API Information
 

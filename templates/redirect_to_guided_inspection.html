@@ -30,6 +30,9 @@
     </style>
 </head>
 <body>
+    {% if breadcrumbs %}
+        {% include 'components/breadcrumb.html' %}
+    {% endif %}
     <div class="redirect-container">
         <div class="redirect-card">
             <i class="fas fa-clipboard-check fa-3x text-primary mb-3"></i>

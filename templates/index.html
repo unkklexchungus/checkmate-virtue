@@ -18,9 +18,16 @@
         .feature-card:hover {
             transform: translateY(-5px);
         }
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
     </style>
 </head>
 <body>
+    {% if breadcrumbs %}
+        {% include 'components/breadcrumb.html' %}
+    {% endif %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="/">
@@ -37,7 +44,7 @@
                     <a class="nav-link" href="/inspection/list">Inspection List</a>
                     <a class="nav-link" href="/inspections">Legacy Inspections</a>
                     <a class="nav-link" href="/invoices">Invoices</a>
-                    <a class="nav-link" href="#" onclick="alert("OAuth disabled for demo")">Logout</a>
+                    <a class="nav-link" href="#" onclick="alert('OAuth disabled for demo')">Logout</a>
                 {% else %}
                     <a class="nav-link" href="/login">Login</a>
                 {% endif %}
@@ -48,15 +55,25 @@
     <section class="hero-section">
         <div class="container text-center">
             <h1 class="display-4 mb-4">Automotive Professional Inspection System</h1>
-            <p class="lead mb-4">Comprehensive vehicle inspection solutions for automotive professionals.</p>
+            <p class="lead mb-4">Comprehensive vehicle inspection and invoicing solutions for automotive professionals.</p>
             <div class="d-flex justify-content-center gap-3">
                 <a href="/inspection/form" class="btn btn-light btn-lg">
                     <i class="fas fa-car me-2"></i>
                     Start Vehicle Inspection
                 </a>
-                <a href="/inspections" class="btn btn-outline-light btn-lg">
+                <a href="/inspection/list" class="btn btn-outline-light btn-lg">
                     <i class="fas fa-clipboard-check me-2"></i>
                     View Inspections
+                </a>
+                <a href="/invoices" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-file-invoice me-2"></i>
+                    Manage Invoices
+                </a>
+            </div>
+            <div class="mt-4">
+                <a href="/inspection/list" class="btn btn-warning btn-sm">
+                    <i class="fas fa-play me-2"></i>
+                    Resume Draft Inspections
                 </a>
             </div>
         </div>
@@ -64,14 +81,20 @@
 
     <section class="py-5">
         <div class="container">
-            <h2 class="text-center mb-5">Automotive Inspection Features</h2>
+            <h2 class="text-center mb-5">Core Features</h2>
             <div class="row g-4">
                 <div class="col-md-6 col-lg-4">
                     <div class="card feature-card h-100 text-center">
                         <div class="card-body">
-                            <i class="fas fa-car fa-3x text-primary mb-3"></i>
-                            <h5 class="card-title">Vehicle Inspections</h5>
-                            <p class="card-text">Comprehensive vehicle safety and maintenance inspections</p>
+                            <i class="fas fa-clipboard-list fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Professional Inspections</h5>
+                            <p class="card-text">Comprehensive vehicle inspection system with step-by-step guided workflows, real-time validation, and professional reporting.</p>
+                            <div class="mt-3">
+                                <span class="badge bg-success status-badge">✓ Engine Bay</span>
+                                <span class="badge bg-success status-badge">✓ Brakes</span>
+                                <span class="badge bg-success status-badge">✓ Tires</span>
+                                <span class="badge bg-success status-badge">✓ Suspension</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -79,17 +102,27 @@
                     <div class="card feature-card h-100 text-center">
                         <div class="card-body">
                             <i class="fas fa-barcode fa-3x text-primary mb-3"></i>
-                            <h5 class="card-title">VIN Decoding</h5>
-                            <p class="card-text">Automatic vehicle information retrieval from VIN numbers</p>
+                            <h5 class="card-title">VIN Decoder</h5>
+                            <p class="card-text">Automatic vehicle information retrieval using NHTSA API with offline fallback. Auto-populates vehicle details instantly.</p>
+                            <div class="mt-3">
+                                <span class="badge bg-info status-badge">✓ Real-time API</span>
+                                <span class="badge bg-info status-badge">✓ Offline Support</span>
+                                <span class="badge bg-info status-badge">✓ Auto-fill</span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="card feature-card h-100 text-center">
                         <div class="card-body">
-                            <i class="fas fa-tools fa-3x text-primary mb-3"></i>
-                            <h5 class="card-title">Maintenance Tracking</h5>
-                            <p class="card-text">Track vehicle maintenance history and service records</p>
+                            <i class="fas fa-tire fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Tire Inspection System</h5>
+                            <p class="card-text">Advanced tire inspection with PSI monitoring, tread measurement, wear analysis, and intelligent work recommendations.</p>
+                            <div class="mt-3">
+                                <span class="badge bg-warning status-badge">✓ 5-Position</span>
+                                <span class="badge bg-warning status-badge">✓ Traffic Light</span>
+                                <span class="badge bg-warning status-badge">✓ Auto-suggest</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -99,32 +132,110 @@
 
     <section class="bg-light py-5">
         <div class="container">
-            <h2 class="text-center mb-5">Key Features</h2>
+            <h2 class="text-center mb-5">Professional Tools</h2>
             <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-clipboard-list fa-3x text-primary mb-3"></i>
-                            <h5 class="card-title">Automotive Templates</h5>
-                            <p class="card-text">Professional vehicle inspection templates designed for automotive industry requirements.</p>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
                         <div class="card-body text-center">
                             <i class="fas fa-camera fa-3x text-primary mb-3"></i>
                             <h5 class="card-title">Photo Documentation</h5>
-                            <p class="card-text">Capture photos of issues and components for detailed documentation.</p>
+                            <p class="card-text">Capture and attach photos to inspection items for detailed visual documentation and evidence.</p>
+                            <div class="mt-3">
+                                <span class="badge bg-secondary status-badge">✓ Mobile Upload</span>
+                                <span class="badge bg-secondary status-badge">✓ Camera Support</span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
                         <div class="card-body text-center">
-                            <i class="fas fa-chart-bar fa-3x text-primary mb-3"></i>
-                            <h5 class="card-title">Professional Reports</h5>
-                            <p class="card-text">Generate comprehensive inspection reports with findings and recommendations.</p>
+                            <i class="fas fa-file-invoice fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Invoicing System</h5>
+                            <p class="card-text">Complete invoicing solution with client management, item tracking, tax calculations, and professional invoice generation.</p>
+                            <div class="mt-3">
+                                <span class="badge bg-primary status-badge">✓ Client Management</span>
+                                <span class="badge bg-primary status-badge">✓ Tax Calculation</span>
+                                <span class="badge bg-primary status-badge">✓ PDF Export</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Progress Tracking</h5>
+                            <p class="card-text">Real-time progress tracking with completion percentages, status indicators, and inspection workflow management.</p>
+                            <div class="mt-3">
+                                <span class="badge bg-success status-badge">✓ Live Progress</span>
+                                <span class="badge bg-success status-badge">✓ Status Tracking</span>
+                                <span class="badge bg-success status-badge">✓ Draft Saving</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Inspection Categories</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-engine fa-2x text-primary mb-3"></i>
+                            <h6 class="card-title">Engine Bay</h6>
+                            <ul class="list-unstyled small">
+                                <li>• Fluids (Oil, Coolant, Brake)</li>
+                                <li>• Filters (Air, Cabin)</li>
+                                <li>• Belts & Hoses</li>
+                                <li>• Battery & Electrical</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-brake fa-2x text-primary mb-3"></i>
+                            <h6 class="card-title">Brakes & Wheels</h6>
+                            <ul class="list-unstyled small">
+                                <li>• Brake Pads & Rotors</li>
+                                <li>• Calipers & Drums</li>
+                                <li>• Wheel Bearings</li>
+                                <li>• Tire Condition</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-cogs fa-2x text-primary mb-3"></i>
+                            <h6 class="card-title">Suspension</h6>
+                            <ul class="list-unstyled small">
+                                <li>• Ball Joints</li>
+                                <li>• Tie Rod Ends</li>
+                                <li>• Struts & Shocks</li>
+                                <li>• Mounts & Bushings</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-car-side fa-2x text-primary mb-3"></i>
+                            <h6 class="card-title">Underbody</h6>
+                            <ul class="list-unstyled small">
+                                <li>• Fluid Leaks</li>
+                                <li>• Exhaust System</li>
+                                <li>• Frame Integrity</li>
+                                <li>• Rust & Corrosion</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -134,7 +245,7 @@
 
     <footer class="bg-dark text-white py-4">
         <div class="container text-center">
-            <p class="mb-0">&copy; 2024 CheckMate Virtue. Professional automotive inspection system.</p>
+            <p class="mb-0">&copy; 2024 CheckMate Virtue. Professional automotive inspection and invoicing system.</p>
         </div>
     </footer>
 

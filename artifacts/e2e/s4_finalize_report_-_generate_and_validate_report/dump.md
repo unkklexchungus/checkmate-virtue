@@ -2,29 +2,13 @@
 
 ## Test Information
 - **Title**: S4: Finalize + Report - generate and validate report
-- **Status**: failed
-- **Duration**: 24676ms
+- **Status**: skipped
+- **Duration**: 0ms
 - **Retry Count**: undefined
-- **Timestamp**: 2025-08-12T09:55:53.900Z
+- **Timestamp**: 2025-08-14T10:17:57.675Z
 
 ## Error Details
-```
-Error: [31mTimed out 10000ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m
-
-Locator: locator('[data-testid="inspection-status"]')
-Expected string: [32m"Finalized"[39m
-Received: <element(s) not found>
-Call log:
-[2m  - Expect "toContainText" with timeout 10000ms[22m
-[2m  - waiting for locator('[data-testid="inspection-status"]')[22m
-[2m    2 × locator resolved to <div id="inspection-status" class="alert alert-info" data-testid="inspection-status">…</div>[22m
-[2m      - unexpected value "[22m
-[2m                         Status: Draft[22m
-[2m                    "[22m
-[2m    - waiting for" http://127.0.0.1:8000/inspections" navigation to finish...[22m
-[2m    - navigated to "http://127.0.0.1:8000/inspections"[22m
-
-```
+No error message available
 
 ## Artifacts Captured
 - **har**: `artifacts/e2e/s4_finalize_report_-_generate_and_validate_report/fe-be.har` - HTTP Archive (HAR) file with all requests

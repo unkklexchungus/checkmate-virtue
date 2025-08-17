@@ -21,7 +21,7 @@ pip install playwright
 playwright install
 
 # Or use the convenience script
-npm run install-deps
+# No npm allowed - Python only
 ```
 
 ### 2. Start the Application

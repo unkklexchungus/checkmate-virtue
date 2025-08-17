@@ -59,8 +59,13 @@ def safe_navigate(page: Page, url: str, timeout: Optional[int] = None) -> bool:
 
 def get_base_url() -> str:
     """Get the base URL from environment variables."""
-    from app.config.runtime import BASE_URL
-    return BASE_URL
+    # Try to import from app.config.runtime first, fallback to environment variable
+    try:
+        from app.config.runtime import BASE_URL
+        return BASE_URL
+    except ImportError:
+        # Fallback to environment variable
+        return os.getenv('APP_BASE_URL', 'http://localhost:8000')
 
 
 def create_regression_test(page: Page) -> bool:
